@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Details — Maa Enterprises</title>
+  <meta name="description" content="View requirements, process, required documents, and pricing for online cyber cafe services at Maa Enterprises.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-badge">⚡</div>
+        <div class="brand-text">
+          <span>Maa Enterprises</span>
+          <small>Cyber Cafe & Online Services</small>
+        </div>
+      </a>
+
+      <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation">☰</button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link active">Services</a></li>
+        <li><a href="track-request.html" class="nav-link">Track Request</a></li>
+        <li><a href="trade-request.html" class="nav-link">Trade / Bulk Orders</a></li>
+        <li><a href="resume-maker.html" class="nav-link">Resume Maker</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="login.html" class="btn btn-outline btn-sm">Admin Portal</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Service Details Container -->
+  <main class="section">
+    <div class="container container-sm" id="service-detail-content">
+      <!-- Injected Dynamically by js/services.js initServiceDetailsPage() -->
+      <div style="text-align: center; padding: 4rem 1rem;">
+        <p style="font-size: 2rem;">⏳</p>
+        <p style="color: var(--text-muted);">Loading service details...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <p>&copy; <span id="current-year">2026</span> Maa Enterprises Cyber Cafe & Online Service Center.</p>
+        <p><a href="services.html">← Back to Services</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { initServiceDetailsPage } from './js/services.js';
+    import './js/app.js';
+    document.addEventListener('DOMContentLoaded', initServiceDetailsPage);
+  </script>
+</body>
+</html>
