@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trade & Bulk Service Requests — Maa Enterprises</title>
+  <meta name="description" content="Commercial, institutional, and bulk online Cyber Cafe services for schools, coaching institutes, and businesses by Maa Enterprises, Bihar Sharif.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-badge">⚡</div>
+        <div class="brand-text">
+          <span>Maa Enterprises</span>
+          <small>Cyber Cafe & Online Services</small>
+        </div>
+      </a>
+
+      <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation">☰</button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="track-request.html" class="nav-link">Track Request</a></li>
+        <li><a href="trade-request.html" class="nav-link active">Trade / Bulk Orders</a></li>
+        <li><a href="resume-maker.html" class="nav-link">Resume Maker</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="login.html" class="btn btn-outline btn-sm">Admin Portal</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section style="background: linear-gradient(135deg, #0f172a, #1e3a8a); color: #ffffff; padding: 3.5rem 0 2.5rem; text-align: center;">
+    <div class="container">
+      <span class="badge badge-completed" style="margin-bottom: 8px;">B2B & Institutional Support</span>
+      <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem;">Trade, Commercial & Bulk Services</h1>
+      <p style="font-size: 1.05rem; color: #cbd5e1; max-width: 650px; margin: 0 auto;">Special discounted rates for bulk document printing, student admissions, PVC smart cards, typing work, and enterprise digital solutions.</p>
+    </div>
+  </section>
+
+  <!-- Form Section -->
+  <main class="section">
+    <div class="container container-sm">
+      <div class="card" style="padding: 2.5rem;">
+        
+        <div style="margin-bottom: 2rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);">Submit Commercial / Bulk Requirement</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Fill out this form and our business manager will connect with tailored pricing and priority delivery.</p>
+        </div>
+
+        <form id="trade-request-form">
+          
+          <!-- Organization / Business Name -->
+          <div class="form-group">
+            <label for="trade-org-name" class="form-label required">Business / School / Institute Name</label>
+            <input type="text" id="trade-org-name" class="form-control" placeholder="e.g. Apex Coaching Institute / Sharma Traders" required>
+          </div>
+
+          <!-- Contact Person -->
+          <div class="form-group">
+            <label for="trade-person-name" class="form-label required">Contact Person Name</label>
+            <input type="text" id="trade-person-name" class="form-control" placeholder="e.g. Rajesh Kumar" required>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="form-group">
+            <label for="trade-mobile" class="form-label required">Mobile Number (WhatsApp Active)</label>
+            <input type="tel" id="trade-mobile" class="form-control" placeholder="10-digit Mobile Number" pattern="[0-9]{10}" maxlength="10" required>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="trade-email" class="form-label">Email Address (Optional)</label>
+            <input type="email" id="trade-email" class="form-control" placeholder="e.g. info@organization.com">
+          </div>
+
+          <!-- Trade Service Category -->
+          <div class="form-group">
+            <label for="trade-category-select" class="form-label required">Requirement Category</label>
+            <select id="trade-category-select" class="form-control" required>
+              <option value="" disabled selected>-- Select Trade Service --</option>
+              <option value="bulk-printing">🖨️ Bulk Printing & Photocopy (Exam Papers, Booklets, Notes)</option>
+              <option value="pvc-cards">🪪 Bulk PVC ID Cards & Smart Cards</option>
+              <option value="bulk-admissions">🎓 Bulk Student Admissions & Board Exam Registration</option>
+              <option value="data-entry">⌨️ Hindi / English Data Entry & Project Typing</option>
+              <option value="banner-promotions">📢 Digital Flex Banner Text & Job Notifications Design</option>
+              <option value="gst-billing">💼 Commercial Billing & Electricity Load Transfer</option>
+              <option value="other-commercial">⚡ Other Custom Corporate / Cyber Cafe Service</option>
+            </select>
+          </div>
+
+          <!-- Estimated Quantity / Volume -->
+          <div class="form-group">
+            <label for="trade-volume" class="form-label">Estimated Volume / Quantity (e.g. 500 Pages, 100 Students)</label>
+            <input type="text" id="trade-volume" class="form-control" placeholder="e.g. 250 copies / 50 candidates">
+          </div>
+
+          <!-- Detailed Requirement -->
+          <div class="form-group">
+            <label for="trade-details" class="form-label required">Detailed Description of Work</label>
+            <textarea id="trade-details" class="form-control" rows="4" placeholder="Mention deadline, specific paper type, color or B&W preference, or any custom instructions..." required></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" id="trade-submit-btn" class="btn btn-primary btn-lg btn-block" style="margin-top: 1.5rem;">
+            Submit Trade Enquiry →
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Confirmation Modal -->
+  <div class="modal-overlay" id="trade-success-modal">
+    <div class="modal-content" style="text-align: center;">
+      <button class="modal-close-btn">&times;</button>
+      <div style="font-size: 3.5rem; margin-bottom: 10px;">🤝</div>
+      <h3 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">Trade Enquiry Received!</h3>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Your bulk request has been registered in our B2B queue.</p>
+
+      <div style="background: var(--bg-main); border: 2px dashed var(--secondary); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+        <span style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Trade Reference ID</span>
+        <div id="trade-modal-request-id" style="font-size: 1.8rem; font-weight: 800; color: var(--secondary); letter-spacing: 1px; margin-top: 4px;">
+          TRADE-000000
+        </div>
+      </div>
+
+      <p style="font-size: 0.9rem; color: #334155; margin-bottom: 1.5rem; text-align: left; background: #f8fafc; padding: 12px; border-radius: var(--radius-sm);">
+        👉 <strong>Connect Directly:</strong> Send your bulk PDF files or sample documents directly on WhatsApp to get immediate discounted rate quotations.
+      </p>
+
+      <a id="trade-modal-whatsapp-btn" href="#" target="_blank" class="btn btn-whatsapp btn-lg btn-block" style="margin-bottom: 10px;">
+        💬 Discuss Pricing on WhatsApp →
+      </a>
+
+      <a href="track-request.html" class="btn btn-outline btn-block">
+        Track Request Status
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <p>&copy; <span id="current-year">2026</span> Maa Enterprises Cyber Cafe & Online Service Center.</p>
+        <p><a href="index.html">← Back to Homepage</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="js/trade-request.js"></script>
+</body>
+</html>
