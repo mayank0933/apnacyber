@@ -1,9 +1,9 @@
 /**
  * MAA ENTERPRISES - COMPLETE RESUME MAKER ENGINE (js/resume-maker.js)
  * Supports:
- * - 3 Complexity Levels: Low, Medium, High
- * - 9 Polished Templates: Classic, Modern, Minimal, Corporate, Elegant, Creative, Executive, Student, Two-Column
- * - Date, Place & Signature Customization (Cursive handwriting, Printed name line, Uploaded signature image)
+ * - 3 Complexity Levels: Low (Basic/Local Jobs), Medium (Graduate/Executive), High (Engineering CV)
+ * - 9 Distinct Printable A4 Templates
+ * - Date, Place & Candidate Signature Customization (Cursive handwriting, Printed name line, Uploaded signature image)
  * - Zoom in / Zoom out / Fit preview controls
  * - 100% Client-side local A4 PDF generator via html2pdf.js
  */
@@ -27,8 +27,8 @@ export const resumeState = {
     email: 'mayank.raj@example.com',
     mobile: '+91 98765 43210',
     address: 'Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101',
-    fatherName: 'Sri Ramesh Kumar',
-    dob: '15-08-2005 | Indian | Male',
+    fatherName: '',
+    dob: '',
     linkedin: 'linkedin.com/in/mayankraj',
     github: 'github.com/mayankraj'
   },
@@ -88,11 +88,11 @@ export const resumeState = {
 };
 
 // Preset Sample Datasets for 3 Detail Levels
-const SAMPLE_PRESETS = {
+export const SAMPLE_PRESETS = {
   low: {
     personal: {
       fullName: 'Ravi Kumar',
-      jobTitle: '',
+      jobTitle: 'Sales Assistant / Store Helper',
       email: 'ravikumar@gmail.com',
       mobile: '+91 98765 12340',
       address: 'Village - Mahalpar, PO - Bihar Sharif, Dist - Nalanda, Bihar (803101)',
@@ -109,7 +109,7 @@ const SAMPLE_PRESETS = {
       signType: 'cursive',
       signImageUrl: ''
     },
-    objective: 'Hardworking and honest individual looking for a suitable job opportunity in a reputed shop, store or local enterprise where I can utilize my skills and contribute sincerely to the organization growth.',
+    objective: 'Hardworking, honest and punctual individual seeking a job opportunity in a reputed shop, store or local enterprise where I can utilize my skills and contribute sincerely to the organization growth.',
     skills: ['Basic Computer Knowledge (MS Word, Excel)', 'Hindi & English Typing', 'Billing & Cash Handling', 'Good Communication', 'Customer Dealing'],
     education: [
       {
@@ -135,7 +135,7 @@ const SAMPLE_PRESETS = {
         role: 'Sales Assistant & Billing Staff',
         startDate: 'Jan 2024',
         endDate: 'Present',
-        description: 'Customer handling, stock maintenance, cash collection, and computer billing generation.'
+        description: 'Customer dealing, stock arrangement, cash collection, and computer billing generation.'
       }
     ],
     projects: [],
@@ -272,8 +272,158 @@ const SAMPLE_PRESETS = {
   }
 };
 
+// Global Switcher function accessible from HTML inline click & Event Listeners
+export function switchResumeLevel(selectedLevel) {
+  if (!selectedLevel || !SAMPLE_PRESETS[selectedLevel]) return;
+
+  resumeState.level = selectedLevel;
+
+  // 1. Update Card Active Classes
+  document.querySelectorAll('.level-card').forEach(card => {
+    if (card.dataset.level === selectedLevel) {
+      card.classList.add('active');
+    } else {
+      card.classList.remove('active');
+    }
+  });
+
+  // 2. Update Header Badges & Titles
+  const badge = document.getElementById('current-level-badge');
+  const modeTitle = document.getElementById('active-mode-title');
+
+  if (selectedLevel === 'low') {
+    if (badge) {
+      badge.textContent = '🟢 Mode: Low Detail (Basic / Local Jobs)';
+      badge.className = 'level-selector-badge';
+      badge.style.borderColor = '#10b981';
+      badge.style.color = '#a7f3d0';
+    }
+    if (modeTitle) modeTitle.textContent = '📝 Editing: Basic Bio-Data & Local Job Resume (10th/12th Pass)';
+  } else if (selectedLevel === 'medium') {
+    if (badge) {
+      badge.textContent = '🟡 Mode: Medium Detail (Graduate / Executive)';
+      badge.className = 'level-selector-badge';
+      badge.style.borderColor = '#0284c7';
+      badge.style.color = '#bae6fd';
+    }
+    if (modeTitle) modeTitle.textContent = '💼 Editing: Professional Graduate & Executive Resume';
+  } else {
+    if (badge) {
+      badge.textContent = '🔵 Mode: High Detail (Engineering CV)';
+      badge.className = 'level-selector-badge';
+      badge.style.borderColor = '#8b5cf6';
+      badge.style.color = '#ddd6fe';
+    }
+    if (modeTitle) modeTitle.textContent = '💻 Editing: Comprehensive Engineering & Tech CV';
+  }
+
+  // 3. Apply Form Visibility & Labels
+  applyLevelUI(selectedLevel);
+
+  // 4. Load Matching Sample Data
+  loadPresetData(selectedLevel);
+
+  showToast(`Switched to ${selectedLevel.toUpperCase()} Detail Resume mode!`, 'info');
+}
+
+// Expose to window object for inline onclick
+if (typeof window !== 'undefined') {
+  window.switchResumeLevel = switchResumeLevel;
+}
+
+function applyLevelUI(level) {
+  const secJobTitle = document.getElementById('sec-jobtitle');
+  const secSocialLinks = document.getElementById('sec-social-links');
+  const secGithubBox = document.getElementById('sec-github-box');
+  const secExtraPersonal = document.getElementById('sec-extra-personal');
+  const secProjectsWrapper = document.getElementById('sec-projects-wrapper');
+  const lblSkillsGuide = document.getElementById('lbl-skills-guide');
+  const headingObjective = document.getElementById('heading-objective');
+  const headingExperience = document.getElementById('heading-experience');
+
+  if (level === 'low') {
+    // Low Detail Mode: Hide complex engineering inputs, show simple personal & local skills
+    if (secJobTitle) secJobTitle.style.display = 'none';
+    if (secSocialLinks) secSocialLinks.style.display = 'none';
+    if (secGithubBox) secGithubBox.style.display = 'none';
+    if (secExtraPersonal) secExtraPersonal.style.display = 'grid';
+    if (secProjectsWrapper) secProjectsWrapper.style.display = 'none';
+    if (lblSkillsGuide) lblSkillsGuide.textContent = 'Basic Skills & Abilities (e.g. Computer, Typing, Cash Handling, Delivery)';
+    if (headingObjective) headingObjective.innerHTML = '<span>🎯</span> 4. Objective / About Candidate (उम्मीदवार का विवरण)';
+    if (headingExperience) headingExperience.innerHTML = '<span>💼</span> 7. Past Work / Shop Experience (अगर कोई हो)';
+  } else if (level === 'medium') {
+    // Medium Detail Mode
+    if (secJobTitle) secJobTitle.style.display = 'block';
+    if (secSocialLinks) secSocialLinks.style.display = 'grid';
+    if (secGithubBox) secGithubBox.style.display = 'none';
+    if (secExtraPersonal) secExtraPersonal.style.display = 'grid';
+    if (secProjectsWrapper) secProjectsWrapper.style.display = 'block';
+    if (lblSkillsGuide) lblSkillsGuide.textContent = 'Key Professional & Software Skills (e.g. Tally, Excel, Administration)';
+    if (headingObjective) headingObjective.innerHTML = '<span>🎯</span> 4. Professional Summary (प्रोफाइल समरी)';
+    if (headingExperience) headingExperience.innerHTML = '<span>💼</span> 7. Work Experience & Roles';
+  } else {
+    // High Detail Mode (Engineering)
+    if (secJobTitle) secJobTitle.style.display = 'block';
+    if (secSocialLinks) secSocialLinks.style.display = 'grid';
+    if (secGithubBox) secGithubBox.style.display = 'block';
+    if (secExtraPersonal) secExtraPersonal.style.display = 'none';
+    if (secProjectsWrapper) secProjectsWrapper.style.display = 'block';
+    if (lblSkillsGuide) lblSkillsGuide.textContent = 'Technical Stack & Engineering Skills (Languages, Tools, Frameworks)';
+    if (headingObjective) headingObjective.innerHTML = '<span>🎯</span> 4. Technical Summary / Career Objective';
+    if (headingExperience) headingExperience.innerHTML = '<span>💼</span> 7. Technical Work Experience & Internships';
+  }
+}
+
+function loadPresetData(level) {
+  const preset = SAMPLE_PRESETS[level];
+  if (!preset) return;
+
+  resumeState.personal = JSON.parse(JSON.stringify(preset.personal));
+  resumeState.signature = JSON.parse(JSON.stringify(preset.signature));
+  resumeState.objective = preset.objective;
+  resumeState.skills = [...preset.skills];
+  resumeState.education = JSON.parse(JSON.stringify(preset.education));
+  resumeState.experience = JSON.parse(JSON.stringify(preset.experience));
+  resumeState.projects = JSON.parse(JSON.stringify(preset.projects));
+  resumeState.certifications = preset.certifications;
+  resumeState.languages = preset.languages;
+
+  syncFormValuesFromState();
+  renderEducationList();
+  renderExperienceList();
+  renderProjectList();
+  updateResumePreview();
+}
+
+function syncFormValuesFromState() {
+  const p = resumeState.personal;
+  const s = resumeState.signature;
+
+  if (document.getElementById('r-fullname')) document.getElementById('r-fullname').value = p.fullName;
+  if (document.getElementById('r-jobtitle')) document.getElementById('r-jobtitle').value = p.jobTitle || '';
+  if (document.getElementById('r-email')) document.getElementById('r-email').value = p.email || '';
+  if (document.getElementById('r-mobile')) document.getElementById('r-mobile').value = p.mobile || '';
+  if (document.getElementById('r-address')) document.getElementById('r-address').value = p.address || '';
+  if (document.getElementById('r-fathername')) document.getElementById('r-fathername').value = p.fatherName || '';
+  if (document.getElementById('r-dob')) document.getElementById('r-dob').value = p.dob || '';
+  if (document.getElementById('r-linkedin')) document.getElementById('r-linkedin').value = p.linkedin || '';
+  if (document.getElementById('r-github')) document.getElementById('r-github').value = p.github || '';
+
+  if (document.getElementById('r-declaration')) document.getElementById('r-declaration').value = s.declaration;
+  if (document.getElementById('r-place')) document.getElementById('r-place').value = s.place;
+  if (document.getElementById('r-date')) document.getElementById('r-date').value = s.date;
+  if (document.getElementById('r-show-signature')) document.getElementById('r-show-signature').checked = s.show;
+  if (document.getElementById('r-sign-type')) document.getElementById('r-sign-type').value = s.signType;
+
+  if (document.getElementById('r-objective')) document.getElementById('r-objective').value = resumeState.objective;
+  if (document.getElementById('r-skills')) document.getElementById('r-skills').value = resumeState.skills.join(', ');
+  if (document.getElementById('r-certifications')) document.getElementById('r-certifications').value = resumeState.certifications;
+  if (document.getElementById('r-languages')) document.getElementById('r-languages').value = resumeState.languages;
+}
+
+// Initialize All Listeners
 document.addEventListener('DOMContentLoaded', () => {
-  initLevelSwitcher();
+  initLevelCardListeners();
   initZoomControls();
   initSignatureControls();
   initDOMListeners();
@@ -284,67 +434,15 @@ document.addEventListener('DOMContentLoaded', () => {
   updateResumePreview();
 });
 
-// Level Switcher Logic
-function initLevelSwitcher() {
-  const levelBtns = document.querySelectorAll('.level-tab-btn');
-  levelBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      levelBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const selectedLevel = btn.dataset.level;
-      resumeState.level = selectedLevel;
-      
-      const badge = document.getElementById('current-level-badge');
-      if (badge) {
-        if (selectedLevel === 'low') {
-          badge.textContent = '🟢 Low Detail (Basic Mode)';
-          badge.className = 'badge badge-completed';
-        } else if (selectedLevel === 'medium') {
-          badge.textContent = '🟡 Medium Detail (Graduate Mode)';
-          badge.className = 'badge badge-processing';
-        } else {
-          badge.textContent = '🔵 High Detail (Engineering Mode)';
-          badge.className = 'badge badge-pending';
-        }
-      }
-
-      loadPresetData(selectedLevel);
-      applyLevelUI(selectedLevel);
-      showToast(`Switched to ${selectedLevel.toUpperCase()} Detail Resume!`, 'info');
+function initLevelCardListeners() {
+  document.querySelectorAll('.level-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const level = card.dataset.level;
+      switchResumeLevel(level);
     });
   });
 }
 
-function applyLevelUI(level) {
-  const secJobTitle = document.getElementById('sec-jobtitle');
-  const secSocialLinks = document.getElementById('sec-social-links');
-  const secExtraPersonal = document.getElementById('sec-extra-personal');
-  const secProjectsWrapper = document.getElementById('sec-projects-wrapper');
-  const lblSkillsGuide = document.getElementById('lbl-skills-guide');
-
-  if (level === 'low') {
-    if (secJobTitle) secJobTitle.style.display = 'none';
-    if (secSocialLinks) secSocialLinks.style.display = 'none';
-    if (secExtraPersonal) secExtraPersonal.style.display = 'grid';
-    if (secProjectsWrapper) secProjectsWrapper.style.display = 'none';
-    if (lblSkillsGuide) lblSkillsGuide.textContent = 'Basic Skills & Abilities (e.g. Computer, Typing, Cash Handling)';
-  } else if (level === 'medium') {
-    if (secJobTitle) secJobTitle.style.display = 'block';
-    if (secSocialLinks) secSocialLinks.style.display = 'grid';
-    if (secExtraPersonal) secExtraPersonal.style.display = 'grid';
-    if (secProjectsWrapper) secProjectsWrapper.style.display = 'block';
-    if (lblSkillsGuide) lblSkillsGuide.textContent = 'Key Professional & Software Skills';
-  } else {
-    if (secJobTitle) secJobTitle.style.display = 'block';
-    if (secSocialLinks) secSocialLinks.style.display = 'grid';
-    if (secExtraPersonal) secExtraPersonal.style.display = 'none';
-    if (secProjectsWrapper) secProjectsWrapper.style.display = 'block';
-    if (lblSkillsGuide) lblSkillsGuide.textContent = 'Technical Stack & Engineering Skills (Languages, Tools, Frameworks)';
-  }
-}
-
-// Zoom Controls Logic
 function initZoomControls() {
   const previewWrapper = document.getElementById('preview-wrapper');
   const zoomText = document.getElementById('zoom-value-text');
@@ -364,7 +462,6 @@ function initZoomControls() {
   document.getElementById('btn-zoom-reset')?.addEventListener('click', () => setZoom(1.0));
 }
 
-// Signature & Date/Place Controls
 function initSignatureControls() {
   const showSignCheckbox = document.getElementById('r-show-signature');
   const declInput = document.getElementById('r-declaration');
@@ -428,53 +525,6 @@ function initSignatureControls() {
   });
 }
 
-function loadPresetData(level) {
-  const preset = SAMPLE_PRESETS[level];
-  if (!preset) return;
-
-  resumeState.personal = JSON.parse(JSON.stringify(preset.personal));
-  resumeState.signature = JSON.parse(JSON.stringify(preset.signature));
-  resumeState.objective = preset.objective;
-  resumeState.skills = [...preset.skills];
-  resumeState.education = JSON.parse(JSON.stringify(preset.education));
-  resumeState.experience = JSON.parse(JSON.stringify(preset.experience));
-  resumeState.projects = JSON.parse(JSON.stringify(preset.projects));
-  resumeState.certifications = preset.certifications;
-  resumeState.languages = preset.languages;
-
-  syncFormValuesFromState();
-  renderEducationList();
-  renderExperienceList();
-  renderProjectList();
-  updateResumePreview();
-}
-
-function syncFormValuesFromState() {
-  const p = resumeState.personal;
-  const s = resumeState.signature;
-
-  if (document.getElementById('r-fullname')) document.getElementById('r-fullname').value = p.fullName;
-  if (document.getElementById('r-jobtitle')) document.getElementById('r-jobtitle').value = p.jobTitle || '';
-  if (document.getElementById('r-email')) document.getElementById('r-email').value = p.email || '';
-  if (document.getElementById('r-mobile')) document.getElementById('r-mobile').value = p.mobile || '';
-  if (document.getElementById('r-address')) document.getElementById('r-address').value = p.address || '';
-  if (document.getElementById('r-fathername')) document.getElementById('r-fathername').value = p.fatherName || '';
-  if (document.getElementById('r-dob')) document.getElementById('r-dob').value = p.dob || '';
-  if (document.getElementById('r-linkedin')) document.getElementById('r-linkedin').value = p.linkedin || '';
-  if (document.getElementById('r-github')) document.getElementById('r-github').value = p.github || '';
-
-  if (document.getElementById('r-declaration')) document.getElementById('r-declaration').value = s.declaration;
-  if (document.getElementById('r-place')) document.getElementById('r-place').value = s.place;
-  if (document.getElementById('r-date')) document.getElementById('r-date').value = s.date;
-  if (document.getElementById('r-show-signature')) document.getElementById('r-show-signature').checked = s.show;
-  if (document.getElementById('r-sign-type')) document.getElementById('r-sign-type').value = s.signType;
-
-  if (document.getElementById('r-objective')) document.getElementById('r-objective').value = resumeState.objective;
-  if (document.getElementById('r-skills')) document.getElementById('r-skills').value = resumeState.skills.join(', ');
-  if (document.getElementById('r-certifications')) document.getElementById('r-certifications').value = resumeState.certifications;
-  if (document.getElementById('r-languages')) document.getElementById('r-languages').value = resumeState.languages;
-}
-
 function initDOMListeners() {
   // Template Selectors
   document.querySelectorAll('.template-card').forEach(card => {
@@ -493,7 +543,9 @@ function initDOMListeners() {
       swatch.classList.add('active');
       resumeState.primaryColor = swatch.dataset.primary;
       resumeState.secondaryColor = swatch.dataset.sec;
-      document.getElementById('r-custom-color').value = swatch.dataset.primary;
+      if (document.getElementById('r-custom-color')) {
+        document.getElementById('r-custom-color').value = swatch.dataset.primary;
+      }
       updateResumePreview();
     });
   });
@@ -558,7 +610,9 @@ function initDOMListeners() {
       const reader = new FileReader();
       reader.onload = (event) => {
         resumeState.photoUrl = event.target.result;
-        document.getElementById('photo-preview-img').src = event.target.result;
+        if (document.getElementById('photo-preview-img')) {
+          document.getElementById('photo-preview-img').src = event.target.result;
+        }
         updateResumePreview();
       };
       reader.readAsDataURL(file);
@@ -572,8 +626,10 @@ function initDOMListeners() {
 
   document.getElementById('r-remove-photo')?.addEventListener('click', () => {
     resumeState.photoUrl = '';
-    photoInput.value = '';
-    document.getElementById('photo-preview-img').src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E";
+    if (photoInput) photoInput.value = '';
+    if (document.getElementById('photo-preview-img')) {
+      document.getElementById('photo-preview-img').src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E";
+    }
     updateResumePreview();
   });
 
@@ -1043,4 +1099,7 @@ async function generatePDF() {
     console.error('Error generating PDF:', error);
     showToast('PDF generation failed. You can use Print to Save as PDF.', 'error');
   }
+}
+EOF
+}
 }
