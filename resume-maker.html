@@ -4,13 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Professional Resume Maker — Maa Enterprises</title>
-  <meta name="description" content="Free ATS-friendly online Resume Builder with 9 professional templates, live preview, color themes, photo shapes, and instant A4 PDF download.">
+  <meta name="description" content="Free ATS-friendly online Resume Builder with Basic, Medium, and Detailed Engineering templates.">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/resume.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <!-- html2pdf library for direct client-side high quality A4 PDF rendering -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body class="resume-app">
@@ -31,15 +30,15 @@
       <ul class="nav-links" id="nav-links">
         <li><a href="index.html" class="nav-link">Home</a></li>
         <li><a href="services.html" class="nav-link">Services</a></li>
-        <li><a href="track-request.html" class="nav-link">Track Request</a></li>
-        <li><a href="trade-request.html" class="nav-link">Trade / Bulk Orders</a></li>
+        <li><a href="track-request.html" class="nav-link">Track Status</a></li>
+        <li><a href="resume-maker.html" class="nav-link active">Resume Maker</a></li>
         <li><a href="contact.html" class="nav-link">Contact</a></li>
         <li><a href="login.html" class="btn btn-outline btn-sm">Admin Portal</a></li>
       </ul>
     </div>
   </header>
 
-  <!-- Resume Builder Top Action Toolbar -->
+  <!-- Toolbar -->
   <div class="resume-toolbar">
     <div style="display: flex; align-items: center; gap: 12px;">
       <span class="badge badge-completed">Live Interactive Builder</span>
@@ -47,9 +46,6 @@
     </div>
 
     <div class="resume-toolbar-actions">
-      <button type="button" id="btn-load-sample" class="btn btn-outline btn-sm" title="Fill sample data to test templates">
-        📝 Load Sample
-      </button>
       <button type="button" id="btn-reset-resume" class="btn btn-outline btn-sm" title="Clear all fields">
         🔄 Clear Form
       </button>
@@ -62,20 +58,36 @@
     </div>
   </div>
 
-  <!-- Main Split-Screen Workspace -->
   <div class="resume-layout">
     
     <!-- LEFT: Form Editor Panel -->
     <aside class="resume-editor-panel" id="resume-editor">
 
-      <!-- 1. Choose Template (9 Distinct Formats) -->
+      <!-- 0. Level Selection (NEW FEATURE) -->
+      <div class="editor-section" style="border-color: var(--primary); background-color: #f8fafc;">
+        <div class="editor-section-header">
+          <h4><span>📊</span> Select Resume Detail Level</h4>
+        </div>
+        <div class="editor-section-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+            <div class="template-card level-btn" data-level="low" style="padding: 12px 6px;">🟢 Basic<br><small>10th/12th/Shop</small></div>
+            <div class="template-card level-btn" data-level="medium" style="padding: 12px 6px;">🟡 Medium<br><small>Standard Job</small></div>
+            <div class="template-card level-btn active" data-level="high" style="padding: 12px 6px;">🔴 High<br><small>Engineering</small></div>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-main); margin-top: 10px; line-height: 1.4; background: #e0f2fe; padding: 10px; border-radius: 6px;" id="level-desc">
+            <strong>Engineering (High Detail):</strong> Highly detailed resume with all technical sections, multiple projects, and certifications.
+          </p>
+        </div>
+      </div>
+
+      <!-- 1. Choose Template -->
       <div class="editor-section">
         <div class="editor-section-header">
-          <h4><span>🎨</span> 1. Choose Template (9 Layouts)</h4>
+          <h4><span>🎨</span> 1. Choose Template Layout</h4>
         </div>
         <div class="editor-section-body">
           <div class="template-grid" id="template-selector-grid">
-            <div class="template-card active" data-template="classic">🏛️ Classic</div>
+            <div class="template-card" data-template="classic">🏛️ Classic</div>
             <div class="template-card" data-template="modern">💼 Modern</div>
             <div class="template-card" data-template="minimal">✨ Minimal</div>
             <div class="template-card" data-template="corporate">🏢 Corporate</div>
@@ -83,7 +95,7 @@
             <div class="template-card" data-template="creative">🚀 Creative</div>
             <div class="template-card" data-template="executive">👔 Executive</div>
             <div class="template-card" data-template="student">🎓 Student</div>
-            <div class="template-card" data-template="two-column">📊 2-Column</div>
+            <div class="template-card active" data-template="two-column">📊 2-Column</div>
           </div>
         </div>
       </div>
@@ -91,34 +103,29 @@
       <!-- 2. Color Themes & Typography -->
       <div class="editor-section">
         <div class="editor-section-header">
-          <h4><span>🖌️</span> 2. Color Theme & Font</h4>
+          <h4><span>🖌️</span> 2. Theme & Font</h4>
         </div>
         <div class="editor-section-body">
-          <label class="form-label" style="font-size: 0.85rem;">Preset Color Palettes</label>
           <div class="theme-swatches" id="theme-swatches-container">
-            <div class="color-swatch active" style="background-color: #1e40af;" data-primary="#1e40af" data-sec="#0f766e" title="Royal Blue"></div>
-            <div class="color-swatch" style="background-color: #0f172a;" data-primary="#0f172a" data-sec="#334155" title="Dark Slate"></div>
-            <div class="color-swatch" style="background-color: #0f766e;" data-primary="#0f766e" data-sec="#115e59" title="Teal Emerald"></div>
-            <div class="color-swatch" style="background-color: #7e22ce;" data-primary="#7e22ce" data-sec="#9333ea" title="Vibrant Purple"></div>
-            <div class="color-swatch" style="background-color: #b91c1c;" data-primary="#b91c1c" data-sec="#991b1b" title="Crimson Red"></div>
-            <div class="color-swatch" style="background-color: #374151;" data-primary="#374151" data-sec="#4b5563" title="Charcoal"></div>
+            <div class="color-swatch active" style="background-color: #1e40af;" data-primary="#1e40af" data-sec="#0f766e"></div>
+            <div class="color-swatch" style="background-color: #0f172a;" data-primary="#0f172a" data-sec="#334155"></div>
+            <div class="color-swatch" style="background-color: #0f766e;" data-primary="#0f766e" data-sec="#115e59"></div>
+            <div class="color-swatch" style="background-color: #7e22ce;" data-primary="#7e22ce" data-sec="#9333ea"></div>
+            <div class="color-swatch" style="background-color: #b91c1c;" data-primary="#b91c1c" data-sec="#991b1b"></div>
+            <div class="color-swatch" style="background-color: #374151;" data-primary="#374151" data-sec="#4b5563"></div>
           </div>
-
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;">
             <div class="form-group" style="margin-bottom: 0;">
               <label class="form-label" style="font-size: 0.85rem;">Custom Color</label>
               <input type="color" id="r-custom-color" class="form-control" value="#1e40af" style="height: 38px; padding: 2px;">
             </div>
-
             <div class="form-group" style="margin-bottom: 0;">
               <label class="form-label" style="font-size: 0.85rem;">Font Family</label>
               <select id="r-font-select" class="form-control" style="font-size: 0.85rem;">
-                <option value="'Segoe UI', Arial, sans-serif">Segoe UI (Modern)</option>
-                <option value="'Georgia', serif">Georgia (Classic Serif)</option>
-                <option value="'Times New Roman', serif">Times New Roman (Formal)</option>
-                <option value="'Poppins', sans-serif">Poppins (Clean)</option>
-                <option value="'Roboto', sans-serif">Roboto (Tech)</option>
-                <option value="'Open Sans', sans-serif">Open Sans (Readable)</option>
+                <option value="'Segoe UI', Arial, sans-serif">Segoe UI</option>
+                <option value="'Georgia', serif">Georgia</option>
+                <option value="'Times New Roman', serif">Times New</option>
+                <option value="'Poppins', sans-serif">Poppins</option>
               </select>
             </div>
           </div>
@@ -133,158 +140,139 @@
         <div class="editor-section-body">
           <div class="form-group">
             <label class="form-label required">Full Name</label>
-            <input type="text" id="r-fullname" class="form-control" placeholder="e.g. Mayank Raj" value="Mayank Raj">
+            <input type="text" id="r-fullname" class="form-control" placeholder="e.g. Mayank Raj">
           </div>
 
           <div class="form-group">
-            <label class="form-label">Professional Job Title / Domain</label>
-            <input type="text" id="r-jobtitle" class="form-control" placeholder="e.g. Full Stack Developer | ECE Student" value="ECE Engineering Student & Web Developer">
+            <label class="form-label">Job Title / Tagline</label>
+            <input type="text" id="r-jobtitle" class="form-control" placeholder="e.g. Honest Worker / Developer">
           </div>
 
           <div class="grid grid-2" style="gap: 10px;">
             <div class="form-group">
               <label class="form-label required">Email</label>
-              <input type="email" id="r-email" class="form-control" placeholder="mayank@example.com" value="mayank.raj@example.com">
+              <input type="email" id="r-email" class="form-control">
             </div>
-
             <div class="form-group">
               <label class="form-label required">Mobile Number</label>
-              <input type="text" id="r-mobile" class="form-control" placeholder="+91 98765 43210" value="+91 98765 43210">
+              <input type="text" id="r-mobile" class="form-control">
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Address / City, State</label>
-            <input type="text" id="r-address" class="form-control" placeholder="e.g. Bihar Sharif, Nalanda, Bihar" value="Bihar Sharif, Nalanda, Bihar - 803101">
+            <label class="form-label">Address / City</label>
+            <input type="text" id="r-address" class="form-control">
           </div>
 
-          <div class="grid grid-2" style="gap: 10px;">
+          <div class="grid grid-2" id="section-links" style="gap: 10px;">
             <div class="form-group">
-              <label class="form-label">LinkedIn Profile (Optional)</label>
-              <input type="text" id="r-linkedin" class="form-control" placeholder="linkedin.com/in/mayankraj" value="linkedin.com/in/mayankraj">
+              <label class="form-label">LinkedIn (Optional)</label>
+              <input type="text" id="r-linkedin" class="form-control">
             </div>
-
             <div class="form-group">
-              <label class="form-label">GitHub / Portfolio (Optional)</label>
-              <input type="text" id="r-github" class="form-control" placeholder="github.com/mayankraj" value="github.com/mayankraj">
+              <label class="form-label">GitHub / Portfolio</label>
+              <input type="text" id="r-github" class="form-control">
             </div>
           </div>
 
-          <!-- Photo Upload & Shape Control -->
+          <!-- Photo Upload -->
           <div class="photo-upload-box">
             <img id="photo-preview-img" class="photo-preview-thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="Preview">
             <div style="flex-grow: 1;">
               <input type="file" id="r-photo-input" accept="image/png, image/jpeg, image/jpg" style="font-size: 0.8rem; margin-bottom: 6px;">
               <div style="display: flex; gap: 6px; align-items: center;">
                 <select id="r-photo-shape" class="form-control" style="padding: 4px 8px; font-size: 0.8rem; width: auto;">
-                  <option value="circle">Circle Photo</option>
-                  <option value="rounded">Rounded Box</option>
+                  <option value="circle">Circle</option>
+                  <option value="rounded">Rounded</option>
                   <option value="square">Square</option>
                 </select>
-                <button type="button" id="r-remove-photo" class="btn btn-outline btn-sm" style="padding: 3px 8px; font-size: 0.75rem;">Remove</button>
+                <button type="button" id="r-remove-photo" class="btn btn-outline btn-sm" style="padding: 3px 8px;">Remove</button>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 4. Profile Summary / Career Objective -->
+      <!-- 4. Profile Summary -->
       <div class="editor-section">
         <div class="editor-section-header">
-          <h4><span>🎯</span> 4. Career Objective / Summary</h4>
+          <h4><span>🎯</span> 4. Objective / About Me</h4>
         </div>
         <div class="editor-section-body">
-          <textarea id="r-objective" class="form-control" rows="3" placeholder="Write a brief professional summary or career objective...">Passionate engineering student with strong foundations in Electronics, Web Development, and Python programming. Seeking an opportunity to leverage analytical and technical skills in an innovative engineering environment.</textarea>
+          <textarea id="r-objective" class="form-control" rows="3" placeholder="Write a brief professional summary or objective..."></textarea>
         </div>
       </div>
 
       <!-- 5. Skills -->
       <div class="editor-section">
         <div class="editor-section-header">
-          <h4><span>💡</span> 5. Technical & Soft Skills</h4>
+          <h4><span>💡</span> 5. Skills</h4>
         </div>
         <div class="editor-section-body">
-          <label class="form-label">Comma separated skills</label>
-          <input type="text" id="r-skills" class="form-control" placeholder="e.g. Python, C++, HTML/CSS, JavaScript, Firebase, Problem Solving" value="Python, C++, HTML/CSS, JavaScript, Firebase, Circuit Design, Problem Solving">
+          <label class="form-label">Comma separated (e.g. Hardworking, Python, Honest)</label>
+          <input type="text" id="r-skills" class="form-control" placeholder="e.g. Communication, Teamwork">
         </div>
       </div>
 
-      <!-- 6. Education History -->
+      <!-- 6. Education -->
       <div class="editor-section">
         <div class="editor-section-header">
           <h4><span>🎓</span> 6. Education</h4>
         </div>
         <div class="editor-section-body">
-          <div id="education-items-list">
-            <!-- Dynamic Education Entries will be rendered here -->
-          </div>
-          <button type="button" id="btn-add-education" class="btn btn-outline btn-sm btn-block">
-            + Add Education Entry
-          </button>
+          <div id="education-items-list"></div>
+          <button type="button" id="btn-add-education" class="btn btn-outline btn-sm btn-block">+ Add Education</button>
         </div>
       </div>
 
-      <!-- 7. Work Experience -->
+      <!-- 7. Experience -->
       <div class="editor-section">
         <div class="editor-section-header">
-          <h4><span>💼</span> 7. Work Experience / Internships</h4>
+          <h4><span>💼</span> 7. Work Experience</h4>
         </div>
         <div class="editor-section-body">
-          <div id="experience-items-list">
-            <!-- Dynamic Experience Entries will be rendered here -->
-          </div>
-          <button type="button" id="btn-add-experience" class="btn btn-outline btn-sm btn-block">
-            + Add Experience Entry
-          </button>
+          <div id="experience-items-list"></div>
+          <button type="button" id="btn-add-experience" class="btn btn-outline btn-sm btn-block">+ Add Experience</button>
         </div>
       </div>
 
-      <!-- 8. Projects -->
-      <div class="editor-section">
+      <!-- 8. Projects (Hidden in Low Mode) -->
+      <div class="editor-section" id="section-projects">
         <div class="editor-section-header">
           <h4><span>🚀</span> 8. Projects</h4>
         </div>
         <div class="editor-section-body">
-          <div id="project-items-list">
-            <!-- Dynamic Project Entries will be rendered here -->
-          </div>
-          <button type="button" id="btn-add-project" class="btn btn-outline btn-sm btn-block">
-            + Add Project Entry
-          </button>
+          <div id="project-items-list"></div>
+          <button type="button" id="btn-add-project" class="btn btn-outline btn-sm btn-block">+ Add Project</button>
         </div>
       </div>
 
-      <!-- 9. Additional Sections (Certifications & Languages) -->
-      <div class="editor-section">
+      <!-- 9. Certifications (Hidden in Low Mode) -->
+      <div class="editor-section" id="section-certs">
         <div class="editor-section-header">
           <h4><span>📜</span> 9. Certifications & Languages</h4>
         </div>
         <div class="editor-section-body">
           <div class="form-group">
             <label class="form-label">Certifications / Achievements</label>
-            <textarea id="r-certifications" class="form-control" rows="2" placeholder="e.g. Reliance Foundation Scholarship Qualifier, Python Certification">Lakshya Batch Merit Student, Python for Beginners Certificate</textarea>
+            <textarea id="r-certifications" class="form-control" rows="2"></textarea>
           </div>
-
           <div class="form-group">
             <label class="form-label">Languages Known</label>
-            <input type="text" id="r-languages" class="form-control" placeholder="e.g. English, Hindi" value="Hindi (Native), English (Fluent)">
+            <input type="text" id="r-languages" class="form-control">
           </div>
         </div>
       </div>
 
     </aside>
 
-    <!-- RIGHT: Live Resume Preview Panel -->
+    <!-- RIGHT: Live Preview Panel -->
     <main class="resume-preview-panel">
-      <!-- The A4 printable paper element that html2pdf exports -->
-      <div id="resume-preview-sheet" class="resume-paper template-classic">
-        <!-- Rendered reactively by js/resume-maker.js -->
-      </div>
+      <div id="resume-preview-sheet" class="resume-paper template-classic"></div>
     </main>
 
   </div>
 
-  <!-- Scripts -->
   <script type="module" src="js/resume-maker.js"></script>
 </body>
 </html>
