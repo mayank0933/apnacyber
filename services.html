@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Online Services — Maa Enterprises Cyber Cafe</title>
+  <meta name="description" content="Explore all cyber cafe and online document services offered by Maa Enterprises in Mahalpar, Bihar Sharif.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 2rem;
+      justify-content: center;
+    }
+    .filter-tab-btn {
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-tab-btn:hover, .filter-tab-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+    .search-box-wrapper {
+      max-width: 580px;
+      margin: 0 auto 2rem;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      padding: 14px 20px 14px 44px;
+      font-size: 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-full);
+      outline: none;
+      transition: var(--transition);
+    }
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.15);
+    }
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-badge">⚡</div>
+        <div class="brand-text">
+          <span>Maa Enterprises</span>
+          <small>Cyber Cafe & Online Services</small>
+        </div>
+      </a>
+
+      <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation">☰</button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link active">Services</a></li>
+        <li><a href="track-request.html" class="nav-link">Track Request</a></li>
+        <li><a href="trade-request.html" class="nav-link">Trade / Bulk Orders</a></li>
+        <li><a href="resume-maker.html" class="nav-link">Resume Maker</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="login.html" class="btn btn-outline btn-sm">Admin Portal</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Header Banner -->
+  <section style="background: linear-gradient(135deg, #1e40af, #0f766e); color: #ffffff; padding: 3rem 0 2.5rem; text-align: center;">
+    <div class="container">
+      <h1 style="font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem;">Explore All Online Services</h1>
+      <p style="font-size: 1.05rem; color: #e2e8f0; max-width: 600px; margin: 0 auto;">Select from government portals, educational forms, bill payments, and document printing solutions.</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="section">
+    <div class="container">
+      
+      <!-- Search Input -->
+      <div class="search-box-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="service-search" class="search-input" placeholder="Search services (e.g. Income certificate, PAN, Meter, OFSS, Typing)...">
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="filter-tabs">
+        <button class="filter-tab-btn active" data-category="all">All Services</button>
+        <button class="filter-tab-btn" data-category="govt">🏛️ Govt & Certificates</button>
+        <button class="filter-tab-btn" data-category="exams">🎓 Exams & Admissions</button>
+        <button class="filter-tab-btn" data-category="utility">⚡ Electricity & Utility</button>
+        <button class="filter-tab-btn" data-category="printing">🖨️ Printing & Typing</button>
+        <button class="filter-tab-btn" data-category="special">📄 Resume Maker</button>
+      </div>
+
+      <!-- Services Grid -->
+      <div class="grid grid-3" id="services-grid-container">
+        <!-- Injected Dynamically by js/services.js -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>⚡ Maa Enterprises</h3>
+          <p>Online Cyber Cafe & Document Processing Center in Mahalpar, Bihar Sharif.</p>
+          <p><strong>Owner:</strong> Rajesh Kumar</p>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services Catalog</a></li>
+            <li><a href="track-request.html">Track Application</a></li>
+            <li><a href="resume-maker.html">Resume Builder</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="services.html">Government RTPS</a></li>
+            <li><a href="services.html">Electricity Suvidha</a></li>
+            <li><a href="services.html">BSEB & College Admission</a></li>
+            <li><a href="services.html">PVC & Color Print</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Need Help?</h4>
+          <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Have questions about any service?</p>
+          <a href="https://wa.me/919876543210" target="_blank" class="btn btn-whatsapp btn-sm">💬 WhatsApp Support</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; <span id="current-year">2026</span> Maa Enterprises. All rights reserved.</p>
+        <p><a href="login.html" style="color: #64748b;">Staff / Admin Login</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { initServicesPage } from './js/services.js';
+    import './js/app.js';
+    document.addEventListener('DOMContentLoaded', initServicesPage);
+  </script>
+</body>
+</html>
