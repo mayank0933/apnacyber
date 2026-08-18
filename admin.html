@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Maa Enterprises</title>
+  <meta name="description" content="Management portal for Maa Enterprises Cyber Cafe requests, statistics, notes, FAQs, and business settings.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-card h3 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-top: 4px;
+    }
+    .stat-card span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .admin-table th, .admin-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .admin-table th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+    .admin-table tr:hover td {
+      background-color: #f8fafc;
+    }
+    .tab-nav {
+      display: flex;
+      gap: 12px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .tab-btn {
+      padding: 10px 18px;
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: var(--transition);
+    }
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    @media (max-width: 992px) {
+      .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .admin-table-container { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body style="background-color: #f1f5f9;">
+
+  <!-- Admin Top Bar -->
+  <header style="background: #0f172a; color: #ffffff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 1.4rem;">⚡</span>
+      <div>
+        <strong style="font-size: 1.1rem; display: block;">Maa Enterprises — Staff Dashboard</strong>
+        <small style="color: #94a3b8;" id="admin-user-email">admin@maaenterprises.com</small>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="index.html" target="_blank" class="btn btn-outline-light btn-sm">🌐 View Live Website</a>
+      <button id="admin-logout-btn" class="btn btn-primary btn-sm" style="background: #dc2626; border-color: #dc2626;">🚪 Logout</button>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Container -->
+  <main class="section" style="padding: 2rem 0;">
+    <div class="container">
+      
+      <!-- Real-Time Statistics -->
+      <div class="admin-stats-grid">
+        <div class="stat-card">
+          <span>Total Requests</span>
+          <h3 id="stat-total">0</h3>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid var(--warning);">
+          <span>Pending</span>
+          <h3 id="stat-pending" style="color: var(--warning);">0</h3>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid var(--info);">
+          <span>Processing</span>
+          <h3 id="stat-processing" style="color: var(--info);">0</h3>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid var(--success);">
+          <span>Completed</span>
+          <h3 id="stat-completed" style="color: var(--success);">0</h3>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid var(--primary);">
+          <span>Today's Submissions</span>
+          <h3 id="stat-today">0</h3>
+        </div>
+      </div>
+
+      <!-- Dashboard Navigation Tabs -->
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="requests">📑 Service & Trade Requests</button>
+        <button class="tab-btn" data-tab="faqs">❓ FAQ Manager</button>
+        <button class="tab-btn" data-tab="settings">⚙️ Business Settings</button>
+      </div>
+
+      <!-- TAB 1: Service Requests Management -->
+      <section id="tab-requests-view">
+        
+        <!-- Filter Toolbar -->
+        <div class="card" style="padding: 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div style="display: flex; gap: 10px; flex-grow: 1; max-width: 500px;">
+            <input type="text" id="admin-search-input" class="form-control" placeholder="Search by ID, Name, or Mobile...">
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <select id="admin-status-filter" class="form-control" style="width: auto;">
+              <option value="all">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Processing">Processing</option>
+              <option value="Completed">Completed</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+
+            <button id="admin-refresh-btn" class="btn btn-outline btn-sm">🔄 Refresh Data</button>
+          </div>
+        </div>
+
+        <!-- Requests Table -->
+        <div class="card" style="padding: 0; overflow: hidden;">
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Request ID</th>
+                  <th>Customer Name</th>
+                  <th>Mobile</th>
+                  <th>Service</th>
+                  <th>Applied On</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-requests-tbody">
+                <!-- Dynamically populated by js/admin.js -->
+                <tr>
+                  <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                    Loading customer applications from Firestore...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 2: FAQ Manager -->
+      <section id="tab-faqs-view" style="display: none;">
+        <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
+          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">➕ Add New FAQ</h3>
+          <form id="add-faq-form" style="display: flex; flex-direction: column; gap: 12px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label required">Question</label>
+              <input type="text" id="faq-question-input" class="form-control" placeholder="e.g. How long does an income certificate take?" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label required">Answer</label>
+              <textarea id="faq-answer-input" class="form-control" rows="3" placeholder="Write clear answer for website visitors..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Add FAQ to Website →</button>
+          </form>
+        </div>
+
+        <div class="card" style="padding: 0; overflow: hidden;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Answer Preview</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="faqs-admin-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 3: Business Settings -->
+      <section id="tab-settings-view" style="display: none;">
+        <div class="card" style="padding: 2.5rem; max-width: 750px;">
+          <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 1.5rem;">⚙️ Update Business & Cyber Cafe Information</h3>
+          
+          <form id="business-settings-form">
+            <div class="form-group">
+              <label class="form-label required">Business Name</label>
+              <input type="text" id="set-business-name" class="form-control" value="Maa Enterprises Cyber Cafe & Online Service Center" required>
+            </div>
+
+            <div class="grid grid-2" style="gap: 12px;">
+              <div class="form-group">
+                <label class="form-label required">Owner / Proprietor Name</label>
+                <input type="text" id="set-owner-name" class="form-control" value="Rajesh Kumar" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required">WhatsApp Notification Number</label>
+                <input type="text" id="set-whatsapp-num" class="form-control" value="919876543210" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label required">Center Full Address</label>
+              <input type="text" id="set-address" class="form-control" value="Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101" required>
+            </div>
+
+            <div class="grid grid-2" style="gap: 12px;">
+              <div class="form-group">
+                <label class="form-label required">Support Email</label>
+                <input type="email" id="set-email" class="form-control" value="support@maaenterprises.com" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required">Business Working Hours</label>
+                <input type="text" id="set-hours" class="form-control" value="Monday - Sunday: 08:00 AM - 08:30 PM" required>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 1rem;">
+              Save & Update Settings
+            </button>
+          </form>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Request Details & Status Update Modal -->
+  <div class="modal-overlay" id="admin-request-modal">
+    <div class="modal-content" style="max-width: 650px;">
+      <button class="modal-close-btn">&times;</button>
+      
+      <div style="border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Manage Request</span>
+        <h2 id="modal-detail-id" style="font-size: 1.4rem; font-weight: 800; color: var(--primary);">MAA-000000</h2>
+      </div>
+
+      <div class="grid grid-2" style="gap: 12px; margin-bottom: 1.25rem; font-size: 0.9rem; background: #f8fafc; padding: 14px; border-radius: var(--radius-sm);">
+        <div><strong>Applicant:</strong> <span id="modal-detail-name"></span></div>
+        <div><strong>Mobile:</strong> <span id="modal-detail-mobile"></span></div>
+        <div><strong>Service:</strong> <span id="modal-detail-service"></span></div>
+        <div><strong>Email:</strong> <span id="modal-detail-email"></span></div>
+        <div style="grid-column: 1/-1;"><strong>Remarks:</strong> <span id="modal-detail-remarks"></span></div>
+      </div>
+
+      <!-- Admin Update Controls Form -->
+      <form id="admin-update-status-form">
+        <input type="hidden" id="modal-hidden-request-id">
+
+        <div class="grid grid-2" style="gap: 12px; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label required">Application Status</label>
+            <select id="modal-status-select" class="form-control" required>
+              <option value="Pending">Pending (Documents awaited)</option>
+              <option value="Processing">Processing (Under review)</option>
+              <option value="Completed">Completed (Form filled / Done)</option>
+              <option value="Rejected">Rejected (Incomplete / Cancelled)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Payment Status</label>
+            <select id="modal-payment-select" class="form-control" required>
+              <option value="Pending">Pending</option>
+              <option value="Paid">Paid</option>
+              <option value="Not Required">Not Required</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Private Internal Admin Notes -->
+        <div class="form-group">
+          <label class="form-label">🔒 Internal Admin Note (Private to Staff)</label>
+          <textarea id="modal-admin-notes" class="form-control" rows="3" placeholder="e.g. Received ₹100 via UPI, Photo signature adjusted, Certificate dispatched on WhatsApp..."></textarea>
+          <small class="form-text">This note will only be visible in this Admin portal, never to the customer.</small>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-outline modal-close-btn" style="position: static;">Cancel</button>
+          <button type="submit" id="modal-save-btn" class="btn btn-primary">Save & Sync to Firestore</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
