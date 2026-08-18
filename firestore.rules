@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper: Check if authenticated user is registered in 'admins' collection
+    function isAdmin() {
+      return isAuthenticated() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // 1. Admins Collection:
+    // Only existing admins can read/verify their own profile.
+    // Client write is strictly denied (must be initialized from Firebase Console).
+    match /admins/{adminUid} {
+      allow read: if isAuthenticated() && request.auth.uid == adminUid;
+      allow write: if false;
+    }
+
+    // 2. Requests Collection (Customer applications & Trade requests):
+    // Public can create new requests (create).
+    // Public can read request by knowing Request ID (for tracking).
+    // Only verified Admin can update status, payment, or private admin notes.
+    // Only verified Admin can delete requests.
+    match /requests/{requestId} {
+      allow create: if request.resource.data.requestId == requestId
+                    && request.resource.data.fullName is string
+                    && request.resource.data.mobile is string;
+      allow read: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // 3. FAQs Collection:
+    // Public can read active FAQs.
+    // Only Admin can add, edit, or delete FAQs.
+    match /faqs/{faqId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 4. Settings Collection:
+    // Public can read business contact info.
+    // Only Admin can update settings.
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+  }
+}
