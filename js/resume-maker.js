@@ -278,14 +278,14 @@ export function switchResumeLevel(selectedLevel) {
 
   resumeState.level = selectedLevel;
 
-  // 1. Update Card Active Classes
-  document.querySelectorAll('.level-card').forEach(card => {
-    if (card.dataset.level === selectedLevel) {
-      card.classList.add('active');
-    } else {
-      card.classList.remove('active');
-    }
-  });
+  // 1. Update Button Cards Active UI
+  const btnLow = document.getElementById('btn-lvl-low');
+  const btnMed = document.getElementById('btn-lvl-medium');
+  const btnHigh = document.getElementById('btn-lvl-high');
+
+  if (btnLow) btnLow.className = 'level-btn-card' + (selectedLevel === 'low' ? ' active-low' : '');
+  if (btnMed) btnMed.className = 'level-btn-card' + (selectedLevel === 'medium' ? ' active-medium' : '');
+  if (btnHigh) btnHigh.className = 'level-btn-card' + (selectedLevel === 'high' ? ' active-high' : '');
 
   // 2. Update Header Badges & Titles
   const badge = document.getElementById('current-level-badge');
@@ -294,25 +294,25 @@ export function switchResumeLevel(selectedLevel) {
   if (selectedLevel === 'low') {
     if (badge) {
       badge.textContent = '🟢 Mode: Low Detail (Basic / Local Jobs)';
-      badge.className = 'level-selector-badge';
-      badge.style.borderColor = '#10b981';
+      badge.style.background = 'rgba(16, 185, 129, 0.2)';
       badge.style.color = '#a7f3d0';
+      badge.style.borderColor = '#10b981';
     }
     if (modeTitle) modeTitle.textContent = '📝 Editing: Basic Bio-Data & Local Job Resume (10th/12th Pass)';
   } else if (selectedLevel === 'medium') {
     if (badge) {
-      badge.textContent = '🟡 Mode: Medium Detail (Graduate / Executive)';
-      badge.className = 'level-selector-badge';
-      badge.style.borderColor = '#0284c7';
+      badge.textContent = '🟡 Mode: Medium Detail (Graduate / Pro)';
+      badge.style.background = 'rgba(2, 132, 199, 0.2)';
       badge.style.color = '#bae6fd';
+      badge.style.borderColor = '#0284c7';
     }
     if (modeTitle) modeTitle.textContent = '💼 Editing: Professional Graduate & Executive Resume';
   } else {
     if (badge) {
       badge.textContent = '🔵 Mode: High Detail (Engineering CV)';
-      badge.className = 'level-selector-badge';
-      badge.style.borderColor = '#8b5cf6';
+      badge.style.background = 'rgba(139, 92, 246, 0.2)';
       badge.style.color = '#ddd6fe';
+      badge.style.borderColor = '#8b5cf6';
     }
     if (modeTitle) modeTitle.textContent = '💻 Editing: Comprehensive Engineering & Tech CV';
   }
@@ -323,7 +323,7 @@ export function switchResumeLevel(selectedLevel) {
   // 4. Load Matching Sample Data
   loadPresetData(selectedLevel);
 
-  showToast(`Switched to ${selectedLevel.toUpperCase()} Detail Resume mode!`, 'info');
+  showToast(`Switched to ${selectedLevel.toUpperCase()} Detail Resume!`, 'info');
 }
 
 // Expose to window object for inline onclick
@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initLevelCardListeners() {
-  document.querySelectorAll('.level-card').forEach(card => {
+  document.querySelectorAll('.level-btn-card').forEach(card => {
     card.addEventListener('click', () => {
       const level = card.dataset.level;
       switchResumeLevel(level);
@@ -1100,6 +1100,4 @@ async function generatePDF() {
     showToast('PDF generation failed. You can use Print to Save as PDF.', 'error');
   }
 }
-EOF
-}
-}
+
