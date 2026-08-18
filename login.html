@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — Maa Enterprises</title>
+  <meta name="description" content="Secure staff and admin authentication portal for Maa Enterprises Cyber Cafe.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem;">
+
+  <!-- Login Card Container -->
+  <div style="max-width: 420px; width: 100%; background: #ffffff; border-radius: var(--radius-lg); padding: 2.5rem 2rem; box-shadow: var(--shadow-xl);">
+    
+    <!-- Branding Header -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div class="brand-badge" style="margin: 0 auto 12px; width: 52px; height: 52px; font-size: 1.5rem;">⚡</div>
+      <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">Staff & Admin Login</h1>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">Maa Enterprises Management Portal</p>
+    </div>
+
+    <!-- Alert Box for Error Handling -->
+    <div id="login-alert" style="display: none; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 1.25rem;"></div>
+
+    <!-- Form -->
+    <form id="admin-login-form">
+      
+      <div class="form-group">
+        <label for="login-email" class="form-label required">Admin Email</label>
+        <input type="email" id="login-email" class="form-control" placeholder="admin@maaenterprises.com" required autocomplete="username">
+      </div>
+
+      <div class="form-group">
+        <label for="login-password" class="form-label required">Password</label>
+        <div style="position: relative;">
+          <input type="password" id="login-password" class="form-control" placeholder="Enter password" required autocomplete="current-password" style="padding-right: 40px;">
+          <button type="button" id="toggle-pwd-btn" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1rem;">👁</button>
+        </div>
+      </div>
+
+      <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: 1.5rem;">
+        Authenticate & Open Portal →
+      </button>
+
+    </form>
+
+    <div style="margin-top: 2rem; text-align: center; border-top: 1px solid var(--border); padding-top: 1rem;">
+      <a href="index.html" style="font-size: 0.85rem; color: var(--text-muted);">← Return to Public Website</a>
+    </div>
+
+  </div>
+
+  <!-- Auth Script -->
+  <script type="module" src="js/auth.js"></script>
+</body>
+</html>
