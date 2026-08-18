@@ -1,129 +1,492 @@
 /**
- * MAA ENTERPRISES - COMPLETE RESUME MAKER ENGINE
- * Includes: 3 Detail Levels (Basic, Standard, Engineering), 9 Templates, PDF Generation
+ * MAA ENTERPRISES - COMPLETE RESUME MAKER ENGINE (js/resume-maker.js)
+ * Supports:
+ * - 3 Complexity Levels: Low, Medium, High
+ * - 9 Polished Templates: Classic, Modern, Minimal, Corporate, Elegant, Creative, Executive, Student, Two-Column
+ * - Date, Place & Signature Customization (Cursive handwriting, Printed name line, Uploaded signature image)
+ * - Zoom in / Zoom out / Fit preview controls
+ * - 100% Client-side local A4 PDF generator via html2pdf.js
  */
 
 import { showToast } from './app.js';
 
-// Global Resume State
-const resumeState = {
-  template: 'two-column',
+// Resume State Object
+export const resumeState = {
+  level: 'high', // 'low' | 'medium' | 'high'
+  template: 'classic',
   font: "'Segoe UI', Arial, sans-serif",
   primaryColor: '#1e40af',
   secondaryColor: '#0f766e',
   accentColor: '#f59e0b',
+  zoomScale: 1.0,
   photoUrl: '',
   photoShape: 'circle',
-  personal: {},
-  objective: '',
-  skills: [],
-  education: [],
-  experience: [],
-  projects: [],
-  certifications: '',
-  languages: ''
+  personal: {
+    fullName: 'Mayank Raj',
+    jobTitle: 'ECE Engineering Student & Web Developer',
+    email: 'mayank.raj@example.com',
+    mobile: '+91 98765 43210',
+    address: 'Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101',
+    fatherName: 'Sri Ramesh Kumar',
+    dob: '15-08-2005 | Indian | Male',
+    linkedin: 'linkedin.com/in/mayankraj',
+    github: 'github.com/mayankraj'
+  },
+  signature: {
+    show: true,
+    declaration: 'I hereby declare that all the information provided above is true and correct to the best of my knowledge and belief.',
+    place: 'Bihar Sharif',
+    date: '18/08/2026',
+    signType: 'cursive', // 'cursive' | 'printed' | 'image'
+    signImageUrl: ''
+  },
+  objective: 'Passionate engineering student with strong foundations in Electronics, Web Development, and Python programming. Seeking an opportunity to leverage analytical and technical skills in an innovative engineering environment.',
+  skills: ['Python', 'C++', 'HTML/CSS', 'JavaScript', 'Firebase', 'Circuit Design', 'Problem Solving', 'Data Structures & Algorithms'],
+  education: [
+    {
+      degree: 'B.Tech in Electronics & Communication (ECE)',
+      institution: 'Engineering Institute',
+      board: 'State Technical University',
+      startYear: '2026',
+      endYear: '2030',
+      grade: 'Pursuing'
+    },
+    {
+      degree: 'Class 12th (Senior Secondary - PCM)',
+      institution: 'Higher Secondary School, Bihar Sharif',
+      board: 'BSEB Patna',
+      startYear: '2024',
+      endYear: '2026',
+      grade: 'First Division'
+    }
+  ],
+  experience: [
+    {
+      company: 'Maa Enterprises Cyber Cafe',
+      role: 'Web Development & Technical Assistant',
+      startDate: 'Nov 2025',
+      endDate: 'Present',
+      description: 'Built responsive web interfaces, managed Firebase backend integrations, and assisted hundreds of students with error-free online admission and recruitment form submissions.'
+    }
+  ],
+  projects: [
+    {
+      title: 'Maa Enterprises Online Service Center Web Portal',
+      tech: 'HTML5, CSS3, Vanilla JS, Firebase Modular SDK',
+      link: '',
+      description: 'Designed and deployed a full-featured cyber cafe website with live request tracking, WhatsApp document routing, and client-side resume builder.'
+    },
+    {
+      title: '2D Drift Car Racing Game',
+      tech: 'Python, Pygame',
+      link: '',
+      description: 'Implemented vehicle physics, collision detection, and track boundary collision algorithms using Python and Pygame engine.'
+    }
+  ],
+  certifications: 'Lakshya Batch Merit Student, Python for Beginners Certificate',
+  languages: 'Hindi (Native), English (Fluent)'
+};
+
+// Preset Sample Datasets for 3 Detail Levels
+const SAMPLE_PRESETS = {
+  low: {
+    personal: {
+      fullName: 'Ravi Kumar',
+      jobTitle: '',
+      email: 'ravikumar@gmail.com',
+      mobile: '+91 98765 12340',
+      address: 'Village - Mahalpar, PO - Bihar Sharif, Dist - Nalanda, Bihar (803101)',
+      fatherName: 'Sri Shambhu Prasad',
+      dob: '10-05-2004 | Male | Unmarried',
+      linkedin: '',
+      github: ''
+    },
+    signature: {
+      show: true,
+      declaration: 'I hereby declare that all the information mentioned above is true and correct to the best of my knowledge and belief.',
+      place: 'Bihar Sharif',
+      date: '18/08/2026',
+      signType: 'cursive',
+      signImageUrl: ''
+    },
+    objective: 'Hardworking and honest individual looking for a suitable job opportunity in a reputed shop, store or local enterprise where I can utilize my skills and contribute sincerely to the organization growth.',
+    skills: ['Basic Computer Knowledge (MS Word, Excel)', 'Hindi & English Typing', 'Billing & Cash Handling', 'Good Communication', 'Customer Dealing'],
+    education: [
+      {
+        degree: 'Intermediate (12th Passed - Arts)',
+        institution: 'RPS College, Bihar Sharif',
+        board: 'BSEB Patna',
+        startYear: '2022',
+        endYear: '2024',
+        grade: '65% (1st Div)'
+      },
+      {
+        degree: 'Matriculation (10th Passed)',
+        institution: 'High School, Nalanda',
+        board: 'BSEB Patna',
+        startYear: '2020',
+        endYear: '2022',
+        grade: '70% (1st Div)'
+      }
+    ],
+    experience: [
+      {
+        company: 'Local Retail Store / Cloth Shop, Bihar Sharif',
+        role: 'Sales Assistant & Billing Staff',
+        startDate: 'Jan 2024',
+        endDate: 'Present',
+        description: 'Customer handling, stock maintenance, cash collection, and computer billing generation.'
+      }
+    ],
+    projects: [],
+    certifications: 'DCA (Diploma in Computer Applications - 6 Months)',
+    languages: 'Hindi, Bhojpuri, Basic English'
+  },
+
+  medium: {
+    personal: {
+      fullName: 'Pooja Kumari',
+      jobTitle: 'Office Executive & Accounts Assistant',
+      email: 'pooja.office@gmail.com',
+      mobile: '+91 98765 88990',
+      address: 'Ramchandrapur, Bihar Sharif, Nalanda, Bihar - 803101',
+      fatherName: 'Sri Mahendra Sharma',
+      dob: '20-11-2002 | Female',
+      linkedin: 'linkedin.com/in/poojakumari',
+      github: ''
+    },
+    signature: {
+      show: true,
+      declaration: 'I hereby declare that all the above details are authentic and true to the best of my knowledge and belief.',
+      place: 'Bihar Sharif',
+      date: '18/08/2026',
+      signType: 'cursive',
+      signImageUrl: ''
+    },
+    objective: 'Detail-oriented Commerce Graduate seeking an Office Executive / Accounts role to streamline documentation, customer support, and financial reporting with efficiency.',
+    skills: ['Tally Prime & GST Billing', 'Advance MS Excel (VLOOKUP, Pivot)', 'Office Administration', 'Email & Client Correspondence', 'Financial Record Keeping'],
+    education: [
+      {
+        degree: 'B.Com (Bachelor of Commerce - Accounts Hons)',
+        institution: 'Nalanda College, Bihar Sharif',
+        board: 'Patliputra University (PPU)',
+        startYear: '2021',
+        endYear: '2024',
+        grade: '72%'
+      },
+      {
+        degree: 'Class 12th (Commerce)',
+        institution: 'Soghra College, Bihar Sharif',
+        board: 'BSEB Patna',
+        startYear: '2019',
+        endYear: '2021',
+        grade: 'First Division'
+      }
+    ],
+    experience: [
+      {
+        company: 'Vikas Enterprises & Logistics',
+        role: 'Junior Accounts & Billing Executive',
+        startDate: 'Aug 2024',
+        endDate: 'Present',
+        description: 'Prepared monthly GST sales invoices, managed petty cash records, and coordinated with clients for bill clearance.'
+      }
+    ],
+    projects: [
+      {
+        title: 'Store Inventory & Accounting Management System',
+        tech: 'Tally Prime, MS Excel',
+        link: '',
+        description: 'Automated stock ledger tracking and reduced billing turnaround time by 30%.'
+      }
+    ],
+    certifications: 'Tally Prime Professional Certificate, Advance Excel Certification',
+    languages: 'Hindi, English'
+  },
+
+  high: {
+    personal: {
+      fullName: 'Mayank Raj',
+      jobTitle: 'ECE Engineering Student & Web Developer',
+      email: 'mayank.raj@example.com',
+      mobile: '+91 98765 43210',
+      address: 'Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101',
+      fatherName: '',
+      dob: '',
+      linkedin: 'linkedin.com/in/mayankraj',
+      github: 'github.com/mayankraj'
+    },
+    signature: {
+      show: true,
+      declaration: 'I hereby declare that all the information provided above is true and correct to the best of my knowledge and belief.',
+      place: 'Bihar Sharif',
+      date: '18/08/2026',
+      signType: 'cursive',
+      signImageUrl: ''
+    },
+    objective: 'Passionate engineering student with strong foundations in Electronics, Web Development, and Python programming. Seeking an opportunity to leverage analytical and technical skills in an innovative engineering environment.',
+    skills: ['Python', 'C++', 'HTML/CSS', 'JavaScript', 'Firebase', 'Circuit Design', 'Problem Solving', 'Data Structures & Algorithms'],
+    education: [
+      {
+        degree: 'B.Tech in Electronics & Communication (ECE)',
+        institution: 'Engineering Institute',
+        board: 'State Technical University',
+        startYear: '2026',
+        endYear: '2030',
+        grade: 'Pursuing'
+      },
+      {
+        degree: 'Class 12th (Senior Secondary - PCM)',
+        institution: 'Higher Secondary School, Bihar Sharif',
+        board: 'BSEB Patna',
+        startYear: '2024',
+        endYear: '2026',
+        grade: 'First Division'
+      }
+    ],
+    experience: [
+      {
+        company: 'Maa Enterprises Cyber Cafe',
+        role: 'Web Development & Technical Assistant',
+        startDate: 'Nov 2025',
+        endDate: 'Present',
+        description: 'Built responsive web interfaces, managed Firebase backend integrations, and assisted hundreds of students with error-free online admission and recruitment form submissions.'
+      }
+    ],
+    projects: [
+      {
+        title: 'Maa Enterprises Online Service Center Web Portal',
+        tech: 'HTML5, CSS3, Vanilla JS, Firebase Modular SDK',
+        link: '',
+        description: 'Designed and deployed a full-featured cyber cafe website with live request tracking, WhatsApp document routing, and client-side resume builder.'
+      },
+      {
+        title: '2D Drift Car Racing Game',
+        tech: 'Python, Pygame',
+        link: '',
+        description: 'Implemented vehicle physics, collision detection, and track boundary collision algorithms using Python and Pygame engine.'
+      }
+    ],
+    certifications: 'Lakshya Batch Merit Student, Python for Beginners Certificate',
+    languages: 'Hindi (Native), English (Fluent)'
+  }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  initLevelSwitcher();
+  initZoomControls();
+  initSignatureControls();
   initDOMListeners();
-  // Simulate clicking the "High" level button to load initial engineering data
-  document.querySelector('.level-btn[data-level="high"]').click();
+  applyLevelUI(resumeState.level);
+  renderEducationList();
+  renderExperienceList();
+  renderProjectList();
+  updateResumePreview();
 });
 
-function initDOMListeners() {
-  
-  // ==========================================
-  // 1. LEVEL SELECTOR LOGIC (Low, Medium, High)
-  // ==========================================
-  document.querySelectorAll('.level-btn').forEach(btn => {
+// Level Switcher Logic
+function initLevelSwitcher() {
+  const levelBtns = document.querySelectorAll('.level-tab-btn');
+  levelBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Update Button UI
-      document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+      levelBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const level = btn.dataset.level;
 
-      // Apply Data & Visibility based on Level
-      if (level === 'low') {
-        resumeState.template = 'minimal';
-        resumeState.personal = { fullName: 'Rahul Kumar', jobTitle: 'Fresher / Hardworking Individual', email: '', mobile: '+91 98765 00000', address: 'Bihar Sharif, Nalanda', linkedin: '', github: '' };
-        resumeState.objective = 'A hardworking and honest individual looking for a reliable job opportunity in a local shop or business. Ready to learn new things and give my best effort to the work given to me.';
-        resumeState.skills = ['Hardworking', 'Punctual', 'Honest', 'Basic Computer', 'Good Communication'];
-        resumeState.education = [{ degree: 'Matriculation (10th)', institution: 'High School, Bihar Sharif', board: 'BSEB', startYear: '2020', endYear: '2021', grade: '1st Division' }];
-        resumeState.experience = [];
-        resumeState.projects = [];
-        resumeState.certifications = '';
-        resumeState.languages = 'Hindi, Basic English';
-
-        document.getElementById('section-projects').style.display = 'none';
-        document.getElementById('section-certs').style.display = 'none';
-        document.getElementById('section-links').style.display = 'none';
-        document.getElementById('level-desc').innerHTML = '<strong>Basic (Low Detail):</strong> Best for local shops, factory work, or 10th/12th pass. Contains basic details and a short summary.';
-      } 
-      else if (level === 'medium') {
-        resumeState.template = 'modern';
-        resumeState.personal = { fullName: 'Vikash Singh', jobTitle: 'IT Professional / Graduate', email: 'vikash@example.com', mobile: '+91 98765 11111', address: 'Patna, Bihar', linkedin: 'linkedin.com/in/vikash', github: '' };
-        resumeState.objective = 'Motivated professional with experience in technical projects and teamwork. Passionate about applying my skills to solve real-world problems and contributing to company growth.';
-        resumeState.skills = ['HTML & CSS', 'Management', 'Teamwork', 'Communication', 'MS Office'];
-        resumeState.education = [
-          { degree: 'B.Sc / Graduation', institution: 'Science College', board: 'University', startYear: '2019', endYear: '2022', grade: 'A Grade' },
-          { degree: 'Intermediate (12th)', institution: 'High School', board: 'BSEB', startYear: '2017', endYear: '2019', grade: '1st Division' }
-        ];
-        resumeState.experience = [{ company: 'Local Tech Agency', role: 'Intern / Junior Staff', startDate: 'Jan 2023', endDate: 'Present', description: 'Assisted in daily operations, handled client data, and managed digital records.' }];
-        resumeState.projects = [{ title: 'College Management System', tech: 'Basic Web Tech', description: 'A basic portal for managing student records.' }];
-        resumeState.certifications = 'Basic Computer Course (BCC)';
-        resumeState.languages = 'Hindi, English';
-
-        document.getElementById('section-projects').style.display = 'block';
-        document.getElementById('section-certs').style.display = 'none';
-        document.getElementById('section-links').style.display = ''; // revert to flex/grid
-        document.getElementById('level-desc').innerHTML = '<strong>Standard (Medium Detail):</strong> Standard resume with projects and experience. Good for mid-level jobs or standard IT roles.';
-      } 
-      else if (level === 'high') {
-        resumeState.template = 'two-column';
-        resumeState.personal = { fullName: 'Mayank Raj', jobTitle: 'ECE Engineering Student & Web Developer', email: 'mayank.raj@example.com', mobile: '+91 98765 43210', address: 'Mahalpar, Bihar Sharif', linkedin: 'linkedin.com/in/mayankraj', github: 'github.com/mayankraj' };
-        resumeState.objective = 'Passionate engineering student with strong foundations in Electronics, Web Development, and Python programming. Seeking an opportunity to leverage analytical and technical skills in an innovative engineering environment.';
-        resumeState.skills = ['Python', 'C++', 'HTML/CSS', 'JavaScript', 'Firebase', 'Circuit Design', 'Problem Solving'];
-        resumeState.education = [
-          { degree: 'B.Tech in Electronics (ECE)', institution: 'Engineering Institute', board: 'State University', startYear: '2026', endYear: '2030', grade: 'Pursuing' },
-          { degree: 'Class 12th (PCM)', institution: 'Higher Secondary School', board: 'BSEB Patna', startYear: '2024', endYear: '2026', grade: 'First Division' }
-        ];
-        resumeState.experience = [{ company: 'Maa Enterprises Cyber Cafe', role: 'Web Development Assistant', startDate: 'Nov 2025', endDate: 'Present', description: 'Built responsive web interfaces and managed Firebase backend integrations.' }];
-        resumeState.projects = [
-          { title: 'Online Service Center Portal', tech: 'HTML, JS, Firebase', description: 'Designed a full-featured cyber cafe website with live request tracking.' },
-          { title: '2D Drift Car Racing Game', tech: 'Python, Pygame', description: 'Implemented vehicle physics and collision detection.' }
-        ];
-        resumeState.certifications = 'Lakshya Batch Merit Student, Python for Beginners';
-        resumeState.languages = 'Hindi (Native), English (Fluent)';
-
-        document.getElementById('section-projects').style.display = 'block';
-        document.getElementById('section-certs').style.display = 'block';
-        document.getElementById('section-links').style.display = '';
-        document.getElementById('level-desc').innerHTML = '<strong>Engineering (High Detail):</strong> Highly detailed resume with all technical sections, multiple projects, and certifications.';
+      const selectedLevel = btn.dataset.level;
+      resumeState.level = selectedLevel;
+      
+      const badge = document.getElementById('current-level-badge');
+      if (badge) {
+        if (selectedLevel === 'low') {
+          badge.textContent = '🟢 Low Detail (Basic Mode)';
+          badge.className = 'badge badge-completed';
+        } else if (selectedLevel === 'medium') {
+          badge.textContent = '🟡 Medium Detail (Graduate Mode)';
+          badge.className = 'badge badge-processing';
+        } else {
+          badge.textContent = '🔵 High Detail (Engineering Mode)';
+          badge.className = 'badge badge-pending';
+        }
       }
 
-      // Visually update template selector
-      document.querySelectorAll('.template-card').forEach(c => c.classList.remove('active'));
-      const activeTemplateCard = document.querySelector(`.template-card[data-template="${resumeState.template}"]`);
-      if (activeTemplateCard) activeTemplateCard.classList.add('active');
-
-      syncFormWithState();
-      updateResumePreview();
-      showToast(`${level.toUpperCase()} Resume Level Loaded`, 'info');
+      loadPresetData(selectedLevel);
+      applyLevelUI(selectedLevel);
+      showToast(`Switched to ${selectedLevel.toUpperCase()} Detail Resume!`, 'info');
     });
   });
+}
 
-  // ==========================================
-  // 2. OTHER LISTENERS (Templates, Colors, Inputs)
-  // ==========================================
-  document.querySelectorAll('#template-selector-grid .template-card').forEach(card => {
+function applyLevelUI(level) {
+  const secJobTitle = document.getElementById('sec-jobtitle');
+  const secSocialLinks = document.getElementById('sec-social-links');
+  const secExtraPersonal = document.getElementById('sec-extra-personal');
+  const secProjectsWrapper = document.getElementById('sec-projects-wrapper');
+  const lblSkillsGuide = document.getElementById('lbl-skills-guide');
+
+  if (level === 'low') {
+    if (secJobTitle) secJobTitle.style.display = 'none';
+    if (secSocialLinks) secSocialLinks.style.display = 'none';
+    if (secExtraPersonal) secExtraPersonal.style.display = 'grid';
+    if (secProjectsWrapper) secProjectsWrapper.style.display = 'none';
+    if (lblSkillsGuide) lblSkillsGuide.textContent = 'Basic Skills & Abilities (e.g. Computer, Typing, Cash Handling)';
+  } else if (level === 'medium') {
+    if (secJobTitle) secJobTitle.style.display = 'block';
+    if (secSocialLinks) secSocialLinks.style.display = 'grid';
+    if (secExtraPersonal) secExtraPersonal.style.display = 'grid';
+    if (secProjectsWrapper) secProjectsWrapper.style.display = 'block';
+    if (lblSkillsGuide) lblSkillsGuide.textContent = 'Key Professional & Software Skills';
+  } else {
+    if (secJobTitle) secJobTitle.style.display = 'block';
+    if (secSocialLinks) secSocialLinks.style.display = 'grid';
+    if (secExtraPersonal) secExtraPersonal.style.display = 'none';
+    if (secProjectsWrapper) secProjectsWrapper.style.display = 'block';
+    if (lblSkillsGuide) lblSkillsGuide.textContent = 'Technical Stack & Engineering Skills (Languages, Tools, Frameworks)';
+  }
+}
+
+// Zoom Controls Logic
+function initZoomControls() {
+  const previewWrapper = document.getElementById('preview-wrapper');
+  const zoomText = document.getElementById('zoom-value-text');
+
+  const setZoom = (scale) => {
+    resumeState.zoomScale = Math.min(Math.max(scale, 0.6), 1.5);
+    if (previewWrapper) {
+      previewWrapper.style.setProperty('--zoom-scale', resumeState.zoomScale);
+    }
+    if (zoomText) {
+      zoomText.textContent = `${Math.round(resumeState.zoomScale * 100)}%`;
+    }
+  };
+
+  document.getElementById('btn-zoom-in')?.addEventListener('click', () => setZoom(resumeState.zoomScale + 0.1));
+  document.getElementById('btn-zoom-out')?.addEventListener('click', () => setZoom(resumeState.zoomScale - 0.1));
+  document.getElementById('btn-zoom-reset')?.addEventListener('click', () => setZoom(1.0));
+}
+
+// Signature & Date/Place Controls
+function initSignatureControls() {
+  const showSignCheckbox = document.getElementById('r-show-signature');
+  const declInput = document.getElementById('r-declaration');
+  const placeInput = document.getElementById('r-place');
+  const dateInput = document.getElementById('r-date');
+  const signTypeSelect = document.getElementById('r-sign-type');
+  const signFileBox = document.getElementById('sec-sign-image-upload');
+  const signFileInput = document.getElementById('r-sign-file-input');
+
+  showSignCheckbox?.addEventListener('change', (e) => {
+    resumeState.signature.show = e.target.checked;
+    updateResumePreview();
+  });
+
+  declInput?.addEventListener('input', (e) => {
+    resumeState.signature.declaration = e.target.value;
+    updateResumePreview();
+  });
+
+  placeInput?.addEventListener('input', (e) => {
+    resumeState.signature.place = e.target.value;
+    updateResumePreview();
+  });
+
+  dateInput?.addEventListener('input', (e) => {
+    resumeState.signature.date = e.target.value;
+    updateResumePreview();
+  });
+
+  document.getElementById('btn-set-today')?.addEventListener('click', () => {
+    const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    resumeState.signature.date = today;
+    if (dateInput) dateInput.value = today;
+    updateResumePreview();
+  });
+
+  signTypeSelect?.addEventListener('change', (e) => {
+    resumeState.signature.signType = e.target.value;
+    if (signFileBox) {
+      signFileBox.style.display = e.target.value === 'image' ? 'block' : 'none';
+    }
+    updateResumePreview();
+  });
+
+  signFileInput?.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        resumeState.signature.signImageUrl = event.target.result;
+        updateResumePreview();
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  document.getElementById('btn-remove-sign-img')?.addEventListener('click', () => {
+    resumeState.signature.signImageUrl = '';
+    if (signFileInput) signFileInput.value = '';
+    updateResumePreview();
+  });
+}
+
+function loadPresetData(level) {
+  const preset = SAMPLE_PRESETS[level];
+  if (!preset) return;
+
+  resumeState.personal = JSON.parse(JSON.stringify(preset.personal));
+  resumeState.signature = JSON.parse(JSON.stringify(preset.signature));
+  resumeState.objective = preset.objective;
+  resumeState.skills = [...preset.skills];
+  resumeState.education = JSON.parse(JSON.stringify(preset.education));
+  resumeState.experience = JSON.parse(JSON.stringify(preset.experience));
+  resumeState.projects = JSON.parse(JSON.stringify(preset.projects));
+  resumeState.certifications = preset.certifications;
+  resumeState.languages = preset.languages;
+
+  syncFormValuesFromState();
+  renderEducationList();
+  renderExperienceList();
+  renderProjectList();
+  updateResumePreview();
+}
+
+function syncFormValuesFromState() {
+  const p = resumeState.personal;
+  const s = resumeState.signature;
+
+  if (document.getElementById('r-fullname')) document.getElementById('r-fullname').value = p.fullName;
+  if (document.getElementById('r-jobtitle')) document.getElementById('r-jobtitle').value = p.jobTitle || '';
+  if (document.getElementById('r-email')) document.getElementById('r-email').value = p.email || '';
+  if (document.getElementById('r-mobile')) document.getElementById('r-mobile').value = p.mobile || '';
+  if (document.getElementById('r-address')) document.getElementById('r-address').value = p.address || '';
+  if (document.getElementById('r-fathername')) document.getElementById('r-fathername').value = p.fatherName || '';
+  if (document.getElementById('r-dob')) document.getElementById('r-dob').value = p.dob || '';
+  if (document.getElementById('r-linkedin')) document.getElementById('r-linkedin').value = p.linkedin || '';
+  if (document.getElementById('r-github')) document.getElementById('r-github').value = p.github || '';
+
+  if (document.getElementById('r-declaration')) document.getElementById('r-declaration').value = s.declaration;
+  if (document.getElementById('r-place')) document.getElementById('r-place').value = s.place;
+  if (document.getElementById('r-date')) document.getElementById('r-date').value = s.date;
+  if (document.getElementById('r-show-signature')) document.getElementById('r-show-signature').checked = s.show;
+  if (document.getElementById('r-sign-type')) document.getElementById('r-sign-type').value = s.signType;
+
+  if (document.getElementById('r-objective')) document.getElementById('r-objective').value = resumeState.objective;
+  if (document.getElementById('r-skills')) document.getElementById('r-skills').value = resumeState.skills.join(', ');
+  if (document.getElementById('r-certifications')) document.getElementById('r-certifications').value = resumeState.certifications;
+  if (document.getElementById('r-languages')) document.getElementById('r-languages').value = resumeState.languages;
+}
+
+function initDOMListeners() {
+  // Template Selectors
+  document.querySelectorAll('.template-card').forEach(card => {
     card.addEventListener('click', () => {
-      document.querySelectorAll('#template-selector-grid .template-card').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.template-card').forEach(c => c.classList.remove('active'));
       card.classList.add('active');
       resumeState.template = card.dataset.template;
       updateResumePreview();
     });
   });
 
+  // Color Swatches
   document.querySelectorAll('.color-swatch').forEach(swatch => {
     swatch.addEventListener('click', () => {
       document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
@@ -145,7 +508,7 @@ function initDOMListeners() {
     updateResumePreview();
   });
 
-  // Input bindings
+  // Bind Form Inputs
   const bindInput = (id, obj, prop) => {
     document.getElementById(id)?.addEventListener('input', (e) => {
       obj[prop] = e.target.value;
@@ -158,6 +521,8 @@ function initDOMListeners() {
   bindInput('r-email', resumeState.personal, 'email');
   bindInput('r-mobile', resumeState.personal, 'mobile');
   bindInput('r-address', resumeState.personal, 'address');
+  bindInput('r-fathername', resumeState.personal, 'fatherName');
+  bindInput('r-dob', resumeState.personal, 'dob');
   bindInput('r-linkedin', resumeState.personal, 'linkedin');
   bindInput('r-github', resumeState.personal, 'github');
 
@@ -187,7 +552,8 @@ function initDOMListeners() {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 2.5 * 1024 * 1024) {
-        showToast('Image size exceeds 2.5MB.', 'error'); return;
+        showToast('Image size exceeds 2.5MB. Please choose a smaller photo.', 'error');
+        return;
       }
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -211,54 +577,55 @@ function initDOMListeners() {
     updateResumePreview();
   });
 
-  // Add Row Buttons
+  // Add Item Buttons
   document.getElementById('btn-add-education')?.addEventListener('click', () => {
-    resumeState.education.push({ degree: '', institution: '', board: '', startYear: '', endYear: '', grade: '' });
-    renderEducationList(); updateResumePreview();
-  });
-  document.getElementById('btn-add-experience')?.addEventListener('click', () => {
-    resumeState.experience.push({ company: '', role: '', startDate: '', endDate: '', description: '' });
-    renderExperienceList(); updateResumePreview();
-  });
-  document.getElementById('btn-add-project')?.addEventListener('click', () => {
-    resumeState.projects.push({ title: '', tech: '', description: '' });
-    renderProjectList(); updateResumePreview();
+    resumeState.education.push({ degree: 'Class / Degree', institution: 'School / College', board: 'Board', startYear: '2022', endYear: '2024', grade: 'Pass' });
+    renderEducationList();
+    updateResumePreview();
   });
 
-  // Toolbar
-  document.getElementById('btn-reset-resume')?.addEventListener('click', () => {
-    resumeState.personal = {}; resumeState.objective = ''; resumeState.skills = []; resumeState.education = []; resumeState.experience = []; resumeState.projects = []; resumeState.certifications = ''; resumeState.languages = '';
-    syncFormWithState(); updateResumePreview();
+  document.getElementById('btn-add-experience')?.addEventListener('click', () => {
+    resumeState.experience.push({ company: 'Company / Shop', role: 'Role', startDate: '2023', endDate: '2024', description: 'Description of responsibilities.' });
+    renderExperienceList();
+    updateResumePreview();
   });
+
+  document.getElementById('btn-add-project')?.addEventListener('click', () => {
+    resumeState.projects.push({ title: 'New Project', tech: 'Technologies', link: '', description: 'Summary of what was built.' });
+    renderProjectList();
+    updateResumePreview();
+  });
+
+  // Toolbar Actions
+  document.getElementById('btn-load-sample')?.addEventListener('click', () => {
+    loadPresetData(resumeState.level);
+    showToast('Loaded sample details!', 'success');
+  });
+
+  document.getElementById('btn-reset-resume')?.addEventListener('click', () => {
+    if (confirm('Clear all resume fields?')) {
+      resumeState.personal = { fullName: '', jobTitle: '', email: '', mobile: '', address: '', fatherName: '', dob: '', linkedin: '', github: '' };
+      resumeState.signature = { show: true, declaration: '', place: '', date: '', signType: 'cursive', signImageUrl: '' };
+      resumeState.objective = '';
+      resumeState.skills = [];
+      resumeState.education = [];
+      resumeState.experience = [];
+      resumeState.projects = [];
+      resumeState.certifications = '';
+      resumeState.languages = '';
+      syncFormValuesFromState();
+      renderEducationList();
+      renderExperienceList();
+      renderProjectList();
+      updateResumePreview();
+    }
+  });
+
   document.getElementById('btn-print-resume')?.addEventListener('click', () => window.print());
   document.getElementById('btn-download-pdf')?.addEventListener('click', generatePDF);
 }
 
-// ==========================================
-// 3. SYNCHRONIZE HTML FORM WITH STATE
-// ==========================================
-function syncFormWithState() {
-  document.getElementById('r-fullname').value = resumeState.personal.fullName || '';
-  document.getElementById('r-jobtitle').value = resumeState.personal.jobTitle || '';
-  document.getElementById('r-email').value = resumeState.personal.email || '';
-  document.getElementById('r-mobile').value = resumeState.personal.mobile || '';
-  document.getElementById('r-address').value = resumeState.personal.address || '';
-  document.getElementById('r-linkedin').value = resumeState.personal.linkedin || '';
-  document.getElementById('r-github').value = resumeState.personal.github || '';
-  
-  document.getElementById('r-objective').value = resumeState.objective || '';
-  document.getElementById('r-skills').value = resumeState.skills.join(', ') || '';
-  document.getElementById('r-certifications').value = resumeState.certifications || '';
-  document.getElementById('r-languages').value = resumeState.languages || '';
-
-  renderEducationList();
-  renderExperienceList();
-  renderProjectList();
-}
-
-// ==========================================
-// 4. RENDER DYNAMIC LISTS
-// ==========================================
+// Dynamic input renderers
 function renderEducationList() {
   const container = document.getElementById('education-items-list');
   if (!container) return;
@@ -268,16 +635,16 @@ function renderEducationList() {
     const card = document.createElement('div');
     card.className = 'dynamic-item-card';
     card.innerHTML = `
-      <button type="button" class="dynamic-item-remove">✕</button>
-      <div class="form-group" style="margin-bottom: 6px;">
-        <input type="text" class="form-control" placeholder="Degree / Class" value="${edu.degree}" data-field="degree">
+      <button type="button" class="dynamic-item-remove" data-index="${index}">✕</button>
+      <div class="form-group" style="margin-bottom: 4px;">
+        <input type="text" class="form-control" placeholder="Degree / Class (e.g. 10th, 12th, B.Tech)" value="${edu.degree}" data-field="degree">
       </div>
-      <div class="form-group" style="margin-bottom: 6px;">
-        <input type="text" class="form-control" placeholder="School / College" value="${edu.institution}" data-field="institution">
+      <div class="form-group" style="margin-bottom: 4px;">
+        <input type="text" class="form-control" placeholder="School / College / University" value="${edu.institution}" data-field="institution">
       </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-        <input type="text" class="form-control" placeholder="Year (e.g. 2020-2022)" value="${edu.startYear}${edu.endYear ? ' - ' + edu.endYear : ''}" data-field="years">
-        <input type="text" class="form-control" placeholder="Grade / %" value="${edu.grade || ''}" data-field="grade">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+        <input type="text" class="form-control" placeholder="Year / Duration" value="${edu.startYear}${edu.endYear ? ` - ${edu.endYear}` : ''}" data-field="years">
+        <input type="text" class="form-control" placeholder="Marks / % / CGPA" value="${edu.grade}" data-field="grade">
       </div>
     `;
 
@@ -287,7 +654,7 @@ function renderEducationList() {
         if (field === 'years') {
           const parts = e.target.value.split('-');
           edu.startYear = parts[0]?.trim() || '';
-          edu.endYear = parts[1]?.trim() || '';
+          edu.endYear = parts?.trim() || '';
         } else {
           edu[field] = e.target.value;
         }
@@ -297,8 +664,10 @@ function renderEducationList() {
 
     card.querySelector('.dynamic-item-remove').addEventListener('click', () => {
       resumeState.education.splice(index, 1);
-      renderEducationList(); updateResumePreview();
+      renderEducationList();
+      updateResumePreview();
     });
+
     container.appendChild(card);
   });
 }
@@ -312,17 +681,17 @@ function renderExperienceList() {
     const card = document.createElement('div');
     card.className = 'dynamic-item-card';
     card.innerHTML = `
-      <button type="button" class="dynamic-item-remove">✕</button>
-      <div class="form-group" style="margin-bottom: 6px;">
-        <input type="text" class="form-control" placeholder="Company / Shop Name" value="${exp.company}" data-field="company">
+      <button type="button" class="dynamic-item-remove" data-index="${index}">✕</button>
+      <div class="form-group" style="margin-bottom: 4px;">
+        <input type="text" class="form-control" placeholder="Company / Business / Shop Name" value="${exp.company}" data-field="company">
       </div>
-      <div class="form-group" style="margin-bottom: 6px;">
-        <input type="text" class="form-control" placeholder="Job Role" value="${exp.role}" data-field="role">
+      <div class="form-group" style="margin-bottom: 4px;">
+        <input type="text" class="form-control" placeholder="Job Title / Role" value="${exp.role}" data-field="role">
       </div>
-      <div class="form-group" style="margin-bottom: 6px;">
-        <input type="text" class="form-control" placeholder="Duration (e.g. 2023 - Present)" value="${exp.startDate}${exp.endDate ? ' - ' + exp.endDate : ''}" data-field="duration">
+      <div class="form-group" style="margin-bottom: 4px;">
+        <input type="text" class="form-control" placeholder="Duration (e.g. 2023 - 2024)" value="${exp.startDate}${exp.endDate ? ` - ${exp.endDate}` : ''}" data-field="duration">
       </div>
-      <textarea class="form-control" rows="2" placeholder="Work details..." data-field="description">${exp.description || ''}</textarea>
+      <textarea class="form-control" rows="2" placeholder="Key responsibilities..." data-field="description">${exp.description}</textarea>
     `;
 
     card.querySelectorAll('input, textarea').forEach(input => {
@@ -331,7 +700,7 @@ function renderExperienceList() {
         if (field === 'duration') {
           const parts = e.target.value.split('-');
           exp.startDate = parts[0]?.trim() || '';
-          exp.endDate = parts[1]?.trim() || '';
+          exp.endDate = parts?.trim() || '';
         } else {
           exp[field] = e.target.value;
         }
@@ -341,8 +710,10 @@ function renderExperienceList() {
 
     card.querySelector('.dynamic-item-remove').addEventListener('click', () => {
       resumeState.experience.splice(index, 1);
-      renderExperienceList(); updateResumePreview();
+      renderExperienceList();
+      updateResumePreview();
     });
+
     container.appendChild(card);
   });
 }
@@ -356,14 +727,14 @@ function renderProjectList() {
     const card = document.createElement('div');
     card.className = 'dynamic-item-card';
     card.innerHTML = `
-      <button type="button" class="dynamic-item-remove">✕</button>
-      <div class="form-group" style="margin-bottom: 6px;">
-        <input type="text" class="form-control" placeholder="Project Name" value="${proj.title}" data-field="title">
+      <button type="button" class="dynamic-item-remove" data-index="${index}">✕</button>
+      <div class="form-group" style="margin-bottom: 4px;">
+        <input type="text" class="form-control" placeholder="Project Title" value="${proj.title}" data-field="title">
       </div>
-      <div class="form-group" style="margin-bottom: 6px;">
-        <input type="text" class="form-control" placeholder="Tech / Skills Used" value="${proj.tech || ''}" data-field="tech">
+      <div class="form-group" style="margin-bottom: 4px;">
+        <input type="text" class="form-control" placeholder="Tech Stack / Tools Used" value="${proj.tech}" data-field="tech">
       </div>
-      <textarea class="form-control" rows="2" placeholder="Project details..." data-field="description">${proj.description || ''}</textarea>
+      <textarea class="form-control" rows="2" placeholder="Brief project description..." data-field="description">${proj.description}</textarea>
     `;
 
     card.querySelectorAll('input, textarea').forEach(input => {
@@ -375,15 +746,47 @@ function renderProjectList() {
 
     card.querySelector('.dynamic-item-remove').addEventListener('click', () => {
       resumeState.projects.splice(index, 1);
-      renderProjectList(); updateResumePreview();
+      renderProjectList();
+      updateResumePreview();
     });
+
     container.appendChild(card);
   });
 }
 
-// ==========================================
-// 5. LIVE PDF PREVIEW ENGINE
-// ==========================================
+// Generate Signature Block HTML
+function getSignatureBlockHTML() {
+  const s = resumeState.signature;
+  const p = resumeState.personal;
+  if (!s || !s.show) return '';
+
+  let signatureVisualHTML = '';
+  if (s.signType === 'image' && s.signImageUrl) {
+    signatureVisualHTML = `<img src="${s.signImageUrl}" class="r-sig-image" alt="Signature">`;
+  } else if (s.signType === 'cursive') {
+    signatureVisualHTML = `<div class="r-sig-cursive">${p.fullName || 'Candidate Sign'}</div>`;
+  }
+
+  return `
+    <div class="r-signature-footer">
+      ${s.declaration ? `<p class="r-declaration-text"><strong>Declaration:</strong> ${s.declaration}</p>` : ''}
+      
+      <div class="r-sig-row">
+        <div class="r-sig-left">
+          ${s.place ? `<div><strong>Place:</strong> ${s.place}</div>` : ''}
+          ${s.date ? `<div><strong>Date:</strong> ${s.date}</div>` : ''}
+        </div>
+
+        <div class="r-sig-right">
+          ${signatureVisualHTML}
+          <div class="r-sig-line">(${p.fullName || 'Signature'})</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Main Live Preview Renderer
 export function updateResumePreview() {
   const preview = document.getElementById('resume-preview-sheet');
   if (!preview) return;
@@ -394,52 +797,97 @@ export function updateResumePreview() {
   preview.className = `resume-paper template-${resumeState.template}`;
 
   const p = resumeState.personal;
-  const photoHTML = resumeState.photoUrl ? `<img src="${resumeState.photoUrl}" class="r-photo ${resumeState.photoShape}" alt="Photo">` : '';
+  const isLow = resumeState.level === 'low';
+  const isMedium = resumeState.level === 'medium';
+  const isHigh = resumeState.level === 'high';
 
+  const photoHTML = resumeState.photoUrl 
+    ? `<img src="${resumeState.photoUrl}" class="r-photo ${resumeState.photoShape}" alt="Photo">` 
+    : '';
+
+  // Contacts Bar
   const contactsHTML = `
     <div class="r-contact-bar">
-      ${p.email ? `<span>✉ ${p.email}</span>` : ''}
       ${p.mobile ? `<span>📞 ${p.mobile}</span>` : ''}
+      ${p.email ? `<span>✉ ${p.email}</span>` : ''}
       ${p.address ? `<span>📍 ${p.address}</span>` : ''}
-      ${p.linkedin ? `<span>🔗 ${p.linkedin}</span>` : ''}
-      ${p.github ? `<span>💻 ${p.github}</span>` : ''}
+      ${(isHigh || isMedium) && p.linkedin ? `<span>🔗 ${p.linkedin}</span>` : ''}
+      ${isHigh && p.github ? `<span>💻 ${p.github}</span>` : ''}
     </div>
   `;
 
+  // Objective / Summary Section
   const objectiveHTML = resumeState.objective ? `
-    <section class="r-section r-objective-section">
-      <h3 class="r-section-title">Profile Summary</h3>
+    <section class="r-section">
+      <h3 class="r-section-title">${isLow ? 'Career Objective' : (isHigh ? 'Professional Summary' : 'Profile Summary')}</h3>
       <p class="r-item-desc">${resumeState.objective}</p>
     </section>
   ` : '';
 
+  // Personal Particulars
+  const personalDetailsHTML = (p.fatherName || p.dob) ? `
+    <section class="r-section">
+      <h3 class="r-section-title">Personal Details</h3>
+      <div style="font-size: 8.2pt; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px;">
+        ${p.fatherName ? `<div><strong>Father's Name:</strong> ${p.fatherName}</div>` : ''}
+        ${p.dob ? `<div><strong>DOB / Gender:</strong> ${p.dob}</div>` : ''}
+      </div>
+    </section>
+  ` : '';
+
+  // Skills
   const skillsHTML = resumeState.skills.length > 0 ? `
-    <section class="r-section r-skills-section">
-      <h3 class="r-section-title">Skills</h3>
+    <section class="r-section">
+      <h3 class="r-section-title">${isHigh ? 'Technical Stack & Skills' : (isLow ? 'Key Skills & Abilities' : 'Skills & Competencies')}</h3>
       <div class="r-tags-container">
         ${resumeState.skills.map(s => `<span class="r-tag">${s}</span>`).join('')}
       </div>
     </section>
   ` : '';
 
+  // Education
   const educationHTML = resumeState.education.length > 0 ? `
     <section class="r-section r-education-section">
-      <h3 class="r-section-title">Education</h3>
-      ${resumeState.education.map(edu => `
-        <div class="r-item">
-          <div class="r-item-header">
-            <span>${edu.degree}</span>
-            <span>${edu.startYear}${edu.endYear ? ' – ' + edu.endYear : ''}</span>
+      <h3 class="r-section-title">Academic Qualifications</h3>
+      ${isLow ? `
+        <table class="r-table">
+          <thead>
+            <tr>
+              <th>Qualification / Class</th>
+              <th>School / Board</th>
+              <th>Year</th>
+              <th>Score / %</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${resumeState.education.map(edu => `
+              <tr>
+                <td><strong>${edu.degree}</strong></td>
+                <td>${edu.institution} ${edu.board ? `(${edu.board})` : ''}</td>
+                <td>${edu.startYear}${edu.endYear ? ` - ${edu.endYear}` : ''}</td>
+                <td>${edu.grade}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      ` : `
+        ${resumeState.education.map(edu => `
+          <div class="r-item">
+            <div class="r-item-header">
+              <span>${edu.degree}</span>
+              <span>${edu.startYear}${edu.endYear ? ` – ${edu.endYear}` : ''}</span>
+            </div>
+            <div class="r-item-sub">
+              <span>${edu.institution} ${edu.board ? `(${edu.board})` : ''}</span>
+              <span>${edu.grade ? `Score: ${edu.grade}` : ''}</span>
+            </div>
           </div>
-          <div class="r-item-sub">
-            <span>${edu.institution} ${edu.board ? `(${edu.board})` : ''}</span>
-            <span>${edu.grade ? `Score: ${edu.grade}` : ''}</span>
-          </div>
-        </div>
-      `).join('')}
+        `).join('')}
+      `}
     </section>
   ` : '';
 
+  // Work Experience
   const experienceHTML = resumeState.experience.length > 0 ? `
     <section class="r-section r-experience-section">
       <h3 class="r-section-title">Work Experience</h3>
@@ -447,95 +895,152 @@ export function updateResumePreview() {
         <div class="r-item">
           <div class="r-item-header">
             <span>${exp.role}</span>
-            <span>${exp.startDate}${exp.endDate ? ' – ' + exp.endDate : ''}</span>
+            <span>${exp.startDate}${exp.endDate ? ` – ${exp.endDate}` : ''}</span>
           </div>
-          <div class="r-item-sub"><span>${exp.company}</span></div>
-          <p class="r-item-desc">${exp.description || ''}</p>
+          <div class="r-item-sub">
+            <span>${exp.company}</span>
+          </div>
+          <p class="r-item-desc">${exp.description}</p>
         </div>
       `).join('')}
     </section>
   ` : '';
 
-  const projectsHTML = resumeState.projects.length > 0 ? `
+  // Projects
+  const projectsHTML = (!isLow && resumeState.projects.length > 0) ? `
     <section class="r-section r-projects-section">
-      <h3 class="r-section-title">Projects</h3>
+      <h3 class="r-section-title">Key Projects</h3>
       ${resumeState.projects.map(proj => `
         <div class="r-item">
-          <div class="r-item-header"><span>${proj.title}</span></div>
-          <div class="r-item-sub"><span>${proj.tech ? 'Tech: ' + proj.tech : ''}</span></div>
-          <p class="r-item-desc">${proj.description || ''}</p>
+          <div class="r-item-header">
+            <span>${proj.title}</span>
+          </div>
+          ${proj.tech ? `<div class="r-item-sub"><span>Tech Stack: ${proj.tech}</span></div>` : ''}
+          <p class="r-item-desc">${proj.description}</p>
         </div>
       `).join('')}
     </section>
   ` : '';
 
+  // Certifications & Languages
   const certsHTML = (resumeState.certifications || resumeState.languages) ? `
     <section class="r-section">
-      <h3 class="r-section-title">Other Details</h3>
+      <h3 class="r-section-title">Additional Details</h3>
       ${resumeState.certifications ? `<p class="r-item-desc"><strong>Certifications:</strong> ${resumeState.certifications}</p>` : ''}
-      ${resumeState.languages ? `<p class="r-item-desc" style="margin-top: 4px;"><strong>Languages:</strong> ${resumeState.languages}</p>` : ''}
+      ${resumeState.languages ? `<p class="r-item-desc" style="margin-top: 2px;"><strong>Languages:</strong> ${resumeState.languages}</p>` : ''}
     </section>
   ` : '';
 
+  const signatureFooterHTML = getSignatureBlockHTML();
+
+  // Template Switching Render Engine
   if (resumeState.template === 'modern') {
     preview.innerHTML = `
       <div class="r-sidebar">
-        ${photoHTML ? `<div style="margin-bottom: 15px; text-align: center;">${photoHTML}</div>` : ''}
-        <h1 class="r-name" style="font-size: 16pt;">${p.fullName || 'Name'}</h1>
-        <p class="r-title" style="font-size: 9pt;">${p.jobTitle || ''}</p>
-        <div style="margin-top: 15px; font-size: 8.5pt; color: #475569;">
-          ${p.email ? `<p style="margin-bottom: 6px;">✉ ${p.email}</p>` : ''}
-          ${p.mobile ? `<p style="margin-bottom: 6px;">📞 ${p.mobile}</p>` : ''}
-          ${p.address ? `<p style="margin-bottom: 6px;">📍 ${p.address}</p>` : ''}
-          ${p.linkedin ? `<p style="margin-bottom: 6px;">🔗 ${p.linkedin}</p>` : ''}
+        ${photoHTML ? `<div style="margin-bottom: 10px; text-align: center;">${photoHTML}</div>` : ''}
+        <h1 class="r-name" style="font-size: 15pt;">${p.fullName}</h1>
+        ${p.jobTitle ? `<p class="r-title" style="font-size: 8.8pt;">${p.jobTitle}</p>` : ''}
+        
+        <div style="margin-top: 10px; font-size: 7.8pt; color: #475569;">
+          ${p.mobile ? `<p style="margin-bottom: 3px;">📞 ${p.mobile}</p>` : ''}
+          ${p.email ? `<p style="margin-bottom: 3px;">✉ ${p.email}</p>` : ''}
+          ${p.address ? `<p style="margin-bottom: 3px;">📍 ${p.address}</p>` : ''}
+          ${(isHigh || isMedium) && p.linkedin ? `<p style="margin-bottom: 3px;">🔗 ${p.linkedin}</p>` : ''}
         </div>
-        <div style="margin-top: 20px;">${skillsHTML}</div>
-        <div style="margin-top: 20px;">${certsHTML}</div>
+
+        <div style="margin-top: 12px;">${skillsHTML}</div>
+        <div style="margin-top: 12px;">${personalDetailsHTML}</div>
+        <div style="margin-top: 12px;">${certsHTML}</div>
       </div>
+
       <div class="r-main">
-        ${objectiveHTML} ${experienceHTML} ${projectsHTML} ${educationHTML}
+        ${objectiveHTML}
+        ${experienceHTML}
+        ${projectsHTML}
+        ${educationHTML}
+        ${signatureFooterHTML}
       </div>
     `;
   } else if (resumeState.template === 'two-column') {
     preview.innerHTML = `
-      <header class="r-header" style="border-bottom: 2px solid var(--r-primary); padding-bottom: 10px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+      <header class="r-header" style="border-bottom: 2px solid var(--r-primary); padding-bottom: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
         <div>
-          <h1 class="r-name">${p.fullName || 'Name'}</h1>
-          <p class="r-title">${p.jobTitle || ''}</p>
+          <h1 class="r-name">${p.fullName}</h1>
+          ${p.jobTitle ? `<p class="r-title">${p.jobTitle}</p>` : ''}
           ${contactsHTML}
         </div>
         ${photoHTML}
       </header>
+
       <div class="template-two-column">
-        <div class="col-left">${skillsHTML} ${educationHTML} ${certsHTML}</div>
-        <div class="col-right">${objectiveHTML} ${experienceHTML} ${projectsHTML}</div>
+        <div class="col-left">
+          ${personalDetailsHTML}
+          ${skillsHTML}
+          ${educationHTML}
+          ${certsHTML}
+        </div>
+        <div class="col-right">
+          ${objectiveHTML}
+          ${experienceHTML}
+          ${projectsHTML}
+        </div>
       </div>
+
+      ${signatureFooterHTML}
     `;
   } else {
+    // Single Column Templates (Classic, Minimal, Corporate, Elegant, Creative, Executive, Student)
     preview.innerHTML = `
       <header class="r-header">
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
           <div>
-            <h1 class="r-name">${p.fullName || 'Name'}</h1>
-            <p class="r-title">${p.jobTitle || ''}</p>
+            <h1 class="r-name">${p.fullName}</h1>
+            ${p.jobTitle ? `<p class="r-title">${p.jobTitle}</p>` : ''}
             ${contactsHTML}
           </div>
           ${photoHTML}
         </div>
       </header>
+
       <main>
         ${objectiveHTML}
-        ${resumeState.template === 'student' ? educationHTML + projectsHTML + skillsHTML + experienceHTML : educationHTML + experienceHTML + projectsHTML + skillsHTML}
+        ${personalDetailsHTML}
+        ${educationHTML}
+        ${experienceHTML}
+        ${projectsHTML}
+        ${skillsHTML}
         ${certsHTML}
+        ${signatureFooterHTML}
       </main>
     `;
   }
 }
 
+// PDF Downloader
 async function generatePDF() {
   const element = document.getElementById('resume-preview-sheet');
-  const name = resumeState.personal.fullName ? resumeState.personal.fullName.replace(/[^a-zA-Z0-9]/g, '_') : 'Resume';
-  showToast('Generating PDF... ⏳', 'info');
-  const opt = { margin: 0, filename: `${name}_Resume.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
-  html2pdf().set(opt).from(element).save().then(() => showToast('PDF Downloaded!', 'success'));
+  const name = resumeState.personal.fullName.replace(/[^a-zA-Z0-9]/g, '_') || 'Resume';
+
+  if (!resumeState.personal.fullName || !resumeState.personal.mobile) {
+    showToast('Please provide at least your Name and Mobile number.', 'error');
+    return;
+  }
+
+  showToast('Generating crisp A4 PDF... ⏳', 'info');
+
+  const opt = {
+    margin: [0, 0, 0, 0],
+    filename: `${name}_Resume.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  try {
+    await html2pdf().set(opt).from(element).save();
+    showToast('Resume PDF downloaded successfully! 🎉', 'success');
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    showToast('PDF generation failed. You can use Print to Save as PDF.', 'error');
+  }
 }
