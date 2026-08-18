@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Professional Resume Maker — Maa Enterprises</title>
-  <meta name="description" content="Free online Resume Builder with 3 complexity levels (Low, Medium, High), 9 professional templates, customizable Date/Place & Candidate Signature, live preview, and instant A4 PDF download.">
+  <meta name="description" content="Free online Resume Builder with 3 complexity levels, 9 professional templates, comprehensive personal details, predefined objectives and instant PDF download.">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/resume.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +38,7 @@
     </div>
   </header>
 
-  <!-- 3 RESUME DETAIL LEVEL SELECTOR BUTTONS (CLICKABLE CARDS) -->
+  <!-- 3 RESUME DETAIL LEVEL SELECTOR CARDS -->
   <div class="level-selector-box">
     <div class="level-selector-top">
       <div style="display: flex; align-items: center; gap: 8px;">
@@ -51,32 +51,29 @@
     </div>
 
     <div class="level-btn-grid" id="resume-level-grid">
-      <!-- 1. Low Detail Card -->
-      <div class="level-btn-card" id="btn-lvl-low" data-level="low" onclick="switchResumeLevel('low')">
+      <div class="level-btn-card" data-level="low">
         <div class="level-btn-icon" style="color: #10b981;">🟢</div>
         <div class="level-btn-info">
           <span class="level-btn-title">Low Detail Resume</span>
-          <span class="level-btn-sub">10th / 12th Pass, Store, Helper, Driver, Shop & Local Jobs</span>
+          <span class="level-btn-sub">10th/12th Pass, Helper, Shop, Local Jobs</span>
         </div>
         <div class="level-btn-check">✔</div>
       </div>
 
-      <!-- 2. Medium Detail Card -->
-      <div class="level-btn-card" id="btn-lvl-medium" data-level="medium" onclick="switchResumeLevel('medium')">
+      <div class="level-btn-card" data-level="medium">
         <div class="level-btn-icon" style="color: #0284c7;">🟡</div>
         <div class="level-btn-info">
           <span class="level-btn-title">Medium Detail Resume</span>
-          <span class="level-btn-sub">Graduates (B.Com/BA/BSc), Office Executive, Sales, Accounts</span>
+          <span class="level-btn-sub">Graduates, Office Exec, Sales, Accounts</span>
         </div>
         <div class="level-btn-check">✔</div>
       </div>
 
-      <!-- 3. High Detail Card (Default) -->
-      <div class="level-btn-card active-high" id="btn-lvl-high" data-level="high" onclick="switchResumeLevel('high')">
+      <div class="level-btn-card active-high" data-level="high">
         <div class="level-btn-icon" style="color: #8b5cf6;">🔵</div>
         <div class="level-btn-info">
           <span class="level-btn-title">High Detail Resume</span>
-          <span class="level-btn-sub">Engineering (B.Tech/BCA/MCA), Developers, Full Tech CV</span>
+          <span class="level-btn-sub">Engineering, Developers, Full Tech CV</span>
         </div>
         <div class="level-btn-check">✔</div>
       </div>
@@ -90,28 +87,20 @@
         💻 Editing: Comprehensive Engineering CV
       </span>
       
-      <!-- Zoom Scale Controls -->
+      <!-- Zoom Controls -->
       <div class="zoom-controls">
         <button type="button" class="zoom-btn" id="btn-zoom-out" title="Zoom Out">🔍−</button>
         <span class="zoom-text" id="zoom-value-text">100%</span>
         <button type="button" class="zoom-btn" id="btn-zoom-in" title="Zoom In">🔍+</button>
-        <button type="button" class="zoom-btn" id="btn-zoom-reset" style="font-size: 0.75rem; color: var(--primary);" title="Reset Zoom">Fit</button>
+        <button type="button" class="zoom-btn" id="btn-zoom-reset" style="font-size: 0.75rem; color: var(--primary);">Fit</button>
       </div>
     </div>
 
     <div class="resume-toolbar-actions">
-      <button type="button" id="btn-load-sample" class="btn btn-outline btn-sm" title="Fill sample data for selected level">
-        📝 Load Sample
-      </button>
-      <button type="button" id="btn-reset-resume" class="btn btn-outline btn-sm" title="Clear all fields">
-        🔄 Clear Form
-      </button>
-      <button type="button" id="btn-print-resume" class="btn btn-secondary btn-sm">
-        🖨️ Print
-      </button>
-      <button type="button" id="btn-download-pdf" class="btn btn-primary btn-sm">
-        📥 Download Resume PDF
-      </button>
+      <button type="button" id="btn-load-sample" class="btn btn-outline btn-sm">📝 Load Sample</button>
+      <button type="button" id="btn-reset-resume" class="btn btn-outline btn-sm">🔄 Clear Form</button>
+      <button type="button" id="btn-print-resume" class="btn btn-secondary btn-sm">🖨️ Print</button>
+      <button type="button" id="btn-download-pdf" class="btn btn-primary btn-sm">📥 Download PDF</button>
     </div>
   </div>
 
@@ -121,11 +110,9 @@
     <!-- LEFT: Form Editor Panel -->
     <aside class="resume-editor-panel" id="resume-editor">
 
-      <!-- 1. Choose Template (9 Distinct Formats) -->
+      <!-- 1. Choose Template -->
       <div class="editor-section">
-        <div class="editor-section-header">
-          <h4><span>🎨</span> 1. Choose Template (9 Formats)</h4>
-        </div>
+        <div class="editor-section-header"><h4><span>🎨</span> 1. Choose Template (9 Formats)</h4></div>
         <div class="editor-section-body">
           <div class="template-grid" id="template-selector-grid">
             <div class="template-card active" data-template="classic">🏛️ Classic</div>
@@ -141,142 +128,135 @@
         </div>
       </div>
 
-      <!-- 2. Color Themes & Typography -->
+      <!-- 2. Color & Font -->
       <div class="editor-section">
-        <div class="editor-section-header">
-          <h4><span>🖌️</span> 2. Color Theme & Font</h4>
-        </div>
+        <div class="editor-section-header"><h4><span>🖌️</span> 2. Color Theme & Font</h4></div>
         <div class="editor-section-body">
-          <label class="form-label" style="font-size: 0.85rem;">Preset Color Palettes</label>
           <div class="theme-swatches" id="theme-swatches-container">
-            <div class="color-swatch active" style="background-color: #1e40af;" data-primary="#1e40af" data-sec="#0f766e" title="Royal Blue"></div>
-            <div class="color-swatch" style="background-color: #0f172a;" data-primary="#0f172a" data-sec="#334155" title="Dark Slate"></div>
-            <div class="color-swatch" style="background-color: #0f766e;" data-primary="#0f766e" data-sec="#115e59" title="Teal Emerald"></div>
-            <div class="color-swatch" style="background-color: #7e22ce;" data-primary="#7e22ce" data-sec="#9333ea" title="Vibrant Purple"></div>
-            <div class="color-swatch" style="background-color: #b91c1c;" data-primary="#b91c1c" data-sec="#991b1b" title="Crimson Red"></div>
-            <div class="color-swatch" style="background-color: #374151;" data-primary="#374151" data-sec="#4b5563" title="Charcoal"></div>
+            <div class="color-swatch active" style="background-color: #1e40af;" data-primary="#1e40af" data-sec="#0f766e"></div>
+            <div class="color-swatch" style="background-color: #0f172a;" data-primary="#0f172a" data-sec="#334155"></div>
+            <div class="color-swatch" style="background-color: #0f766e;" data-primary="#0f766e" data-sec="#115e59"></div>
+            <div class="color-swatch" style="background-color: #7e22ce;" data-primary="#7e22ce" data-sec="#9333ea"></div>
+            <div class="color-swatch" style="background-color: #b91c1c;" data-primary="#b91c1c" data-sec="#991b1b"></div>
+            <div class="color-swatch" style="background-color: #374151;" data-primary="#374151" data-sec="#4b5563"></div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+          <div class="grid grid-2" style="gap: 10px; margin-top: 8px;">
             <div class="form-group" style="margin-bottom: 0;">
               <label class="form-label" style="font-size: 0.85rem;">Custom Color</label>
               <input type="color" id="r-custom-color" class="form-control" value="#1e40af" style="height: 38px; padding: 2px;">
             </div>
-
             <div class="form-group" style="margin-bottom: 0;">
               <label class="form-label" style="font-size: 0.85rem;">Font Family</label>
               <select id="r-font-select" class="form-control" style="font-size: 0.85rem;">
                 <option value="'Segoe UI', Arial, sans-serif">Segoe UI (Modern)</option>
                 <option value="'Georgia', serif">Georgia (Classic Serif)</option>
-                <option value="'Times New Roman', serif">Times New Roman (Formal)</option>
+                <option value="'Times New Roman', serif">Times New Roman</option>
                 <option value="'Poppins', sans-serif">Poppins (Clean)</option>
-                <option value="'Roboto', sans-serif">Roboto (Tech)</option>
-                <option value="'Open Sans', sans-serif">Open Sans (Readable)</option>
               </select>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 3. Personal Information (ALL DETAILS INCLUDED) -->
+      <!-- 3. Personal Information -->
       <div class="editor-section">
-        <div class="editor-section-header">
-          <h4><span>👤</span> 3. Personal Information</h4>
-        </div>
+        <div class="editor-section-header"><h4><span>👤</span> 3. Personal Information</h4></div>
         <div class="editor-section-body">
           <div class="form-group">
-            <label class="form-label required">Full Name (पूरा नाम)</label>
-            <input type="text" id="r-fullname" class="form-control" placeholder="e.g. Mayank Raj" value="Mayank Raj">
+            <label class="form-label required">Full Name</label>
+            <input type="text" id="r-fullname" class="form-control" placeholder="e.g. Mayank Raj">
           </div>
 
-          <!-- Professional Job Title (Visible in High & Medium) -->
           <div class="form-group" id="sec-jobtitle">
             <label class="form-label" id="lbl-jobtitle">Professional Title / Role</label>
-            <input type="text" id="r-jobtitle" class="form-control" placeholder="e.g. ECE Student & Full Stack Web Developer" value="ECE Engineering Student & Web Developer">
-          </div>
-
-          <!-- Father's & Mother's Name -->
-          <div class="grid grid-2" style="gap: 10px;">
-            <div class="form-group">
-              <label class="form-label">Father's Name (पिता का नाम)</label>
-              <input type="text" id="r-fathername" class="form-control" placeholder="e.g. Sri Ramesh Prasad" value="Sri Ramesh Prasad">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Mother's Name (माता का नाम)</label>
-              <input type="text" id="r-mothername" class="form-control" placeholder="e.g. Smt. Anita Devi" value="Smt. Anita Devi">
-            </div>
-          </div>
-
-          <!-- DOB & Gender -->
-          <div class="grid grid-2" style="gap: 10px;">
-            <div class="form-group">
-              <label class="form-label">Date of Birth (जन्मतिथि)</label>
-              <input type="text" id="r-dob" class="form-control" placeholder="e.g. 15-08-2005" value="15-08-2005">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Gender (लिंग)</label>
-              <select id="r-gender" class="form-control">
-                <option value="Male" selected>Male (पुरुष)</option>
-                <option value="Female">Female (महिला)</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Marital Status & Nationality -->
-          <div class="grid grid-2" style="gap: 10px;">
-            <div class="form-group">
-              <label class="form-label">Marital Status (वैवाहिक स्थिति)</label>
-              <select id="r-marital" class="form-control">
-                <option value="Unmarried" selected>Unmarried (अविवाहित)</option>
-                <option value="Married">Married (विवाहित)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Nationality (राष्ट्रीयता)</label>
-              <input type="text" id="r-nationality" class="form-control" placeholder="Indian" value="Indian">
-            </div>
+            <input type="text" id="r-jobtitle" class="form-control" placeholder="e.g. ECE Student & Full Stack Web Developer">
           </div>
 
           <div class="grid grid-2" style="gap: 10px;">
             <div class="form-group">
               <label class="form-label required">Mobile Number</label>
-              <input type="text" id="r-mobile" class="form-control" placeholder="+91 98765 43210" value="+91 98765 43210">
+              <input type="text" id="r-mobile" class="form-control" placeholder="+91 98765 43210">
             </div>
-
             <div class="form-group" id="sec-email-box">
-              <label class="form-label" id="lbl-email">Email Address</label>
-              <input type="email" id="r-email" class="form-control" placeholder="mayank@example.com" value="mayank.raj@example.com">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="r-email" class="form-control" placeholder="mayank@example.com">
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label required">Full Permanent / Present Address</label>
-            <input type="text" id="r-address" class="form-control" placeholder="e.g. Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101" value="Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101">
+            <label class="form-label required">Full Address</label>
+            <input type="text" id="r-address" class="form-control" placeholder="e.g. Mahalpar, Bihar Sharif, Nalanda">
           </div>
 
-          <!-- Tech Links (LinkedIn, GitHub) - Active for High & Medium -->
+          <!-- Comprehensive Personal Details (Visible in ALL levels) -->
+          <div style="background: #f8fafc; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px;">
+            <label class="form-label" style="margin-bottom: 10px; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 4px;">Family & Identity Details</label>
+            
+            <div class="grid grid-2" style="gap: 10px;">
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label class="form-label">Father's Name</label>
+                <input type="text" id="r-fathername" class="form-control" placeholder="e.g. Sri Ramesh Prasad">
+              </div>
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label class="form-label">Mother's Name</label>
+                <input type="text" id="r-mothername" class="form-control" placeholder="e.g. Smt. Sunita Devi">
+              </div>
+            </div>
+
+            <div class="grid grid-2" style="gap: 10px;">
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label class="form-label">Date of Birth</label>
+                <input type="text" id="r-dob" class="form-control" placeholder="e.g. 15/08/2005">
+              </div>
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label class="form-label">Gender</label>
+                <select id="r-gender" class="form-control">
+                  <option value="">-- Select --</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-2" style="gap: 10px;">
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label class="form-label">Marital Status</label>
+                <select id="r-marital" class="form-control">
+                  <option value="">-- Select --</option>
+                  <option value="Single">Single / Unmarried</option>
+                  <option value="Married">Married</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label class="form-label">Nationality</label>
+                <input type="text" id="r-nationality" class="form-control" value="Indian">
+              </div>
+            </div>
+          </div>
+
+          <!-- Tech Links -->
           <div class="grid grid-2" id="sec-social-links" style="gap: 10px;">
             <div class="form-group">
-              <label class="form-label">LinkedIn Profile (Optional)</label>
-              <input type="text" id="r-linkedin" class="form-control" placeholder="linkedin.com/in/mayankraj" value="linkedin.com/in/mayankraj">
+              <label class="form-label">LinkedIn Profile</label>
+              <input type="text" id="r-linkedin" class="form-control">
             </div>
-
             <div class="form-group" id="sec-github-box">
-              <label class="form-label">GitHub / Portfolio (Optional)</label>
-              <input type="text" id="r-github" class="form-control" placeholder="github.com/mayankraj" value="github.com/mayankraj">
+              <label class="form-label">GitHub / Portfolio</label>
+              <input type="text" id="r-github" class="form-control">
             </div>
           </div>
 
-          <!-- Photo Upload & Shape Control -->
+          <!-- Photo Upload -->
           <div class="photo-upload-box">
             <img id="photo-preview-img" class="photo-preview-thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="Preview">
             <div style="flex-grow: 1;">
               <input type="file" id="r-photo-input" accept="image/png, image/jpeg, image/jpg" style="font-size: 0.8rem; margin-bottom: 6px;">
               <div style="display: flex; gap: 6px; align-items: center;">
                 <select id="r-photo-shape" class="form-control" style="padding: 4px 8px; font-size: 0.8rem; width: auto;">
-                  <option value="circle">Circle Photo</option>
-                  <option value="rounded">Rounded Box</option>
+                  <option value="circle">Circle</option>
+                  <option value="rounded">Rounded</option>
                   <option value="square">Square</option>
                 </select>
                 <button type="button" id="r-remove-photo" class="btn btn-outline btn-sm" style="padding: 3px 8px; font-size: 0.75rem;">Remove</button>
@@ -286,119 +266,82 @@
         </div>
       </div>
 
-      <!-- 4. Career Objective (WITH READY-MADE 1-CLICK PRESETS) -->
+      <!-- 4. Profile Summary / Career Objective -->
       <div class="editor-section" id="sec-objective-wrapper">
-        <div class="editor-section-header">
-          <h4 id="heading-objective"><span>🎯</span> 4. Career Objective (उद्देश्य)</h4>
-        </div>
+        <div class="editor-section-header"><h4 id="heading-objective"><span>🎯</span> 4. Career Objective</h4></div>
         <div class="editor-section-body">
-          <label class="form-label" style="font-size: 0.85rem; color: var(--primary);">
-            ✨ Select Ready-Made Career Objective (Click to insert):
-          </label>
-          
-          <div class="preset-objective-list" id="preset-objective-container">
-            <button type="button" class="preset-obj-btn" data-opt="0">
-              <span>1️⃣</span> <span><strong>General Career:</strong> Secure a responsible career opportunity to fully utilize talent and skills to grow...</span>
-            </button>
-            <button type="button" class="preset-obj-btn" data-opt="1">
-              <span>2️⃣</span> <span><strong>Fresher / Hardworking:</strong> Self-motivated and hardworking fresher seeking opportunity to prove skills...</span>
-            </button>
-            <button type="button" class="preset-obj-btn" data-opt="2">
-              <span>3️⃣</span> <span><strong>Technical / Fast Learner:</strong> Urge for a position in growing organization where technical expertise can be utilized...</span>
-            </button>
-            <button type="button" class="preset-obj-btn" data-opt="3">
-              <span>4️⃣</span> <span><strong>Management / Professional:</strong> To seek a good & responsible job in professionally managed organization...</span>
-            </button>
-            <button type="button" class="preset-obj-btn" data-opt="4">
-              <span>5️⃣</span> <span><strong>Growth & Loyalty:</strong> To make a good position in reputed company and work enthusiastically in team...</span>
-            </button>
-            <button type="button" class="preset-obj-btn" data-opt="5">
-              <span>6️⃣</span> <span><strong>Best Contribution:</strong> To contribute my best to organization and perform job to the best of my ability...</span>
-            </button>
-          </div>
-
-          <label class="form-label" style="margin-top: 6px;">Objective Text (Editable):</label>
-          <textarea id="r-objective" class="form-control" rows="3" placeholder="Write or click above to insert career objective...">Secure a responsible career opportunity to fully utilize my talent and skills to grow, while making a significant contribution to the success of the company.</textarea>
+          <label class="form-label">Select a preset or type your own:</label>
+          <select id="r-objective-select" class="form-control" style="margin-bottom: 8px; font-size: 0.85rem;">
+            <option value="">-- Choose a Preset Career Objective --</option>
+            <option value="Secure a responsible career opportunity to fully utilize my talent and skills to grow, while making a significant contribution to the success of the company.">1. Secure a responsible career opportunity to fully utilize my talent...</option>
+            <option value="Self-motivated and hardworking fresher seeking for an opportunity to work in a challenging environment to prove my skills and utilize my knowledge & intelligence in the growth of the organization.">2. Self-motivated and hardworking fresher seeking...</option>
+            <option value="Urge for a position in an aggressively growing organization where my technical & functional expertise can be effectively utilized and possess good analytical abilities, quick grasping power, zeal for learning new things and excellent communication skills.">3. Urge for a position in an aggressively growing organization...</option>
+            <option value="To seek a good & responsible job in professionally managed organization where in my conceptual and functional skills are effectively utilized in a way that contributes to the organization growth coupled with personal growth within the organization.">4. To seek a good & responsible job in professionally managed...</option>
+            <option value="To make a good position in a reputed company and work enthusiastically in team which provides steady career growth along with job satisfaction, challenges and give value contribution in the success and to build a challenging career with honesty and loyalty by translating my experience knowledge, skills and abilities into value for an organization.">5. To make a good position in a reputed company and work enthusiastically...</option>
+            <option value="To contribute my best to the organization irrespective of the kind of project undertaken and to utilize my skills and to perform the job to the best of my ability with the zeal and willing to learn.">6. To contribute my best to the organization irrespective of the kind...</option>
+          </select>
+          <textarea id="r-objective" class="form-control" rows="4" placeholder="Your objective will appear here..."></textarea>
         </div>
       </div>
 
       <!-- 5. Skills -->
       <div class="editor-section" id="sec-skills-wrapper">
-        <div class="editor-section-header">
-          <h4 id="heading-skills"><span>💡</span> 5. Key Skills</h4>
-        </div>
+        <div class="editor-section-header"><h4 id="heading-skills"><span>💡</span> 5. Key Skills</h4></div>
         <div class="editor-section-body">
           <label class="form-label" id="lbl-skills-guide">Skills (Comma separated)</label>
-          <input type="text" id="r-skills" class="form-control" placeholder="e.g. Python, C++, HTML/CSS, JavaScript, Circuit Design">
+          <input type="text" id="r-skills" class="form-control" placeholder="e.g. Python, C++, Teamwork, Management">
         </div>
       </div>
 
       <!-- 6. Education History -->
-      <div class="editor-section" id="sec-education-wrapper">
-        <div class="editor-section-header">
-          <h4><span>🎓</span> 6. Education Details</h4>
-        </div>
+      <div class="editor-section">
+        <div class="editor-section-header"><h4><span>🎓</span> 6. Education Details</h4></div>
         <div class="editor-section-body">
           <div id="education-items-list"></div>
-          <button type="button" id="btn-add-education" class="btn btn-outline btn-sm btn-block">
-            + Add Education Entry
-          </button>
+          <button type="button" id="btn-add-education" class="btn btn-outline btn-sm btn-block">+ Add Education</button>
         </div>
       </div>
 
       <!-- 7. Work Experience -->
       <div class="editor-section" id="sec-experience-wrapper">
-        <div class="editor-section-header">
-          <h4 id="heading-experience"><span>💼</span> 7. Work Experience / Employment</h4>
-        </div>
+        <div class="editor-section-header"><h4 id="heading-experience"><span>💼</span> 7. Work Experience</h4></div>
         <div class="editor-section-body">
           <div id="experience-items-list"></div>
-          <button type="button" id="btn-add-experience" class="btn btn-outline btn-sm btn-block">
-            + Add Experience Entry
-          </button>
+          <button type="button" id="btn-add-experience" class="btn btn-outline btn-sm btn-block">+ Add Experience</button>
         </div>
       </div>
 
-      <!-- 8. Technical Projects (Only for High & Medium) -->
+      <!-- 8. Projects -->
       <div class="editor-section" id="sec-projects-wrapper">
-        <div class="editor-section-header">
-          <h4><span>🚀</span> 8. Technical Projects & Work</h4>
-        </div>
+        <div class="editor-section-header"><h4><span>🚀</span> 8. Technical Projects</h4></div>
         <div class="editor-section-body">
           <div id="project-items-list"></div>
-          <button type="button" id="btn-add-project" class="btn btn-outline btn-sm btn-block">
-            + Add Project Entry
-          </button>
+          <button type="button" id="btn-add-project" class="btn btn-outline btn-sm btn-block">+ Add Project</button>
         </div>
       </div>
 
       <!-- 9. Certifications & Languages -->
       <div class="editor-section" id="sec-extras-wrapper">
-        <div class="editor-section-header">
-          <h4><span>📜</span> 9. Certifications & Languages</h4>
-        </div>
+        <div class="editor-section-header"><h4><span>📜</span> 9. Certifications & Languages</h4></div>
         <div class="editor-section-body">
           <div class="form-group" id="sec-certs-box">
             <label class="form-label">Certifications / Achievements</label>
-            <textarea id="r-certifications" class="form-control" rows="2" placeholder="e.g. DCA Diploma, Python Certification"></textarea>
+            <textarea id="r-certifications" class="form-control" rows="2"></textarea>
           </div>
-
           <div class="form-group">
             <label class="form-label">Languages Known</label>
-            <input type="text" id="r-languages" class="form-control" placeholder="e.g. Hindi, English" value="Hindi, English">
+            <input type="text" id="r-languages" class="form-control">
           </div>
         </div>
       </div>
 
-      <!-- 10. DATE, PLACE, DECLARATION & SIGNATURE CUSTOMIZATION -->
-      <div class="editor-section" id="sec-signature-customizer">
-        <div class="editor-section-header">
-          <h4><span>✍️</span> 10. Date, Place & Signature</h4>
-        </div>
+      <!-- 10. DATE, PLACE & SIGNATURE -->
+      <div class="editor-section">
+        <div class="editor-section-header"><h4><span>✍️</span> 10. Date, Place & Signature</h4></div>
         <div class="editor-section-body">
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
             <input type="checkbox" id="r-show-signature" checked style="width: 16px; height: 16px;">
-            <label for="r-show-signature" class="form-label" style="margin-bottom: 0; cursor: pointer;">Show Declaration, Date & Signature at bottom</label>
+            <label for="r-show-signature" class="form-label" style="margin-bottom: 0; cursor: pointer;">Show Declaration at bottom</label>
           </div>
 
           <div class="form-group">
@@ -409,35 +352,31 @@
           <div class="grid grid-2" style="gap: 10px;">
             <div class="form-group">
               <label class="form-label">Place</label>
-              <input type="text" id="r-place" class="form-control" placeholder="e.g. Bihar Sharif" value="Bihar Sharif">
+              <input type="text" id="r-place" class="form-control" value="Bihar Sharif">
             </div>
-
             <div class="form-group">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                 <label class="form-label" style="margin-bottom: 0;">Date</label>
                 <button type="button" id="btn-set-today" style="background: none; border: none; font-size: 0.75rem; color: var(--primary); cursor: pointer;">📅 Today</button>
               </div>
-              <input type="text" id="r-date" class="form-control" placeholder="DD/MM/YYYY" value="18/08/2026">
+              <input type="text" id="r-date" class="form-control" value="18/08/2026">
             </div>
           </div>
 
-          <!-- Signature Format & Type -->
           <div class="form-group">
             <label class="form-label">Candidate Signature Format</label>
             <select id="r-sign-type" class="form-control" style="font-size: 0.9rem;">
-              <option value="cursive">✨ Digital Cursive Handwriting (E-Sign)</option>
-              <option value="printed">📄 Printed Name & Signature Line</option>
-              <option value="image">🖼️ Upload Signature Image (PNG/JPG)</option>
+              <option value="cursive">✨ Digital Cursive Handwriting</option>
+              <option value="printed">📄 Printed Name Line</option>
+              <option value="image">🖼️ Upload Signature Image</option>
             </select>
           </div>
 
-          <!-- Optional Signature Image Upload Box -->
           <div id="sec-sign-image-upload" style="display: none; background: #f8fafc; border: 1px dashed var(--border); padding: 10px; border-radius: var(--radius-sm);">
-            <label class="form-label" style="font-size: 0.8rem;">Upload Signature Photo (Transparent PNG or White BG)</label>
-            <input type="file" id="r-sign-file-input" accept="image/png, image/jpeg, image/jpg" style="font-size: 0.8rem;">
-            <button type="button" id="btn-remove-sign-img" class="btn btn-outline btn-sm" style="margin-top: 6px; padding: 2px 8px; font-size: 0.75rem;">Remove Image</button>
+            <label class="form-label" style="font-size: 0.8rem;">Upload Signature Photo</label>
+            <input type="file" id="r-sign-file-input" accept="image/png, image/jpeg" style="font-size: 0.8rem;">
+            <button type="button" id="btn-remove-sign-img" class="btn btn-outline btn-sm" style="margin-top: 6px;">Remove Image</button>
           </div>
-
         </div>
       </div>
 
@@ -452,7 +391,6 @@
 
   </div>
 
-  <!-- Scripts -->
   <script type="module" src="js/resume-maker.js"></script>
 </body>
 </html>
