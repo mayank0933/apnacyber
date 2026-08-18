@@ -40,30 +40,60 @@
     </div>
   </header>
 
-  <!-- 3 RESUME LEVELS TOP SWITCHER (REDESIGNED CARDS) -->
-  <div class="level-switcher-bar">
-    <div class="level-switcher-label">
-      <span class="level-switcher-title">⚡ Resume Format Level:</span>
-      <span class="level-switcher-sub">(Choose your job category)</span>
+  <!-- 3 RESUME DETAIL LEVEL SELECTOR CARDS -->
+  <div class="level-selector-container">
+    <div class="level-selector-header">
+      <div class="level-selector-title">
+        <span>⚡ Select Resume Type / Detail Level:</span>
+      </div>
+      <span class="level-selector-badge" id="current-level-badge">🔵 Mode: High Detail (Engineering CV)</span>
     </div>
 
-    <div class="level-tabs" id="resume-level-tabs">
-      <button type="button" class="level-tab-btn" data-level="low" title="For 10th/12th pass, Store, Helper, Driver, Shop or Local Jobs">
-        🟢 Low (Basic / Local Jobs)
-      </button>
-      <button type="button" class="level-tab-btn" data-level="medium" title="For Graduates, Diploma, Office Executive, Sales, Accounts">
-        🟡 Medium (Graduate / Pro)
-      </button>
-      <button type="button" class="level-tab-btn active" data-level="high" title="For Engineering, Developers, Tech Professionals & Comprehensive CV">
-        🔵 High (Engineering / Tech)
-      </button>
+    <div class="level-cards-grid" id="resume-level-cards">
+      <!-- 1. Low Detail Card -->
+      <div class="level-card" data-level="low" id="card-level-low" onclick="window.switchResumeLevel && window.switchResumeLevel('low')">
+        <div class="level-card-icon" style="color: #10b981;">🟢</div>
+        <div class="level-card-text">
+          <div class="level-card-title">
+            <span>Low Detail Resume</span>
+          </div>
+          <div class="level-card-desc">10th / 12th Pass, Store, Helper, Driver, Shop & Local Jobs</div>
+        </div>
+        <div class="level-card-radio"></div>
+      </div>
+
+      <!-- 2. Medium Detail Card -->
+      <div class="level-card" data-level="medium" id="card-level-medium" onclick="window.switchResumeLevel && window.switchResumeLevel('medium')">
+        <div class="level-card-icon" style="color: #0284c7;">🟡</div>
+        <div class="level-card-text">
+          <div class="level-card-title">
+            <span>Medium Detail Resume</span>
+          </div>
+          <div class="level-card-desc">Graduates (B.Com/BA/BSc), Office Executive, Sales, Accounts</div>
+        </div>
+        <div class="level-card-radio"></div>
+      </div>
+
+      <!-- 3. High Detail Card -->
+      <div class="level-card active" data-level="high" id="card-level-high" onclick="window.switchResumeLevel && window.switchResumeLevel('high')">
+        <div class="level-card-icon" style="color: #8b5cf6;">🔵</div>
+        <div class="level-card-text">
+          <div class="level-card-title">
+            <span>High Detail Resume</span>
+          </div>
+          <div class="level-card-desc">Engineering (B.Tech/BCA/MCA), Developers, Full Tech CV</div>
+        </div>
+        <div class="level-card-radio"></div>
+      </div>
     </div>
   </div>
 
-  <!-- Resume Builder Top Action Toolbar -->
+  <!-- Resume Builder Action Toolbar -->
   <div class="resume-toolbar">
     <div class="resume-toolbar-left">
-      <span class="badge badge-completed" id="current-level-badge">🔵 High Detail Mode</span>
+      <span style="font-weight: 700; font-size: 0.9rem; color: var(--primary);" id="active-mode-title">
+        💻 Editing: Comprehensive Engineering CV
+      </span>
       
       <!-- Zoom Scale Controls -->
       <div class="zoom-controls">
@@ -164,9 +194,10 @@
             <input type="text" id="r-fullname" class="form-control" placeholder="e.g. Mayank Raj" value="Mayank Raj">
           </div>
 
+          <!-- Professional Job Title (Visible in High & Medium) -->
           <div class="form-group" id="sec-jobtitle">
-            <label class="form-label">Professional Job Title / Role</label>
-            <input type="text" id="r-jobtitle" class="form-control" placeholder="e.g. Full Stack Developer | ECE Student" value="ECE Engineering Student & Web Developer">
+            <label class="form-label" id="lbl-jobtitle">Professional Title / Role</label>
+            <input type="text" id="r-jobtitle" class="form-control" placeholder="e.g. ECE Student & Full Stack Web Developer" value="ECE Engineering Student & Web Developer">
           </div>
 
           <div class="grid grid-2" style="gap: 10px;">
@@ -175,7 +206,7 @@
               <input type="text" id="r-mobile" class="form-control" placeholder="+91 98765 43210" value="+91 98765 43210">
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="sec-email-box">
               <label class="form-label" id="lbl-email">Email Address</label>
               <input type="email" id="r-email" class="form-control" placeholder="mayank@example.com" value="mayank.raj@example.com">
             </div>
@@ -186,26 +217,26 @@
             <input type="text" id="r-address" class="form-control" placeholder="e.g. Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101" value="Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101">
           </div>
 
-          <!-- Basic Personal Fields (Father name, DOB, Gender) -->
+          <!-- Basic Personal Fields (Father name, DOB, Gender) - Specially for Low & Medium -->
           <div class="grid grid-2" id="sec-extra-personal" style="gap: 10px;">
             <div class="form-group">
-              <label class="form-label">Father's Name (Optional)</label>
+              <label class="form-label">Father's Name (पिता का नाम)</label>
               <input type="text" id="r-fathername" class="form-control" placeholder="e.g. Sri Ramesh Prasad">
             </div>
             <div class="form-group">
-              <label class="form-label">Date of Birth / Gender</label>
+              <label class="form-label">Date of Birth & Gender</label>
               <input type="text" id="r-dob" class="form-control" placeholder="e.g. 15-08-2005 | Male">
             </div>
           </div>
 
-          <!-- Tech Links (LinkedIn, GitHub) -->
+          <!-- Tech Links (LinkedIn, GitHub) - Active for High & Medium -->
           <div class="grid grid-2" id="sec-social-links" style="gap: 10px;">
             <div class="form-group">
               <label class="form-label">LinkedIn Profile (Optional)</label>
               <input type="text" id="r-linkedin" class="form-control" placeholder="linkedin.com/in/mayankraj" value="linkedin.com/in/mayankraj">
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="sec-github-box">
               <label class="form-label">GitHub / Portfolio (Optional)</label>
               <input type="text" id="r-github" class="form-control" placeholder="github.com/mayankraj" value="github.com/mayankraj">
             </div>
@@ -232,7 +263,7 @@
       <!-- 4. Profile Summary / Career Objective -->
       <div class="editor-section" id="sec-objective-wrapper">
         <div class="editor-section-header">
-          <h4><span>🎯</span> 4. Objective / About Me</h4>
+          <h4 id="heading-objective"><span>🎯</span> 4. Objective / About Me</h4>
         </div>
         <div class="editor-section-body">
           <textarea id="r-objective" class="form-control" rows="3" placeholder="Write a brief 1-2 paragraph description or objective..."></textarea>
@@ -242,7 +273,7 @@
       <!-- 5. Skills -->
       <div class="editor-section" id="sec-skills-wrapper">
         <div class="editor-section-header">
-          <h4><span>💡</span> 5. Key Skills</h4>
+          <h4 id="heading-skills"><span>💡</span> 5. Key Skills</h4>
         </div>
         <div class="editor-section-body">
           <label class="form-label" id="lbl-skills-guide">Skills (Comma separated)</label>
@@ -266,7 +297,7 @@
       <!-- 7. Work Experience -->
       <div class="editor-section" id="sec-experience-wrapper">
         <div class="editor-section-header">
-          <h4><span>💼</span> 7. Work Experience / Employment</h4>
+          <h4 id="heading-experience"><span>💼</span> 7. Work Experience / Employment</h4>
         </div>
         <div class="editor-section-body">
           <div id="experience-items-list"></div>
