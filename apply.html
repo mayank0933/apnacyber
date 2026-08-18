@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply for Service — Maa Enterprises</title>
+  <meta name="description" content="Submit your service application online, generate a unique Request ID, and send documents easily via WhatsApp to Maa Enterprises Cyber Cafe.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-badge">⚡</div>
+        <div class="brand-text">
+          <span>Maa Enterprises</span>
+          <small>Cyber Cafe & Online Services</small>
+        </div>
+      </a>
+
+      <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation">☰</button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="track-request.html" class="nav-link">Track Request</a></li>
+        <li><a href="trade-request.html" class="nav-link">Trade / Bulk Orders</a></li>
+        <li><a href="resume-maker.html" class="nav-link">Resume Maker</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="login.html" class="btn btn-outline btn-sm">Admin Portal</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Application Form Section -->
+  <main class="section">
+    <div class="container container-sm">
+      <div class="card" style="padding: 2.5rem;">
+        
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <span class="badge badge-pending" style="margin-bottom: 8px;">Fast Online Submission</span>
+          <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);">Service Application Form</h1>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Enter your basic contact details below. You will receive a unique Request ID to send your documents via WhatsApp.</p>
+        </div>
+
+        <form id="service-apply-form">
+          
+          <!-- Selected Service Dropdown -->
+          <div class="form-group">
+            <label for="apply-service-select" class="form-label required">Select Service</label>
+            <select id="apply-service-select" class="form-control" required>
+              <option value="" disabled selected>-- Choose a Service --</option>
+              <!-- Populated dynamically by js/apply.js -->
+            </select>
+          </div>
+
+          <!-- Full Name -->
+          <div class="form-group">
+            <label for="apply-full-name" class="form-label required">Full Name (Applicant Name)</label>
+            <input type="text" id="apply-full-name" class="form-control" placeholder="e.g. Ramesh Kumar" required>
+          </div>
+
+          <!-- Mobile Number -->
+          <div class="form-group">
+            <label for="apply-mobile" class="form-label required">Mobile Number (WhatsApp Active)</label>
+            <input type="tel" id="apply-mobile" class="form-control" placeholder="10-digit Mobile Number" pattern="[0-9]{10}" maxlength="10" required>
+            <small class="form-text">We will send updates and connect on this WhatsApp number.</small>
+          </div>
+
+          <!-- Email Address (Optional) -->
+          <div class="form-group">
+            <label for="apply-email" class="form-label">Email Address (Optional)</label>
+            <input type="email" id="apply-email" class="form-control" placeholder="e.g. name@example.com">
+          </div>
+
+          <!-- Address / Location (Optional) -->
+          <div class="form-group">
+            <label for="apply-address" class="form-label">Village / Ward / Landmark (Optional)</label>
+            <input type="text" id="apply-address" class="form-control" placeholder="e.g. Mahalpar, Bihar Sharif">
+          </div>
+
+          <!-- Remarks / Instructions -->
+          <div class="form-group">
+            <label for="apply-remarks" class="form-label">Specific Instructions / Remarks (Optional)</label>
+            <textarea id="apply-remarks" class="form-control" rows="3" placeholder="Tell us if you have any urgency, urgent exam date, or special category..."></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" id="apply-submit-btn" class="btn btn-primary btn-lg btn-block" style="margin-top: 1.5rem;">
+            Generate Request ID & Continue →
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Success Confirmation Modal -->
+  <div class="modal-overlay" id="apply-success-modal">
+    <div class="modal-content" style="text-align: center;">
+      <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      
+      <div style="font-size: 3.5rem; margin-bottom: 10px;">🎉</div>
+      <h3 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">Application Registered!</h3>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Your service request has been saved in our system.</p>
+
+      <div style="background: var(--bg-main); border: 2px dashed var(--primary); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+        <span style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Your Unique Request ID</span>
+        <div id="modal-request-id" style="font-size: 1.8rem; font-weight: 800; color: var(--primary); letter-spacing: 1px; margin-top: 4px;">
+          MAA-000000
+        </div>
+      </div>
+
+      <p style="font-size: 0.9rem; color: #334155; margin-bottom: 1.5rem; text-align: left; background: #f8fafc; padding: 12px; border-radius: var(--radius-sm);">
+        👉 <strong>Next Step:</strong> Click the button below to send your document photos and payment receipt on WhatsApp. Our operator will immediately begin processing.
+      </p>
+
+      <a id="modal-whatsapp-btn" href="#" target="_blank" class="btn btn-whatsapp btn-lg btn-block" style="margin-bottom: 10px;">
+        💬 Send Docs & Fee on WhatsApp →
+      </a>
+
+      <a href="track-request.html" class="btn btn-outline btn-block">
+        Track Status Online
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <p>&copy; <span id="current-year">2026</span> Maa Enterprises. Mahalpar, Bihar Sharif.</p>
+        <p><a href="services.html">View Services Catalog</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="js/apply.js"></script>
+</body>
+</html>
