@@ -4,13 +4,765 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Professional Resume Maker — Maa Enterprises</title>
-  <meta name="description" content="Free online Resume Builder with 3 complexity levels, 9 professional templates, comprehensive personal details, predefined objectives and instant PDF download.">
+  <meta name="description" content="Free online Resume Builder with 3 complexity levels (Low, Medium, High), 9 professional templates, customizable Date/Place & Candidate Signature, live preview, and instant A4 PDF download.">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/resume.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    /* ==========================================================================
+       RESUME MAKER COMPLETE EMBEDDED STYLESHEET (GUARANTEED NO CACHING ISSUES)
+       ========================================================================== */
+    .resume-app {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #0f172a;
+      font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    /* TOP 3 LEVEL SWITCHER HERO CONTAINER */
+    .level-hero-bar {
+      background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);
+      padding: 16px 20px;
+      border-bottom: 2px solid #334155;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 950;
+    }
+
+    .level-hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .level-hero-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.2px;
+    }
+
+    .level-status-pill {
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      background: rgba(139, 92, 246, 0.2);
+      color: #ddd6fe;
+      border: 1.5px solid #8b5cf6;
+      transition: all 0.3s ease;
+    }
+
+    /* 3 INTERACTIVE LEVEL BUTTON CARDS */
+    .level-cards-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .level-btn {
+      background: #1e293b;
+      border: 2.5px solid #334155;
+      border-radius: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+      text-align: left;
+      color: #ffffff;
+      position: relative;
+      outline: none;
+    }
+
+    .level-btn:hover {
+      border-color: #64748b;
+      background: #243248;
+      transform: translateY(-2px);
+    }
+
+    /* Active Glowing State for LOW */
+    .level-btn.active-low {
+      border-color: #10b981 !important;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, #132725 100%) !important;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45) !important;
+      transform: scale(1.02);
+    }
+
+    /* Active Glowing State for MEDIUM */
+    .level-btn.active-medium {
+      border-color: #0284c7 !important;
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.25) 0%, #0c263c 100%) !important;
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.45) !important;
+      transform: scale(1.02);
+    }
+
+    /* Active Glowing State for HIGH */
+    .level-btn.active-high {
+      border-color: #8b5cf6 !important;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, #1e1938 100%) !important;
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.45) !important;
+      transform: scale(1.02);
+    }
+
+    .level-btn-icon {
+      font-size: 1.6rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+    }
+
+    .level-btn-text {
+      flex-grow: 1;
+    }
+
+    .level-btn-heading {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: block;
+      line-height: 1.2;
+    }
+
+    .level-btn-subtext {
+      font-size: 0.76rem;
+      color: #94a3b8;
+      display: block;
+      margin-top: 3px;
+      line-height: 1.3;
+    }
+
+    .level-btn-radio {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 900;
+      color: transparent;
+      flex-shrink: 0;
+    }
+
+    .level-btn.active-low .level-btn-radio,
+    .level-btn.active-medium .level-btn-radio,
+    .level-btn.active-high .level-btn-radio {
+      background: #ffffff;
+      border-color: #ffffff;
+      color: #0f172a;
+    }
+
+    /* ACTION TOOLBAR */
+    .resume-toolbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 72px;
+      z-index: 900;
+      box-shadow: var(--shadow-sm);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .resume-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #f1f5f9;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+    .zoom-btn {
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .zoom-btn:hover {
+      background: #e2e8f0;
+      color: var(--primary);
+    }
+
+    .zoom-text {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      min-width: 44px;
+      text-align: center;
+    }
+
+    .resume-toolbar-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* SPLIT SCREEN WORKSPACE */
+    .resume-layout {
+      display: grid;
+      grid-template-columns: 500px 1fr;
+      flex-grow: 1;
+      height: calc(100vh - 220px);
+      overflow: hidden;
+    }
+
+    /* Left Form Editor Sidebar */
+    .resume-editor-panel {
+      background: #ffffff;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .editor-section {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: var(--transition);
+    }
+
+    .editor-section:hover {
+      border-color: #cbd5e1;
+    }
+
+    .editor-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .editor-section-header h4 {
+      font-size: 0.98rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-main);
+    }
+
+    .editor-section-body {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Preset Objective 1-Click Buttons */
+    .preset-objective-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .preset-obj-btn {
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      color: #334155;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      line-height: 1.35;
+    }
+
+    .preset-obj-btn:hover {
+      background: #eff6ff;
+      border-color: #2563eb;
+      color: #1e3a8a;
+      transform: translateX(3px);
+    }
+
+    .dynamic-item-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      position: relative;
+      margin-bottom: 8px;
+    }
+
+    .dynamic-item-remove {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #fee2e2;
+      color: #dc2626;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-swatches {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .color-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      transition: all 0.2s ease;
+    }
+
+    .color-swatch:hover {
+      transform: scale(1.15);
+    }
+
+    .color-swatch.active {
+      border-color: #0f172a;
+      transform: scale(1.2);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .template-card {
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: #ffffff;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .template-card:hover {
+      border-color: #94a3b8;
+      transform: translateY(-2px);
+    }
+
+    .template-card.active {
+      border-color: var(--primary);
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .photo-upload-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #f8fafc;
+      border: 1.5px dashed var(--border);
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .photo-preview-thumb {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #e2e8f0;
+      border: 2px solid var(--border);
+    }
+
+    /* RIGHT RESUME LIVE PREVIEW */
+    .resume-preview-panel {
+      background: #334155;
+      overflow-y: auto;
+      padding: 35px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .resume-preview-wrapper {
+      transform: scale(var(--zoom-scale, 1));
+      transform-origin: top center;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* A4 Sheet Dimensions & Paper Styling */
+    .resume-paper {
+      width: 210mm;
+      min-height: 297mm;
+      background: #ffffff;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+      padding: 16mm 16mm;
+      position: relative;
+      box-sizing: border-box;
+      color: var(--r-text, #1e293b);
+      font-family: var(--r-font, 'Segoe UI', Arial, sans-serif);
+      font-size: 9pt;
+      line-height: 1.4;
+      --r-primary: #1e40af;
+      --r-secondary: #0f766e;
+      --r-accent: #f59e0b;
+      --r-text: #1e293b;
+      --r-bg: #ffffff;
+      border-radius: 2px;
+    }
+
+    /* Shared Typography & Elements */
+    .r-name {
+      font-size: 19.5pt;
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--r-primary);
+      margin-bottom: 2px;
+      letter-spacing: -0.3px;
+    }
+
+    .r-title {
+      font-size: 9.5pt;
+      font-weight: 600;
+      color: var(--r-secondary);
+      margin-bottom: 6px;
+    }
+
+    .r-contact-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 8.2pt;
+      color: #475569;
+      margin-bottom: 10px;
+    }
+
+    .r-section {
+      margin-bottom: 10px;
+    }
+
+    .r-section-title {
+      font-size: 9.4pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--r-primary);
+      border-bottom: 1.5px solid var(--r-primary);
+      padding-bottom: 2px;
+      margin-bottom: 6px;
+    }
+
+    .r-item {
+      margin-bottom: 6px;
+    }
+
+    .r-item-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 8.8pt;
+      color: #0f172a;
+    }
+
+    .r-item-sub {
+      display: flex;
+      justify-content: space-between;
+      font-size: 8.2pt;
+      color: var(--r-secondary);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .r-item-desc {
+      font-size: 8.3pt;
+      color: #334155;
+      text-align: justify;
+    }
+
+    .r-tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .r-tag {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 8pt;
+      font-weight: 600;
+    }
+
+    .r-photo {
+      width: 74px;
+      height: 74px;
+      object-fit: cover;
+      border: 2px solid var(--r-primary);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .r-photo.circle { border-radius: 50%; }
+    .r-photo.rounded { border-radius: 6px; }
+    .r-photo.square { border-radius: 0; }
+
+    .r-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      font-size: 8.2pt;
+    }
+    .r-table th, .r-table td {
+      border: 1px solid #cbd5e1;
+      padding: 3px 6px;
+      text-align: left;
+    }
+    .r-table th {
+      background: #f8fafc;
+      color: var(--r-primary);
+      font-weight: 700;
+    }
+
+    /* Personal Particulars Grid (Father, Mother, DOB, Gender, Nationality, Marital) */
+    .r-personal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3px 12px;
+      font-size: 8.2pt;
+      color: #334155;
+      background: #f8fafc;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+    .r-personal-item {
+      display: flex;
+      gap: 4px;
+    }
+    .r-personal-item strong {
+      color: #0f172a;
+      min-width: 95px;
+    }
+
+    /* 5. DATE, PLACE, DECLARATION & SIGNATURE FOOTER BOX */
+    .r-signature-footer {
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: 1px dashed #cbd5e1;
+      font-size: 8.5pt;
+      color: #334155;
+      page-break-inside: avoid;
+    }
+
+    .r-declaration-text {
+      font-size: 8.1pt;
+      color: #475569;
+      text-align: justify;
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+
+    .r-sig-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 8px;
+    }
+
+    .r-sig-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-weight: 600;
+      font-size: 8.3pt;
+    }
+
+    .r-sig-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      min-width: 150px;
+    }
+
+    .r-sig-image {
+      max-height: 38px;
+      max-width: 130px;
+      object-fit: contain;
+      margin-bottom: 2px;
+    }
+
+    .r-sig-cursive {
+      font-family: 'Caveat', 'Dancing Script', cursive;
+      font-size: 16pt;
+      color: #1e3a8a;
+      line-height: 1;
+      margin-bottom: 2px;
+      font-weight: 700;
+    }
+
+    .r-sig-line {
+      width: 100%;
+      border-top: 1px solid #475569;
+      margin-top: 3px;
+      padding-top: 2px;
+      font-weight: 700;
+      font-size: 8.3pt;
+      color: #0f172a;
+    }
+
+    /* 6. THE 9 DISTINCT RESUME TEMPLATES */
+    .template-classic { font-family: 'Georgia', serif; }
+    .template-classic .r-header {
+      text-align: center;
+      border-bottom: 2px solid var(--r-primary);
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .template-classic .r-contact-bar { justify-content: center; }
+    .template-classic .r-section-title { border-bottom: 1px solid #94a3b8; }
+
+    .template-modern {
+      display: grid;
+      grid-template-columns: 55mm 1fr;
+      gap: 12mm;
+      padding: 0;
+    }
+    .template-modern .r-sidebar {
+      background-color: #f8fafc;
+      border-right: 1.5px solid var(--border);
+      padding: 14mm 10mm;
+    }
+    .template-modern .r-main { padding: 14mm 12mm 14mm 0; }
+
+    .template-minimal .r-name { font-size: 20pt; font-weight: 300; }
+    .template-minimal .r-section-title { border-bottom: none; font-weight: 800; font-size: 8.5pt; }
+
+    .template-corporate .r-header {
+      background: var(--r-primary);
+      color: #ffffff;
+      padding: 12px;
+      margin: -16mm -16mm 10px -16mm;
+    }
+    .template-corporate .r-name { color: #ffffff; }
+    .template-corporate .r-title { color: #fef08a; }
+    .template-corporate .r-contact-bar { color: #e2e8f0; }
+
+    .template-elegant .r-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--r-accent);
+      padding-bottom: 8px;
+    }
+    .template-elegant .r-section-title { color: var(--r-secondary); border-bottom: 2px solid var(--r-accent); }
+
+    .template-creative .r-tag { background-color: var(--r-primary); color: #ffffff; border-radius: 10px; }
+    .template-creative .r-section-title {
+      background-color: #f1f5f9; padding: 2px 6px;
+      border-left: 4px solid var(--r-primary); border-bottom: none;
+    }
+
+    .template-executive .r-header { display: flex; gap: 14px; align-items: center; margin-bottom: 10px; }
+    .template-executive .r-section-title { border-bottom: 2px solid #0f172a; color: #0f172a; }
+
+    .template-student .r-education-section { order: 1; }
+    .template-student .r-projects-section { order: 2; }
+    .template-student .r-skills-section { order: 3; }
+    .template-student .r-experience-section { order: 4; }
+
+    .template-two-column { display: grid; grid-template-columns: 35% 65%; gap: 12px; }
+    .template-two-column .col-left { border-right: 1px solid var(--border); padding-right: 12px; }
+
+    /* 7. PRINT RULES */
+    @media print {
+      body { background: #ffffff; margin: 0; padding: 0; }
+      .navbar, .level-hero-bar, .resume-toolbar, .resume-editor-panel, .modal-overlay, .toast-container { display: none !important; }
+      .resume-layout { display: block; height: auto; }
+      .resume-preview-panel { background: #ffffff; padding: 0; margin: 0; }
+      .resume-preview-wrapper { transform: none !important; }
+      .resume-paper { width: 210mm; min-height: 297mm; margin: 0; padding: 12mm; box-shadow: none; }
+    }
+
+    /* 8. MOBILE RESPONSIVENESS */
+    @media (max-width: 992px) {
+      .level-cards-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .level-btn {
+        padding: 12px 14px;
+      }
+      .resume-toolbar {
+        top: 72px;
+        padding: 8px 14px;
+        gap: 8px;
+      }
+      .resume-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+        overflow: visible;
+      }
+      .resume-editor-panel {
+        border-right: none;
+        overflow-y: visible;
+        padding: 14px;
+      }
+      .resume-preview-panel {
+        padding: 16px 8px;
+        overflow-x: auto;
+      }
+    }
+  </style>
 </head>
 <body class="resume-app">
 
@@ -38,45 +790,45 @@
     </div>
   </header>
 
-  <!-- 3 RESUME DETAIL LEVEL SELECTOR CARDS -->
-  <div class="level-selector-box">
-    <div class="level-selector-top">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 1.1rem;">⚡</span>
-        <strong style="color: #ffffff; font-size: 1rem;">Select Resume Detail Level / Format:</strong>
+  <!-- 3 RESUME DETAIL LEVEL SELECTOR BUTTONS (CLICKABLE CARDS) -->
+  <div class="level-hero-bar">
+    <div class="level-hero-header">
+      <div class="level-hero-title">
+        <span>⚡ Select Resume Type / Detail Level:</span>
       </div>
-      <span id="current-level-badge" style="font-size: 0.8rem; background: rgba(139, 92, 246, 0.2); color: #ddd6fe; border: 1px solid #8b5cf6; padding: 4px 12px; border-radius: 9999px; font-weight: 700;">
-        🔵 Mode: High Detail (Engineering CV)
-      </span>
+      <span class="level-status-pill" id="current-level-badge">🔵 Mode: High Detail (Engineering CV)</span>
     </div>
 
-    <div class="level-btn-grid" id="resume-level-grid">
-      <div class="level-btn-card" data-level="low">
+    <div class="level-cards-container" id="resume-level-grid">
+      <!-- 1. Low Detail Button -->
+      <button type="button" class="level-btn" id="btn-lvl-low" data-level="low">
         <div class="level-btn-icon" style="color: #10b981;">🟢</div>
-        <div class="level-btn-info">
-          <span class="level-btn-title">Low Detail Resume</span>
-          <span class="level-btn-sub">10th/12th Pass, Helper, Shop, Local Jobs</span>
+        <div class="level-btn-text">
+          <span class="level-btn-heading">Low Detail Resume</span>
+          <span class="level-btn-subtext">10th / 12th Pass, Store, Helper, Driver, Shop & Local Jobs</span>
         </div>
-        <div class="level-btn-check">✔</div>
-      </div>
+        <div class="level-btn-radio">✔</div>
+      </button>
 
-      <div class="level-btn-card" data-level="medium">
+      <!-- 2. Medium Detail Button -->
+      <button type="button" class="level-btn" id="btn-lvl-medium" data-level="medium">
         <div class="level-btn-icon" style="color: #0284c7;">🟡</div>
-        <div class="level-btn-info">
-          <span class="level-btn-title">Medium Detail Resume</span>
-          <span class="level-btn-sub">Graduates, Office Exec, Sales, Accounts</span>
+        <div class="level-btn-text">
+          <span class="level-btn-heading">Medium Detail Resume</span>
+          <span class="level-btn-subtext">Graduates (B.Com/BA/BSc), Office Executive, Sales, Accounts</span>
         </div>
-        <div class="level-btn-check">✔</div>
-      </div>
+        <div class="level-btn-radio">✔</div>
+      </button>
 
-      <div class="level-btn-card active-high" data-level="high">
+      <!-- 3. High Detail Button (Default) -->
+      <button type="button" class="level-btn active-high" id="btn-lvl-high" data-level="high">
         <div class="level-btn-icon" style="color: #8b5cf6;">🔵</div>
-        <div class="level-btn-info">
-          <span class="level-btn-title">High Detail Resume</span>
-          <span class="level-btn-sub">Engineering, Developers, Full Tech CV</span>
+        <div class="level-btn-text">
+          <span class="level-btn-heading">High Detail Resume</span>
+          <span class="level-btn-subtext">Engineering (B.Tech/BCA/MCA), Developers, Full Tech CV</span>
         </div>
-        <div class="level-btn-check">✔</div>
-      </div>
+        <div class="level-btn-radio">✔</div>
+      </button>
     </div>
   </div>
 
@@ -87,20 +839,28 @@
         💻 Editing: Comprehensive Engineering CV
       </span>
       
-      <!-- Zoom Controls -->
+      <!-- Zoom Scale Controls -->
       <div class="zoom-controls">
         <button type="button" class="zoom-btn" id="btn-zoom-out" title="Zoom Out">🔍−</button>
         <span class="zoom-text" id="zoom-value-text">100%</span>
         <button type="button" class="zoom-btn" id="btn-zoom-in" title="Zoom In">🔍+</button>
-        <button type="button" class="zoom-btn" id="btn-zoom-reset" style="font-size: 0.75rem; color: var(--primary);">Fit</button>
+        <button type="button" class="zoom-btn" id="btn-zoom-reset" style="font-size: 0.75rem; color: var(--primary);" title="Reset Zoom">Fit</button>
       </div>
     </div>
 
     <div class="resume-toolbar-actions">
-      <button type="button" id="btn-load-sample" class="btn btn-outline btn-sm">📝 Load Sample</button>
-      <button type="button" id="btn-reset-resume" class="btn btn-outline btn-sm">🔄 Clear Form</button>
-      <button type="button" id="btn-print-resume" class="btn btn-secondary btn-sm">🖨️ Print</button>
-      <button type="button" id="btn-download-pdf" class="btn btn-primary btn-sm">📥 Download PDF</button>
+      <button type="button" id="btn-load-sample" class="btn btn-outline btn-sm" title="Fill sample data for selected level">
+        📝 Load Sample
+      </button>
+      <button type="button" id="btn-reset-resume" class="btn btn-outline btn-sm" title="Clear all fields">
+        🔄 Clear Form
+      </button>
+      <button type="button" id="btn-print-resume" class="btn btn-secondary btn-sm">
+        🖨️ Print
+      </button>
+      <button type="button" id="btn-download-pdf" class="btn btn-primary btn-sm">
+        📥 Download Resume PDF
+      </button>
     </div>
   </div>
 
@@ -110,9 +870,11 @@
     <!-- LEFT: Form Editor Panel -->
     <aside class="resume-editor-panel" id="resume-editor">
 
-      <!-- 1. Choose Template -->
+      <!-- 1. Choose Template (9 Distinct Formats) -->
       <div class="editor-section">
-        <div class="editor-section-header"><h4><span>🎨</span> 1. Choose Template (9 Formats)</h4></div>
+        <div class="editor-section-header">
+          <h4><span>🎨</span> 1. Choose Template (9 Formats)</h4>
+        </div>
         <div class="editor-section-body">
           <div class="template-grid" id="template-selector-grid">
             <div class="template-card active" data-template="classic">🏛️ Classic</div>
@@ -128,135 +890,142 @@
         </div>
       </div>
 
-      <!-- 2. Color & Font -->
+      <!-- 2. Color Themes & Typography -->
       <div class="editor-section">
-        <div class="editor-section-header"><h4><span>🖌️</span> 2. Color Theme & Font</h4></div>
+        <div class="editor-section-header">
+          <h4><span>🖌️</span> 2. Color Theme & Font</h4>
+        </div>
         <div class="editor-section-body">
+          <label class="form-label" style="font-size: 0.85rem;">Preset Color Palettes</label>
           <div class="theme-swatches" id="theme-swatches-container">
-            <div class="color-swatch active" style="background-color: #1e40af;" data-primary="#1e40af" data-sec="#0f766e"></div>
-            <div class="color-swatch" style="background-color: #0f172a;" data-primary="#0f172a" data-sec="#334155"></div>
-            <div class="color-swatch" style="background-color: #0f766e;" data-primary="#0f766e" data-sec="#115e59"></div>
-            <div class="color-swatch" style="background-color: #7e22ce;" data-primary="#7e22ce" data-sec="#9333ea"></div>
-            <div class="color-swatch" style="background-color: #b91c1c;" data-primary="#b91c1c" data-sec="#991b1b"></div>
-            <div class="color-swatch" style="background-color: #374151;" data-primary="#374151" data-sec="#4b5563"></div>
+            <div class="color-swatch active" style="background-color: #1e40af;" data-primary="#1e40af" data-sec="#0f766e" title="Royal Blue"></div>
+            <div class="color-swatch" style="background-color: #0f172a;" data-primary="#0f172a" data-sec="#334155" title="Dark Slate"></div>
+            <div class="color-swatch" style="background-color: #0f766e;" data-primary="#0f766e" data-sec="#115e59" title="Teal Emerald"></div>
+            <div class="color-swatch" style="background-color: #7e22ce;" data-primary="#7e22ce" data-sec="#9333ea" title="Vibrant Purple"></div>
+            <div class="color-swatch" style="background-color: #b91c1c;" data-primary="#b91c1c" data-sec="#991b1b" title="Crimson Red"></div>
+            <div class="color-swatch" style="background-color: #374151;" data-primary="#374151" data-sec="#4b5563" title="Charcoal"></div>
           </div>
 
-          <div class="grid grid-2" style="gap: 10px; margin-top: 8px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
             <div class="form-group" style="margin-bottom: 0;">
               <label class="form-label" style="font-size: 0.85rem;">Custom Color</label>
               <input type="color" id="r-custom-color" class="form-control" value="#1e40af" style="height: 38px; padding: 2px;">
             </div>
+
             <div class="form-group" style="margin-bottom: 0;">
               <label class="form-label" style="font-size: 0.85rem;">Font Family</label>
               <select id="r-font-select" class="form-control" style="font-size: 0.85rem;">
                 <option value="'Segoe UI', Arial, sans-serif">Segoe UI (Modern)</option>
                 <option value="'Georgia', serif">Georgia (Classic Serif)</option>
-                <option value="'Times New Roman', serif">Times New Roman</option>
+                <option value="'Times New Roman', serif">Times New Roman (Formal)</option>
                 <option value="'Poppins', sans-serif">Poppins (Clean)</option>
+                <option value="'Roboto', sans-serif">Roboto (Tech)</option>
+                <option value="'Open Sans', sans-serif">Open Sans (Readable)</option>
               </select>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 3. Personal Information -->
+      <!-- 3. Personal Information (ALL DETAILS INCLUDED) -->
       <div class="editor-section">
-        <div class="editor-section-header"><h4><span>👤</span> 3. Personal Information</h4></div>
+        <div class="editor-section-header">
+          <h4><span>👤</span> 3. Personal Information</h4>
+        </div>
         <div class="editor-section-body">
           <div class="form-group">
-            <label class="form-label required">Full Name</label>
-            <input type="text" id="r-fullname" class="form-control" placeholder="e.g. Mayank Raj">
+            <label class="form-label required">Full Name (पूरा नाम)</label>
+            <input type="text" id="r-fullname" class="form-control" placeholder="e.g. Mayank Raj" value="Mayank Raj">
           </div>
 
+          <!-- Professional Job Title (Visible in High & Medium) -->
           <div class="form-group" id="sec-jobtitle">
             <label class="form-label" id="lbl-jobtitle">Professional Title / Role</label>
-            <input type="text" id="r-jobtitle" class="form-control" placeholder="e.g. ECE Student & Full Stack Web Developer">
+            <input type="text" id="r-jobtitle" class="form-control" placeholder="e.g. ECE Student & Full Stack Web Developer" value="ECE Engineering Student & Web Developer">
+          </div>
+
+          <!-- Father's & Mother's Name -->
+          <div class="grid grid-2" style="gap: 10px;">
+            <div class="form-group">
+              <label class="form-label">Father's Name (पिता का नाम)</label>
+              <input type="text" id="r-fathername" class="form-control" placeholder="e.g. Sri Ramesh Prasad" value="Sri Ramesh Prasad">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mother's Name (माता का नाम)</label>
+              <input type="text" id="r-mothername" class="form-control" placeholder="e.g. Smt. Anita Devi" value="Smt. Anita Devi">
+            </div>
+          </div>
+
+          <!-- DOB & Gender -->
+          <div class="grid grid-2" style="gap: 10px;">
+            <div class="form-group">
+              <label class="form-label">Date of Birth (जन्मतिथि)</label>
+              <input type="text" id="r-dob" class="form-control" placeholder="e.g. 15-08-2005" value="15-08-2005">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Gender (लिंग)</label>
+              <select id="r-gender" class="form-control">
+                <option value="Male" selected>Male (पुरुष)</option>
+                <option value="Female">Female (महिला)</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Marital Status & Nationality -->
+          <div class="grid grid-2" style="gap: 10px;">
+            <div class="form-group">
+              <label class="form-label">Marital Status (वैवाहिक स्थिति)</label>
+              <select id="r-marital" class="form-control">
+                <option value="Unmarried" selected>Unmarried (अविवाहित)</option>
+                <option value="Married">Married (विवाहित)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nationality (राष्ट्रीयता)</label>
+              <input type="text" id="r-nationality" class="form-control" placeholder="Indian" value="Indian">
+            </div>
           </div>
 
           <div class="grid grid-2" style="gap: 10px;">
             <div class="form-group">
               <label class="form-label required">Mobile Number</label>
-              <input type="text" id="r-mobile" class="form-control" placeholder="+91 98765 43210">
+              <input type="text" id="r-mobile" class="form-control" placeholder="+91 98765 43210" value="+91 98765 43210">
             </div>
+
             <div class="form-group" id="sec-email-box">
-              <label class="form-label">Email Address</label>
-              <input type="email" id="r-email" class="form-control" placeholder="mayank@example.com">
+              <label class="form-label" id="lbl-email">Email Address</label>
+              <input type="email" id="r-email" class="form-control" placeholder="mayank@example.com" value="mayank.raj@example.com">
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label required">Full Address</label>
-            <input type="text" id="r-address" class="form-control" placeholder="e.g. Mahalpar, Bihar Sharif, Nalanda">
+            <label class="form-label required">Full Permanent / Present Address</label>
+            <input type="text" id="r-address" class="form-control" placeholder="e.g. Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101" value="Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101">
           </div>
 
-          <!-- Comprehensive Personal Details (Visible in ALL levels) -->
-          <div style="background: #f8fafc; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px;">
-            <label class="form-label" style="margin-bottom: 10px; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 4px;">Family & Identity Details</label>
-            
-            <div class="grid grid-2" style="gap: 10px;">
-              <div class="form-group" style="margin-bottom: 8px;">
-                <label class="form-label">Father's Name</label>
-                <input type="text" id="r-fathername" class="form-control" placeholder="e.g. Sri Ramesh Prasad">
-              </div>
-              <div class="form-group" style="margin-bottom: 8px;">
-                <label class="form-label">Mother's Name</label>
-                <input type="text" id="r-mothername" class="form-control" placeholder="e.g. Smt. Sunita Devi">
-              </div>
-            </div>
-
-            <div class="grid grid-2" style="gap: 10px;">
-              <div class="form-group" style="margin-bottom: 8px;">
-                <label class="form-label">Date of Birth</label>
-                <input type="text" id="r-dob" class="form-control" placeholder="e.g. 15/08/2005">
-              </div>
-              <div class="form-group" style="margin-bottom: 8px;">
-                <label class="form-label">Gender</label>
-                <select id="r-gender" class="form-control">
-                  <option value="">-- Select --</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="grid grid-2" style="gap: 10px;">
-              <div class="form-group" style="margin-bottom: 8px;">
-                <label class="form-label">Marital Status</label>
-                <select id="r-marital" class="form-control">
-                  <option value="">-- Select --</option>
-                  <option value="Single">Single / Unmarried</option>
-                  <option value="Married">Married</option>
-                </select>
-              </div>
-              <div class="form-group" style="margin-bottom: 8px;">
-                <label class="form-label">Nationality</label>
-                <input type="text" id="r-nationality" class="form-control" value="Indian">
-              </div>
-            </div>
-          </div>
-
-          <!-- Tech Links -->
+          <!-- Tech Links (LinkedIn, GitHub) - Active for High & Medium -->
           <div class="grid grid-2" id="sec-social-links" style="gap: 10px;">
             <div class="form-group">
-              <label class="form-label">LinkedIn Profile</label>
-              <input type="text" id="r-linkedin" class="form-control">
+              <label class="form-label">LinkedIn Profile (Optional)</label>
+              <input type="text" id="r-linkedin" class="form-control" placeholder="linkedin.com/in/mayankraj" value="linkedin.com/in/mayankraj">
             </div>
+
             <div class="form-group" id="sec-github-box">
-              <label class="form-label">GitHub / Portfolio</label>
-              <input type="text" id="r-github" class="form-control">
+              <label class="form-label">GitHub / Portfolio (Optional)</label>
+              <input type="text" id="r-github" class="form-control" placeholder="github.com/mayankraj" value="github.com/mayankraj">
             </div>
           </div>
 
-          <!-- Photo Upload -->
+          <!-- Photo Upload & Shape Control -->
           <div class="photo-upload-box">
             <img id="photo-preview-img" class="photo-preview-thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="Preview">
             <div style="flex-grow: 1;">
               <input type="file" id="r-photo-input" accept="image/png, image/jpeg, image/jpg" style="font-size: 0.8rem; margin-bottom: 6px;">
               <div style="display: flex; gap: 6px; align-items: center;">
                 <select id="r-photo-shape" class="form-control" style="padding: 4px 8px; font-size: 0.8rem; width: auto;">
-                  <option value="circle">Circle</option>
-                  <option value="rounded">Rounded</option>
+                  <option value="circle">Circle Photo</option>
+                  <option value="rounded">Rounded Box</option>
                   <option value="square">Square</option>
                 </select>
                 <button type="button" id="r-remove-photo" class="btn btn-outline btn-sm" style="padding: 3px 8px; font-size: 0.75rem;">Remove</button>
@@ -266,82 +1035,119 @@
         </div>
       </div>
 
-      <!-- 4. Profile Summary / Career Objective -->
+      <!-- 4. Career Objective (WITH READY-MADE 1-CLICK PRESETS) -->
       <div class="editor-section" id="sec-objective-wrapper">
-        <div class="editor-section-header"><h4 id="heading-objective"><span>🎯</span> 4. Career Objective</h4></div>
+        <div class="editor-section-header">
+          <h4 id="heading-objective"><span>🎯</span> 4. Career Objective (उद्देश्य)</h4>
+        </div>
         <div class="editor-section-body">
-          <label class="form-label">Select a preset or type your own:</label>
-          <select id="r-objective-select" class="form-control" style="margin-bottom: 8px; font-size: 0.85rem;">
-            <option value="">-- Choose a Preset Career Objective --</option>
-            <option value="Secure a responsible career opportunity to fully utilize my talent and skills to grow, while making a significant contribution to the success of the company.">1. Secure a responsible career opportunity to fully utilize my talent...</option>
-            <option value="Self-motivated and hardworking fresher seeking for an opportunity to work in a challenging environment to prove my skills and utilize my knowledge & intelligence in the growth of the organization.">2. Self-motivated and hardworking fresher seeking...</option>
-            <option value="Urge for a position in an aggressively growing organization where my technical & functional expertise can be effectively utilized and possess good analytical abilities, quick grasping power, zeal for learning new things and excellent communication skills.">3. Urge for a position in an aggressively growing organization...</option>
-            <option value="To seek a good & responsible job in professionally managed organization where in my conceptual and functional skills are effectively utilized in a way that contributes to the organization growth coupled with personal growth within the organization.">4. To seek a good & responsible job in professionally managed...</option>
-            <option value="To make a good position in a reputed company and work enthusiastically in team which provides steady career growth along with job satisfaction, challenges and give value contribution in the success and to build a challenging career with honesty and loyalty by translating my experience knowledge, skills and abilities into value for an organization.">5. To make a good position in a reputed company and work enthusiastically...</option>
-            <option value="To contribute my best to the organization irrespective of the kind of project undertaken and to utilize my skills and to perform the job to the best of my ability with the zeal and willing to learn.">6. To contribute my best to the organization irrespective of the kind...</option>
-          </select>
-          <textarea id="r-objective" class="form-control" rows="4" placeholder="Your objective will appear here..."></textarea>
+          <label class="form-label" style="font-size: 0.85rem; color: var(--primary);">
+            ✨ Select Ready-Made Career Objective (Click to insert):
+          </label>
+          
+          <div class="preset-objective-list" id="preset-objective-container">
+            <button type="button" class="preset-obj-btn" data-opt="0">
+              <span>1️⃣</span> <span><strong>General Career:</strong> Secure a responsible career opportunity to fully utilize my talent and skills to grow, while making a significant contribution to the success of the company.</span>
+            </button>
+            <button type="button" class="preset-obj-btn" data-opt="1">
+              <span>2️⃣</span> <span><strong>Fresher / Hardworking:</strong> Self-motivated and hardworking fresher seeking for an opportunity to work in a challenging environment to prove my skills and utilize my knowledge & intelligence in the growth of the organization.</span>
+            </button>
+            <button type="button" class="preset-obj-btn" data-opt="2">
+              <span>3️⃣</span> <span><strong>Technical / Fast Learner:</strong> Urge for a position in an aggressively growing organization where my technical & functional expertise can be effectively utilized and possess good analytical abilities, quick grasping power, zeal for learning new things and excellent communication skills.</span>
+            </button>
+            <button type="button" class="preset-obj-btn" data-opt="3">
+              <span>4️⃣</span> <span><strong>Management / Professional:</strong> To seek a good & responsible job in professionally managed organization where in my conceptual and functional skills are effectively utilized in a way that contributes to the organization growth coupled with personal growth within the organization.</span>
+            </button>
+            <button type="button" class="preset-obj-btn" data-opt="4">
+              <span>5️⃣</span> <span><strong>Growth & Loyalty:</strong> To make a good position in a reputed company and work enthusiastically in team which provides steady career growth along with job satisfaction, challenges and give value contribution in the success and to build a challenging career with honesty and loyalty by translating my experience knowledge ,skills and abilities into value for an organization.</span>
+            </button>
+            <button type="button" class="preset-obj-btn" data-opt="5">
+              <span>6️⃣</span> <span><strong>Best Contribution:</strong> To contribute my best to the organization irrespective of the kind of project undertaken and to utilize my skills and to perform the job to the best of my ability with the zeal and willing to learn.</span>
+            </button>
+          </div>
+
+          <label class="form-label" style="margin-top: 6px;">Objective Text (Editable):</label>
+          <textarea id="r-objective" class="form-control" rows="3" placeholder="Write or click above to insert career objective...">Secure a responsible career opportunity to fully utilize my talent and skills to grow, while making a significant contribution to the success of the company.</textarea>
         </div>
       </div>
 
       <!-- 5. Skills -->
       <div class="editor-section" id="sec-skills-wrapper">
-        <div class="editor-section-header"><h4 id="heading-skills"><span>💡</span> 5. Key Skills</h4></div>
+        <div class="editor-section-header">
+          <h4 id="heading-skills"><span>💡</span> 5. Key Skills</h4>
+        </div>
         <div class="editor-section-body">
           <label class="form-label" id="lbl-skills-guide">Skills (Comma separated)</label>
-          <input type="text" id="r-skills" class="form-control" placeholder="e.g. Python, C++, Teamwork, Management">
+          <input type="text" id="r-skills" class="form-control" placeholder="e.g. Python, C++, HTML/CSS, JavaScript, Circuit Design">
         </div>
       </div>
 
       <!-- 6. Education History -->
-      <div class="editor-section">
-        <div class="editor-section-header"><h4><span>🎓</span> 6. Education Details</h4></div>
+      <div class="editor-section" id="sec-education-wrapper">
+        <div class="editor-section-header">
+          <h4><span>🎓</span> 6. Education Details</h4>
+        </div>
         <div class="editor-section-body">
           <div id="education-items-list"></div>
-          <button type="button" id="btn-add-education" class="btn btn-outline btn-sm btn-block">+ Add Education</button>
+          <button type="button" id="btn-add-education" class="btn btn-outline btn-sm btn-block">
+            + Add Education Entry
+          </button>
         </div>
       </div>
 
       <!-- 7. Work Experience -->
       <div class="editor-section" id="sec-experience-wrapper">
-        <div class="editor-section-header"><h4 id="heading-experience"><span>💼</span> 7. Work Experience</h4></div>
+        <div class="editor-section-header">
+          <h4 id="heading-experience"><span>💼</span> 7. Work Experience / Employment</h4>
+        </div>
         <div class="editor-section-body">
           <div id="experience-items-list"></div>
-          <button type="button" id="btn-add-experience" class="btn btn-outline btn-sm btn-block">+ Add Experience</button>
+          <button type="button" id="btn-add-experience" class="btn btn-outline btn-sm btn-block">
+            + Add Experience Entry
+          </button>
         </div>
       </div>
 
-      <!-- 8. Projects -->
+      <!-- 8. Technical Projects (Only for High & Medium) -->
       <div class="editor-section" id="sec-projects-wrapper">
-        <div class="editor-section-header"><h4><span>🚀</span> 8. Technical Projects</h4></div>
+        <div class="editor-section-header">
+          <h4><span>🚀</span> 8. Technical Projects & Work</h4>
+        </div>
         <div class="editor-section-body">
           <div id="project-items-list"></div>
-          <button type="button" id="btn-add-project" class="btn btn-outline btn-sm btn-block">+ Add Project</button>
+          <button type="button" id="btn-add-project" class="btn btn-outline btn-sm btn-block">
+            + Add Project Entry
+          </button>
         </div>
       </div>
 
       <!-- 9. Certifications & Languages -->
       <div class="editor-section" id="sec-extras-wrapper">
-        <div class="editor-section-header"><h4><span>📜</span> 9. Certifications & Languages</h4></div>
+        <div class="editor-section-header">
+          <h4><span>📜</span> 9. Certifications & Languages</h4>
+        </div>
         <div class="editor-section-body">
           <div class="form-group" id="sec-certs-box">
             <label class="form-label">Certifications / Achievements</label>
-            <textarea id="r-certifications" class="form-control" rows="2"></textarea>
+            <textarea id="r-certifications" class="form-control" rows="2" placeholder="e.g. DCA Diploma, Python Certification"></textarea>
           </div>
+
           <div class="form-group">
             <label class="form-label">Languages Known</label>
-            <input type="text" id="r-languages" class="form-control">
+            <input type="text" id="r-languages" class="form-control" placeholder="e.g. Hindi, English" value="Hindi, English">
           </div>
         </div>
       </div>
 
-      <!-- 10. DATE, PLACE & SIGNATURE -->
-      <div class="editor-section">
-        <div class="editor-section-header"><h4><span>✍️</span> 10. Date, Place & Signature</h4></div>
+      <!-- 10. DATE, PLACE, DECLARATION & SIGNATURE CUSTOMIZATION -->
+      <div class="editor-section" id="sec-signature-customizer">
+        <div class="editor-section-header">
+          <h4><span>✍️</span> 10. Date, Place & Signature</h4>
+        </div>
         <div class="editor-section-body">
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
             <input type="checkbox" id="r-show-signature" checked style="width: 16px; height: 16px;">
-            <label for="r-show-signature" class="form-label" style="margin-bottom: 0; cursor: pointer;">Show Declaration at bottom</label>
+            <label for="r-show-signature" class="form-label" style="margin-bottom: 0; cursor: pointer;">Show Declaration, Date & Signature at bottom</label>
           </div>
 
           <div class="form-group">
@@ -352,31 +1158,35 @@
           <div class="grid grid-2" style="gap: 10px;">
             <div class="form-group">
               <label class="form-label">Place</label>
-              <input type="text" id="r-place" class="form-control" value="Bihar Sharif">
+              <input type="text" id="r-place" class="form-control" placeholder="e.g. Bihar Sharif" value="Bihar Sharif">
             </div>
+
             <div class="form-group">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                 <label class="form-label" style="margin-bottom: 0;">Date</label>
                 <button type="button" id="btn-set-today" style="background: none; border: none; font-size: 0.75rem; color: var(--primary); cursor: pointer;">📅 Today</button>
               </div>
-              <input type="text" id="r-date" class="form-control" value="18/08/2026">
+              <input type="text" id="r-date" class="form-control" placeholder="DD/MM/YYYY" value="18/08/2026">
             </div>
           </div>
 
+          <!-- Signature Format & Type -->
           <div class="form-group">
             <label class="form-label">Candidate Signature Format</label>
             <select id="r-sign-type" class="form-control" style="font-size: 0.9rem;">
-              <option value="cursive">✨ Digital Cursive Handwriting</option>
-              <option value="printed">📄 Printed Name Line</option>
-              <option value="image">🖼️ Upload Signature Image</option>
+              <option value="cursive">✨ Digital Cursive Handwriting (E-Sign)</option>
+              <option value="printed">📄 Printed Name & Signature Line</option>
+              <option value="image">🖼️ Upload Signature Image (PNG/JPG)</option>
             </select>
           </div>
 
-          <div id="sec-sign-image-upload" style="display: none; background: #f8fafc; border: 1px dashed var(--border); padding: 10px; border-radius: var(--radius-sm);">
-            <label class="form-label" style="font-size: 0.8rem;">Upload Signature Photo</label>
-            <input type="file" id="r-sign-file-input" accept="image/png, image/jpeg" style="font-size: 0.8rem;">
-            <button type="button" id="btn-remove-sign-img" class="btn btn-outline btn-sm" style="margin-top: 6px;">Remove Image</button>
+          <!-- Optional Signature Image Upload Box -->
+          <div id="sec-sign-image-upload" style="display: none; background: #f8fafc; border: 1px dashed var(--border); padding: 10px; border-radius: 8px;">
+            <label class="form-label" style="font-size: 0.8rem;">Upload Signature Photo (Transparent PNG or White BG)</label>
+            <input type="file" id="r-sign-file-input" accept="image/png, image/jpeg, image/jpg" style="font-size: 0.8rem;">
+            <button type="button" id="btn-remove-sign-img" class="btn btn-outline btn-sm" style="margin-top: 6px; padding: 2px 8px; font-size: 0.75rem;">Remove Image</button>
           </div>
+
         </div>
       </div>
 
@@ -391,7 +1201,988 @@
 
   </div>
 
-  <script type="module" src="js/resume-maker.js"></script>
+  <!-- EMBEDDED COMPLETE ROBUST JAVASCRIPT ENGINE (NO MODULE FAILURE) -->
+  <script>
+    // 6 Exact Career Objectives provided by user
+    const CAREER_OBJECTIVES = [
+      "Secure a responsible career opportunity to fully utilize my talent and skills to grow, while making a significant contribution to the success of the company.",
+      "Self-motivated and hardworking fresher seeking for an opportunity to work in a challenging environment to prove my skills and utilize my knowledge & intelligence in the growth of the organization.",
+      "Urge for a position in an aggressively growing organization where my technical & functional expertise can be effectively utilized and possess good analytical abilities, quick grasping power, zeal for learning new things and excellent communication skills.",
+      "To seek a good & responsible job in professionally managed organization where in my conceptual and functional skills are effectively utilized in a way that contributes to the organization growth coupled with personal growth within the organization.",
+      "To make a good position in a reputed company and work enthusiastically in team which provides steady career growth along with job satisfaction, challenges and give value contribution in the success and to build a challenging career with honesty and loyalty by translating my experience knowledge ,skills and abilities into value for an organization.",
+      "To contribute my best to the organization irrespective of the kind of project undertaken and to utilize my skills and to perform the job to the best of my ability with the zeal and willing to learn."
+    ];
+
+    // Resume State
+    const resumeState = {
+      level: 'high',
+      template: 'classic',
+      font: "'Segoe UI', Arial, sans-serif",
+      primaryColor: '#1e40af',
+      secondaryColor: '#0f766e',
+      accentColor: '#f59e0b',
+      zoomScale: 1.0,
+      photoUrl: '',
+      photoShape: 'circle',
+      personal: {
+        fullName: 'Mayank Raj',
+        jobTitle: 'ECE Engineering Student & Web Developer',
+        email: 'mayank.raj@example.com',
+        mobile: '+91 98765 43210',
+        address: 'Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101',
+        fatherName: 'Sri Ramesh Prasad',
+        motherName: 'Smt. Anita Devi',
+        dob: '15-08-2005',
+        gender: 'Male',
+        maritalStatus: 'Unmarried',
+        nationality: 'Indian',
+        linkedin: 'linkedin.com/in/mayankraj',
+        github: 'github.com/mayankraj'
+      },
+      signature: {
+        show: true,
+        declaration: 'I hereby declare that all the information provided above is true and correct to the best of my knowledge and belief.',
+        place: 'Bihar Sharif',
+        date: '18/08/2026',
+        signType: 'cursive',
+        signImageUrl: ''
+      },
+      objective: CAREER_OBJECTIVES[0],
+      skills: ['Python', 'C++', 'HTML/CSS', 'JavaScript', 'Firebase', 'Circuit Design', 'Problem Solving', 'Data Structures & Algorithms'],
+      education: [
+        { degree: 'B.Tech in Electronics & Communication (ECE)', institution: 'Engineering Institute', board: 'State Technical University', startYear: '2026', endYear: '2030', grade: 'Pursuing' },
+        { degree: 'Class 12th (Senior Secondary - PCM)', institution: 'Higher Secondary School, Bihar Sharif', board: 'BSEB Patna', startYear: '2024', endYear: '2026', grade: 'First Division' }
+      ],
+      experience: [
+        { company: 'Maa Enterprises Cyber Cafe', role: 'Web Development & Technical Assistant', startDate: 'Nov 2025', endDate: 'Present', description: 'Built responsive web interfaces, managed Firebase backend integrations, and assisted hundreds of students with error-free online admission and recruitment form submissions.' }
+      ],
+      projects: [
+        { title: 'Maa Enterprises Online Service Center Web Portal', tech: 'HTML5, CSS3, Vanilla JS, Firebase Modular SDK', description: 'Designed and deployed a full-featured cyber cafe website with live request tracking, WhatsApp document routing, and client-side resume builder.' },
+        { title: '2D Drift Car Racing Game', tech: 'Python, Pygame', description: 'Implemented vehicle physics, collision detection, and track boundary collision algorithms using Python and Pygame engine.' }
+      ],
+      certifications: 'Lakshya Batch Merit Student, Python for Beginners Certificate',
+      languages: 'Hindi (Native), English (Fluent)'
+    };
+
+    // Preset Datasets for the 3 Levels
+    const SAMPLE_PRESETS = {
+      low: {
+        personal: {
+          fullName: 'Ravi Kumar',
+          jobTitle: '',
+          email: '',
+          mobile: '+91 98765 12340',
+          address: 'Village - Mahalpar, PO - Bihar Sharif, Dist - Nalanda, Bihar (803101)',
+          fatherName: 'Sri Shambhu Prasad',
+          motherName: 'Smt. Geeta Devi',
+          dob: '10-05-2004',
+          gender: 'Male',
+          maritalStatus: 'Unmarried',
+          nationality: 'Indian',
+          linkedin: '',
+          github: ''
+        },
+        signature: {
+          show: true,
+          declaration: 'I hereby declare that all the information mentioned above is true and correct to the best of my knowledge and belief.',
+          place: 'Bihar Sharif',
+          date: '18/08/2026',
+          signType: 'cursive',
+          signImageUrl: ''
+        },
+        objective: CAREER_OBJECTIVES, // Self-motivated and hardworking fresher...
+        skills: ['Basic Computer Knowledge (MS Word, Excel)', 'Hindi & English Typing', 'Billing & Cash Handling', 'Good Communication', 'Customer Dealing'],
+        education: [
+          { degree: 'Intermediate (12th Passed - Arts)', institution: 'RPS College, Bihar Sharif', board: 'BSEB Patna', startYear: '2022', endYear: '2024', grade: '65% (1st Div)' },
+          { degree: 'Matriculation (10th Passed)', institution: 'High School, Nalanda', board: 'BSEB Patna', startYear: '2020', endYear: '2022', grade: '70% (1st Div)' }
+        ],
+        experience: [
+          { company: 'Local Retail Store / Cloth Shop, Bihar Sharif', role: 'Sales Assistant & Billing Staff', startDate: 'Jan 2024', endDate: 'Present', description: 'Customer dealing, stock arrangement, cash collection, and computer billing generation.' }
+        ],
+        projects: [],
+        certifications: 'DCA (Diploma in Computer Applications - 6 Months)',
+        languages: 'Hindi, Bhojpuri, Basic English'
+      },
+
+      medium: {
+        personal: {
+          fullName: 'Pooja Kumari',
+          jobTitle: 'Office Executive & Accounts Assistant',
+          email: 'pooja.office@gmail.com',
+          mobile: '+91 98765 88990',
+          address: 'Ramchandrapur, Bihar Sharif, Nalanda, Bihar - 803101',
+          fatherName: 'Sri Mahendra Sharma',
+          motherName: 'Smt. Sunita Sharma',
+          dob: '20-11-2002',
+          gender: 'Female',
+          maritalStatus: 'Unmarried',
+          nationality: 'Indian',
+          linkedin: 'linkedin.com/in/poojakumari',
+          github: ''
+        },
+        signature: {
+          show: true,
+          declaration: 'I hereby declare that all the above details are authentic and true to the best of my knowledge and belief.',
+          place: 'Bihar Sharif',
+          date: '18/08/2026',
+          signType: 'cursive',
+          signImageUrl: ''
+        },
+        objective: CAREER_OBJECTIVES, // To seek a good & responsible job in professionally managed organization...
+        skills: ['Tally Prime & GST Billing', 'Advance MS Excel (VLOOKUP, Pivot)', 'Office Administration', 'Email & Client Correspondence', 'Financial Record Keeping'],
+        education: [
+          { degree: 'B.Com (Bachelor of Commerce - Accounts Hons)', institution: 'Nalanda College, Bihar Sharif', board: 'Patliputra University (PPU)', startYear: '2021', endYear: '2024', grade: '72%' },
+          { degree: 'Class 12th (Commerce)', institution: 'Soghra College, Bihar Sharif', board: 'BSEB Patna', startYear: '2019', endYear: '2021', grade: 'First Division' }
+        ],
+        experience: [
+          { company: 'Vikas Enterprises & Logistics', role: 'Junior Accounts & Billing Executive', startDate: 'Aug 2024', endDate: 'Present', description: 'Prepared monthly GST sales invoices, managed petty cash records, and coordinated with clients for bill clearance.' }
+        ],
+        projects: [
+          { title: 'Store Inventory & Accounting Management System', tech: 'Tally Prime, MS Excel', description: 'Automated stock ledger tracking and reduced billing turnaround time by 30%.' }
+        ],
+        certifications: 'Tally Prime Professional Certificate, Advance Excel Certification',
+        languages: 'Hindi, English'
+      },
+
+      high: {
+        personal: {
+          fullName: 'Mayank Raj',
+          jobTitle: 'ECE Engineering Student & Web Developer',
+          email: 'mayank.raj@example.com',
+          mobile: '+91 98765 43210',
+          address: 'Mahalpar, Bihar Sharif, Nalanda, Bihar - 803101',
+          fatherName: 'Sri Ramesh Prasad',
+          motherName: 'Smt. Anita Devi',
+          dob: '15-08-2005',
+          gender: 'Male',
+          maritalStatus: 'Unmarried',
+          nationality: 'Indian',
+          linkedin: 'linkedin.com/in/mayankraj',
+          github: 'github.com/mayankraj'
+        },
+        signature: {
+          show: true,
+          declaration: 'I hereby declare that all the information provided above is true and correct to the best of my knowledge and belief.',
+          place: 'Bihar Sharif',
+          date: '18/08/2026',
+          signType: 'cursive',
+          signImageUrl: ''
+        },
+        objective: CAREER_OBJECTIVES, // Urge for a position in an aggressively growing organization...
+        skills: ['Python', 'C++', 'HTML/CSS', 'JavaScript', 'Firebase', 'Circuit Design', 'Problem Solving', 'Data Structures & Algorithms'],
+        education: [
+          { degree: 'B.Tech in Electronics & Communication (ECE)', institution: 'Engineering Institute', board: 'State Technical University', startYear: '2026', endYear: '2030', grade: 'Pursuing' },
+          { degree: 'Class 12th (Senior Secondary - PCM)', institution: 'Higher Secondary School, Bihar Sharif', board: 'BSEB Patna', startYear: '2024', endYear: '2026', grade: 'First Division' }
+        ],
+        experience: [
+          { company: 'Maa Enterprises Cyber Cafe', role: 'Web Development & Technical Assistant', startDate: 'Nov 2025', endDate: 'Present', description: 'Built responsive web interfaces, managed Firebase backend integrations, and assisted hundreds of students with error-free online admission and recruitment form submissions.' }
+        ],
+        projects: [
+          { title: 'Maa Enterprises Online Service Center Web Portal', tech: 'HTML5, CSS3, Vanilla JS, Firebase Modular SDK', description: 'Designed and deployed a full-featured cyber cafe website with live request tracking, WhatsApp document routing, and client-side resume builder.' },
+          { title: '2D Drift Car Racing Game', tech: 'Python, Pygame', description: 'Implemented vehicle physics, collision detection, and track boundary collision algorithms using Python and Pygame engine.' }
+        ],
+        certifications: 'Lakshya Batch Merit Student, Python for Beginners Certificate',
+        languages: 'Hindi (Native), English (Fluent)'
+      }
+    };
+
+    // GLOBAL LEVEL SWITCHER FUNCTION
+    function switchResumeLevel(selectedLevel) {
+      if (!selectedLevel || !SAMPLE_PRESETS[selectedLevel]) return;
+      resumeState.level = selectedLevel;
+
+      // 1. Update Button Visual States
+      const btnLow = document.getElementById('btn-lvl-low');
+      const btnMed = document.getElementById('btn-lvl-medium');
+      const btnHigh = document.getElementById('btn-lvl-high');
+
+      if (btnLow) btnLow.className = 'level-btn' + (selectedLevel === 'low' ? ' active-low' : '');
+      if (btnMed) btnMed.className = 'level-btn' + (selectedLevel === 'medium' ? ' active-medium' : '');
+      if (btnHigh) btnHigh.className = 'level-btn' + (selectedLevel === 'high' ? ' active-high' : '');
+
+      // 2. Update Header Status Pill
+      const badge = document.getElementById('current-level-badge');
+      const modeTitle = document.getElementById('active-mode-title');
+
+      if (selectedLevel === 'low') {
+        if (badge) {
+          badge.textContent = '🟢 Mode: Low Detail (Basic / Local Jobs)';
+          badge.style.background = 'rgba(16, 185, 129, 0.2)';
+          badge.style.color = '#a7f3d0';
+          badge.style.borderColor = '#10b981';
+        }
+        if (modeTitle) modeTitle.textContent = '📝 Editing: Basic Bio-Data & Local Job Resume (10th/12th Pass)';
+      } else if (selectedLevel === 'medium') {
+        if (badge) {
+          badge.textContent = '🟡 Mode: Medium Detail (Graduate / Pro)';
+          badge.style.background = 'rgba(2, 132, 199, 0.2)';
+          badge.style.color = '#bae6fd';
+          badge.style.borderColor = '#0284c7';
+        }
+        if (modeTitle) modeTitle.textContent = '💼 Editing: Professional Graduate & Executive Resume';
+      } else {
+        if (badge) {
+          badge.textContent = '🔵 Mode: High Detail (Engineering CV)';
+          badge.style.background = 'rgba(139, 92, 246, 0.2)';
+          badge.style.color = '#ddd6fe';
+          badge.style.borderColor = '#8b5cf6';
+        }
+        if (modeTitle) modeTitle.textContent = '💻 Editing: Comprehensive Engineering & Tech CV';
+      }
+
+      // 3. Transform Form UI (Show/Hide Relevant Fields)
+      applyLevelUI(selectedLevel);
+
+      // 4. Load Matching Sample Data
+      loadPresetData(selectedLevel);
+    }
+
+    function applyLevelUI(level) {
+      const secJobTitle = document.getElementById('sec-jobtitle');
+      const secSocialLinks = document.getElementById('sec-social-links');
+      const secGithubBox = document.getElementById('sec-github-box');
+      const secEmailBox = document.getElementById('sec-email-box');
+      const secProjectsWrapper = document.getElementById('sec-projects-wrapper');
+      const lblSkillsGuide = document.getElementById('lbl-skills-guide');
+      const headingObjective = document.getElementById('heading-objective');
+      const headingExperience = document.getElementById('heading-experience');
+
+      if (level === 'low') {
+        // LOW DETAIL MODE: Hide complex tech fields
+        if (secJobTitle) secJobTitle.style.display = 'none';
+        if (secSocialLinks) secSocialLinks.style.display = 'none';
+        if (secGithubBox) secGithubBox.style.display = 'none';
+        if (secEmailBox) secEmailBox.style.display = 'none';
+        if (secProjectsWrapper) secProjectsWrapper.style.display = 'none';
+        if (lblSkillsGuide) lblSkillsGuide.textContent = 'Basic Skills & Abilities (e.g. Computer, Typing, Cash Handling, Store Work)';
+        if (headingObjective) headingObjective.innerHTML = '<span>🎯</span> 4. Objective / About Candidate (उम्मीदवार का विवरण)';
+        if (headingExperience) headingExperience.innerHTML = '<span>💼</span> 7. Past Work / Shop Experience (अगर कोई हो)';
+      } else if (level === 'medium') {
+        // MEDIUM DETAIL MODE: Graduate/Executive
+        if (secJobTitle) secJobTitle.style.display = 'block';
+        if (secSocialLinks) secSocialLinks.style.display = 'grid';
+        if (secGithubBox) secGithubBox.style.display = 'none';
+        if (secEmailBox) secEmailBox.style.display = 'block';
+        if (secProjectsWrapper) secProjectsWrapper.style.display = 'block';
+        if (lblSkillsGuide) lblSkillsGuide.textContent = 'Key Professional & Software Skills (e.g. Tally, Excel, Administration)';
+        if (headingObjective) headingObjective.innerHTML = '<span>🎯</span> 4. Professional Summary (प्रोफाइल समरी)';
+        if (headingExperience) headingExperience.innerHTML = '<span>💼</span> 7. Work Experience & Roles';
+      } else {
+        // HIGH DETAIL MODE: Full Engineering
+        if (secJobTitle) secJobTitle.style.display = 'block';
+        if (secSocialLinks) secSocialLinks.style.display = 'grid';
+        if (secGithubBox) secGithubBox.style.display = 'block';
+        if (secEmailBox) secEmailBox.style.display = 'block';
+        if (secProjectsWrapper) secProjectsWrapper.style.display = 'block';
+        if (lblSkillsGuide) lblSkillsGuide.textContent = 'Technical Stack & Engineering Skills (Languages, Tools, Frameworks)';
+        if (headingObjective) headingObjective.innerHTML = '<span>🎯</span> 4. Technical Summary / Career Objective';
+        if (headingExperience) headingExperience.innerHTML = '<span>💼</span> 7. Technical Work Experience & Internships';
+      }
+    }
+
+    function loadPresetData(level) {
+      const preset = SAMPLE_PRESETS[level];
+      if (!preset) return;
+
+      resumeState.personal = JSON.parse(JSON.stringify(preset.personal));
+      resumeState.signature = JSON.parse(JSON.stringify(preset.signature));
+      resumeState.objective = preset.objective;
+      resumeState.skills = [...preset.skills];
+      resumeState.education = JSON.parse(JSON.stringify(preset.education));
+      resumeState.experience = JSON.parse(JSON.stringify(preset.experience));
+      resumeState.projects = JSON.parse(JSON.stringify(preset.projects));
+      resumeState.certifications = preset.certifications;
+      resumeState.languages = preset.languages;
+
+      syncFormValuesFromState();
+      renderEducationList();
+      renderExperienceList();
+      renderProjectList();
+      updateResumePreview();
+    }
+
+    function syncFormValuesFromState() {
+      const p = resumeState.personal;
+      const s = resumeState.signature;
+
+      if (document.getElementById('r-fullname')) document.getElementById('r-fullname').value = p.fullName;
+      if (document.getElementById('r-jobtitle')) document.getElementById('r-jobtitle').value = p.jobTitle || '';
+      if (document.getElementById('r-email')) document.getElementById('r-email').value = p.email || '';
+      if (document.getElementById('r-mobile')) document.getElementById('r-mobile').value = p.mobile || '';
+      if (document.getElementById('r-address')) document.getElementById('r-address').value = p.address || '';
+      if (document.getElementById('r-fathername')) document.getElementById('r-fathername').value = p.fatherName || '';
+      if (document.getElementById('r-mothername')) document.getElementById('r-mothername').value = p.motherName || '';
+      if (document.getElementById('r-dob')) document.getElementById('r-dob').value = p.dob || '';
+      if (document.getElementById('r-gender')) document.getElementById('r-gender').value = p.gender || 'Male';
+      if (document.getElementById('r-marital')) document.getElementById('r-marital').value = p.maritalStatus || 'Unmarried';
+      if (document.getElementById('r-nationality')) document.getElementById('r-nationality').value = p.nationality || 'Indian';
+      if (document.getElementById('r-linkedin')) document.getElementById('r-linkedin').value = p.linkedin || '';
+      if (document.getElementById('r-github')) document.getElementById('r-github').value = p.github || '';
+
+      if (document.getElementById('r-declaration')) document.getElementById('r-declaration').value = s.declaration;
+      if (document.getElementById('r-place')) document.getElementById('r-place').value = s.place;
+      if (document.getElementById('r-date')) document.getElementById('r-date').value = s.date;
+      if (document.getElementById('r-show-signature')) document.getElementById('r-show-signature').checked = s.show;
+      if (document.getElementById('r-sign-type')) document.getElementById('r-sign-type').value = s.signType;
+
+      if (document.getElementById('r-objective')) document.getElementById('r-objective').value = resumeState.objective;
+      if (document.getElementById('r-skills')) document.getElementById('r-skills').value = resumeState.skills.join(', ');
+      if (document.getElementById('r-certifications')) document.getElementById('r-certifications').value = resumeState.certifications;
+      if (document.getElementById('r-languages')) document.getElementById('r-languages').value = resumeState.languages;
+    }
+
+    // INITIALIZATION ON DOM READY
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Level Buttons Click Listeners
+      document.getElementById('btn-lvl-low')?.addEventListener('click', () => switchResumeLevel('low'));
+      document.getElementById('btn-lvl-medium')?.addEventListener('click', () => switchResumeLevel('medium'));
+      document.getElementById('btn-lvl-high')?.addEventListener('click', () => switchResumeLevel('high'));
+
+      // 2. Preset Objective Click Listeners
+      document.querySelectorAll('.preset-obj-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.dataset.opt, 10);
+          if (CAREER_OBJECTIVES[idx]) {
+            resumeState.objective = CAREER_OBJECTIVES[idx];
+            const textarea = document.getElementById('r-objective');
+            if (textarea) textarea.value = CAREER_OBJECTIVES[idx];
+            updateResumePreview();
+          }
+        });
+      });
+
+      // 3. Zoom Controls
+      const previewWrapper = document.getElementById('preview-wrapper');
+      const zoomText = document.getElementById('zoom-value-text');
+      const setZoom = (scale) => {
+        resumeState.zoomScale = Math.min(Math.max(scale, 0.6), 1.5);
+        if (previewWrapper) previewWrapper.style.setProperty('--zoom-scale', resumeState.zoomScale);
+        if (zoomText) zoomText.textContent = Math.round(resumeState.zoomScale * 100) + '%';
+      };
+      document.getElementById('btn-zoom-in')?.addEventListener('click', () => setZoom(resumeState.zoomScale + 0.1));
+      document.getElementById('btn-zoom-out')?.addEventListener('click', () => setZoom(resumeState.zoomScale - 0.1));
+      document.getElementById('btn-zoom-reset')?.addEventListener('click', () => setZoom(1.0));
+
+      // 4. Signature & Date/Place Controls
+      const showSignCheckbox = document.getElementById('r-show-signature');
+      const declInput = document.getElementById('r-declaration');
+      const placeInput = document.getElementById('r-place');
+      const dateInput = document.getElementById('r-date');
+      const signTypeSelect = document.getElementById('r-sign-type');
+      const signFileBox = document.getElementById('sec-sign-image-upload');
+      const signFileInput = document.getElementById('r-sign-file-input');
+
+      showSignCheckbox?.addEventListener('change', (e) => {
+        resumeState.signature.show = e.target.checked;
+        updateResumePreview();
+      });
+      declInput?.addEventListener('input', (e) => {
+        resumeState.signature.declaration = e.target.value;
+        updateResumePreview();
+      });
+      placeInput?.addEventListener('input', (e) => {
+        resumeState.signature.place = e.target.value;
+        updateResumePreview();
+      });
+      dateInput?.addEventListener('input', (e) => {
+        resumeState.signature.date = e.target.value;
+        updateResumePreview();
+      });
+      document.getElementById('btn-set-today')?.addEventListener('click', () => {
+        const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        resumeState.signature.date = today;
+        if (dateInput) dateInput.value = today;
+        updateResumePreview();
+      });
+      signTypeSelect?.addEventListener('change', (e) => {
+        resumeState.signature.signType = e.target.value;
+        if (signFileBox) signFileBox.style.display = e.target.value === 'image' ? 'block' : 'none';
+        updateResumePreview();
+      });
+      signFileInput?.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            resumeState.signature.signImageUrl = event.target.result;
+            updateResumePreview();
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      document.getElementById('btn-remove-sign-img')?.addEventListener('click', () => {
+        resumeState.signature.signImageUrl = '';
+        if (signFileInput) signFileInput.value = '';
+        updateResumePreview();
+      });
+
+      // 5. Template and Color Theme Pickers
+      document.querySelectorAll('.template-card').forEach(card => {
+        card.addEventListener('click', () => {
+          document.querySelectorAll('.template-card').forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+          resumeState.template = card.dataset.template;
+          updateResumePreview();
+        });
+      });
+
+      document.querySelectorAll('.color-swatch').forEach(swatch => {
+        swatch.addEventListener('click', () => {
+          document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+          swatch.classList.add('active');
+          resumeState.primaryColor = swatch.dataset.primary;
+          resumeState.secondaryColor = swatch.dataset.sec;
+          if (document.getElementById('r-custom-color')) {
+            document.getElementById('r-custom-color').value = swatch.dataset.primary;
+          }
+          updateResumePreview();
+        });
+      });
+
+      document.getElementById('r-custom-color')?.addEventListener('input', (e) => {
+        resumeState.primaryColor = e.target.value;
+        updateResumePreview();
+      });
+      document.getElementById('r-font-select')?.addEventListener('change', (e) => {
+        resumeState.font = e.target.value;
+        updateResumePreview();
+      });
+
+      // 6. Bind All Personal Input Fields
+      const bind = (id, obj, key) => {
+        document.getElementById(id)?.addEventListener('input', (e) => {
+          obj[key] = e.target.value;
+          updateResumePreview();
+        });
+      };
+
+      bind('r-fullname', resumeState.personal, 'fullName');
+      bind('r-jobtitle', resumeState.personal, 'jobTitle');
+      bind('r-email', resumeState.personal, 'email');
+      bind('r-mobile', resumeState.personal, 'mobile');
+      bind('r-address', resumeState.personal, 'address');
+      bind('r-fathername', resumeState.personal, 'fatherName');
+      bind('r-mothername', resumeState.personal, 'motherName');
+      bind('r-dob', resumeState.personal, 'dob');
+      bind('r-gender', resumeState.personal, 'gender');
+      bind('r-marital', resumeState.personal, 'maritalStatus');
+      bind('r-nationality', resumeState.personal, 'nationality');
+      bind('r-linkedin', resumeState.personal, 'linkedin');
+      bind('r-github', resumeState.personal, 'github');
+
+      document.getElementById('r-gender')?.addEventListener('change', (e) => {
+        resumeState.personal.gender = e.target.value;
+        updateResumePreview();
+      });
+      document.getElementById('r-marital')?.addEventListener('change', (e) => {
+        resumeState.personal.maritalStatus = e.target.value;
+        updateResumePreview();
+      });
+      document.getElementById('r-objective')?.addEventListener('input', (e) => {
+        resumeState.objective = e.target.value;
+        updateResumePreview();
+      });
+      document.getElementById('r-skills')?.addEventListener('input', (e) => {
+        resumeState.skills = e.target.value.split(',').map(s => s.trim()).filter(Boolean);
+        updateResumePreview();
+      });
+      document.getElementById('r-certifications')?.addEventListener('input', (e) => {
+        resumeState.certifications = e.target.value;
+        updateResumePreview();
+      });
+      document.getElementById('r-languages')?.addEventListener('input', (e) => {
+        resumeState.languages = e.target.value;
+        updateResumePreview();
+      });
+
+      // 7. Photo Upload Control
+      const photoInput = document.getElementById('r-photo-input');
+      photoInput?.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            resumeState.photoUrl = event.target.result;
+            const thumb = document.getElementById('photo-preview-img');
+            if (thumb) thumb.src = event.target.result;
+            updateResumePreview();
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      document.getElementById('r-photo-shape')?.addEventListener('change', (e) => {
+        resumeState.photoShape = e.target.value;
+        updateResumePreview();
+      });
+      document.getElementById('r-remove-photo')?.addEventListener('click', () => {
+        resumeState.photoUrl = '';
+        if (photoInput) photoInput.value = '';
+        const thumb = document.getElementById('photo-preview-img');
+        if (thumb) thumb.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E";
+        updateResumePreview();
+      });
+
+      // 8. Dynamic Section Buttons
+      document.getElementById('btn-add-education')?.addEventListener('click', () => {
+        resumeState.education.push({ degree: 'Class / Degree', institution: 'School / College', board: 'Board', startYear: '2022', endYear: '2024', grade: 'Pass' });
+        renderEducationList();
+        updateResumePreview();
+      });
+      document.getElementById('btn-add-experience')?.addEventListener('click', () => {
+        resumeState.experience.push({ company: 'Company / Shop', role: 'Role', startDate: '2023', endDate: '2024', description: 'Description of responsibilities.' });
+        renderExperienceList();
+        updateResumePreview();
+      });
+      document.getElementById('btn-add-project')?.addEventListener('click', () => {
+        resumeState.projects.push({ title: 'New Project', tech: 'Technologies', description: 'Summary of what was built.' });
+        renderProjectList();
+        updateResumePreview();
+      });
+
+      // 9. Toolbar Actions
+      document.getElementById('btn-load-sample')?.addEventListener('click', () => {
+        loadPresetData(resumeState.level);
+      });
+      document.getElementById('btn-reset-resume')?.addEventListener('click', () => {
+        if (confirm('Clear all resume fields?')) {
+          resumeState.personal = { fullName: '', jobTitle: '', email: '', mobile: '', address: '', fatherName: '', motherName: '', dob: '', gender: 'Male', maritalStatus: 'Unmarried', nationality: 'Indian', linkedin: '', github: '' };
+          resumeState.signature = { show: true, declaration: '', place: '', date: '', signType: 'cursive', signImageUrl: '' };
+          resumeState.objective = '';
+          resumeState.skills = [];
+          resumeState.education = [];
+          resumeState.experience = [];
+          resumeState.projects = [];
+          resumeState.certifications = '';
+          resumeState.languages = '';
+          syncFormValuesFromState();
+          renderEducationList();
+          renderExperienceList();
+          renderProjectList();
+          updateResumePreview();
+        }
+      });
+      document.getElementById('btn-print-resume')?.addEventListener('click', () => window.print());
+      document.getElementById('btn-download-pdf')?.addEventListener('click', generatePDF);
+
+      // Initial Render
+      applyLevelUI(resumeState.level);
+      renderEducationList();
+      renderExperienceList();
+      renderProjectList();
+      updateResumePreview();
+    });
+
+    // DYNAMIC FORMS RENDERERS
+    function renderEducationList() {
+      const container = document.getElementById('education-items-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      resumeState.education.forEach((edu, index) => {
+        const card = document.createElement('div');
+        card.className = 'dynamic-item-card';
+        card.innerHTML = `
+          <button type="button" class="dynamic-item-remove" data-index="${index}">✕</button>
+          <div class="form-group" style="margin-bottom: 4px;">
+            <input type="text" class="form-control" placeholder="Degree / Class (e.g. 10th, 12th, B.Tech)" value="${edu.degree}" data-field="degree">
+          </div>
+          <div class="form-group" style="margin-bottom: 4px;">
+            <input type="text" class="form-control" placeholder="School / College / University" value="${edu.institution}" data-field="institution">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+            <input type="text" class="form-control" placeholder="Year / Duration" value="${edu.startYear}${edu.endYear ? ` - ${edu.endYear}` : ''}" data-field="years">
+            <input type="text" class="form-control" placeholder="Marks / % / CGPA" value="${edu.grade}" data-field="grade">
+          </div>
+        `;
+
+        card.querySelectorAll('input').forEach(input => {
+          input.addEventListener('input', (e) => {
+            const field = e.target.dataset.field;
+            if (field === 'years') {
+              const parts = e.target.value.split('-');
+              edu.startYear = parts[0]?.trim() || '';
+              edu.endYear = parts?.trim() || '';
+            } else {
+              edu[field] = e.target.value;
+            }
+            updateResumePreview();
+          });
+        });
+
+        card.querySelector('.dynamic-item-remove').addEventListener('click', () => {
+          resumeState.education.splice(index, 1);
+          renderEducationList();
+          updateResumePreview();
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    function renderExperienceList() {
+      const container = document.getElementById('experience-items-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      resumeState.experience.forEach((exp, index) => {
+        const card = document.createElement('div');
+        card.className = 'dynamic-item-card';
+        card.innerHTML = `
+          <button type="button" class="dynamic-item-remove" data-index="${index}">✕</button>
+          <div class="form-group" style="margin-bottom: 4px;">
+            <input type="text" class="form-control" placeholder="Company / Business / Shop Name" value="${exp.company}" data-field="company">
+          </div>
+          <div class="form-group" style="margin-bottom: 4px;">
+            <input type="text" class="form-control" placeholder="Job Title / Role" value="${exp.role}" data-field="role">
+          </div>
+          <div class="form-group" style="margin-bottom: 4px;">
+            <input type="text" class="form-control" placeholder="Duration (e.g. 2023 - 2024)" value="${exp.startDate}${exp.endDate ? ` - ${exp.endDate}` : ''}" data-field="duration">
+          </div>
+          <textarea class="form-control" rows="2" placeholder="Key responsibilities..." data-field="description">${exp.description}</textarea>
+        `;
+
+        card.querySelectorAll('input, textarea').forEach(input => {
+          input.addEventListener('input', (e) => {
+            const field = e.target.dataset.field;
+            if (field === 'duration') {
+              const parts = e.target.value.split('-');
+              exp.startDate = parts[0]?.trim() || '';
+              exp.endDate = parts?.trim() || '';
+            } else {
+              exp[field] = e.target.value;
+            }
+            updateResumePreview();
+          });
+        });
+
+        card.querySelector('.dynamic-item-remove').addEventListener('click', () => {
+          resumeState.experience.splice(index, 1);
+          renderExperienceList();
+          updateResumePreview();
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    function renderProjectList() {
+      const container = document.getElementById('project-items-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      resumeState.projects.forEach((proj, index) => {
+        const card = document.createElement('div');
+        card.className = 'dynamic-item-card';
+        card.innerHTML = `
+          <button type="button" class="dynamic-item-remove" data-index="${index}">✕</button>
+          <div class="form-group" style="margin-bottom: 4px;">
+            <input type="text" class="form-control" placeholder="Project Title" value="${proj.title}" data-field="title">
+          </div>
+          <div class="form-group" style="margin-bottom: 4px;">
+            <input type="text" class="form-control" placeholder="Tech Stack / Tools Used" value="${proj.tech}" data-field="tech">
+          </div>
+          <textarea class="form-control" rows="2" placeholder="Brief project description..." data-field="description">${proj.description}</textarea>
+        `;
+
+        card.querySelectorAll('input, textarea').forEach(input => {
+          input.addEventListener('input', (e) => {
+            proj[e.target.dataset.field] = e.target.value;
+            updateResumePreview();
+          });
+        });
+
+        card.querySelector('.dynamic-item-remove').addEventListener('click', () => {
+          resumeState.projects.splice(index, 1);
+          renderProjectList();
+          updateResumePreview();
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    // SIGNATURE FOOTER BLOCK BUILDER
+    function getSignatureBlockHTML() {
+      const s = resumeState.signature;
+      const p = resumeState.personal;
+      if (!s || !s.show) return '';
+
+      let signatureVisualHTML = '';
+      if (s.signType === 'image' && s.signImageUrl) {
+        signatureVisualHTML = `<img src="${s.signImageUrl}" class="r-sig-image" alt="Signature">`;
+      } else if (s.signType === 'cursive') {
+        signatureVisualHTML = `<div class="r-sig-cursive">${p.fullName || 'Candidate Sign'}</div>`;
+      }
+
+      return `
+        <div class="r-signature-footer">
+          ${s.declaration ? `<p class="r-declaration-text"><strong>Declaration:</strong> ${s.declaration}</p>` : ''}
+          <div class="r-sig-row">
+            <div class="r-sig-left">
+              ${s.place ? `<div><strong>Place:</strong> ${s.place}</div>` : ''}
+              ${s.date ? `<div><strong>Date:</strong> ${s.date}</div>` : ''}
+            </div>
+            <div class="r-sig-right">
+              ${signatureVisualHTML}
+              <div class="r-sig-line">(${p.fullName || 'Signature'})</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // LIVE PREVIEW RENDERER
+    function updateResumePreview() {
+      const preview = document.getElementById('resume-preview-sheet');
+      if (!preview) return;
+
+      preview.style.setProperty('--r-primary', resumeState.primaryColor);
+      preview.style.setProperty('--r-secondary', resumeState.secondaryColor);
+      preview.style.setProperty('--r-font', resumeState.font);
+      preview.className = `resume-paper template-${resumeState.template}`;
+
+      const p = resumeState.personal;
+      const isLow = resumeState.level === 'low';
+      const isMedium = resumeState.level === 'medium';
+      const isHigh = resumeState.level === 'high';
+
+      const photoHTML = resumeState.photoUrl 
+        ? `<img src="${resumeState.photoUrl}" class="r-photo ${resumeState.photoShape}" alt="Photo">` 
+        : '';
+
+      const contactsHTML = `
+        <div class="r-contact-bar">
+          ${p.mobile ? `<span>📞 ${p.mobile}</span>` : ''}
+          ${p.email ? `<span>✉ ${p.email}</span>` : ''}
+          ${p.address ? `<span>📍 ${p.address}</span>` : ''}
+          ${(isHigh || isMedium) && p.linkedin ? `<span>🔗 ${p.linkedin}</span>` : ''}
+          ${isHigh && p.github ? `<span>💻 ${p.github}</span>` : ''}
+        </div>
+      `;
+
+      const objectiveHTML = resumeState.objective ? `
+        <section class="r-section">
+          <h3 class="r-section-title">${isLow ? 'Career Objective' : (isHigh ? 'Technical Summary / Career Objective' : 'Professional Summary')}</h3>
+          <p class="r-item-desc">${resumeState.objective}</p>
+        </section>
+      ` : '';
+
+      // Personal Particulars Grid (Father, Mother, DOB, Gender, Marital, Nationality)
+      const personalDetailsHTML = (p.fatherName || p.motherName || p.dob) ? `
+        <section class="r-section">
+          <h3 class="r-section-title">Personal Particulars</h3>
+          <div class="r-personal-grid">
+            ${p.fatherName ? `<div class="r-personal-item"><strong>Father's Name:</strong> <span>${p.fatherName}</span></div>` : ''}
+            ${p.motherName ? `<div class="r-personal-item"><strong>Mother's Name:</strong> <span>${p.motherName}</span></div>` : ''}
+            ${p.dob ? `<div class="r-personal-item"><strong>Date of Birth:</strong> <span>${p.dob}</span></div>` : ''}
+            ${p.gender ? `<div class="r-personal-item"><strong>Gender:</strong> <span>${p.gender}</span></div>` : ''}
+            ${p.maritalStatus ? `<div class="r-personal-item"><strong>Marital Status:</strong> <span>${p.maritalStatus}</span></div>` : ''}
+            ${p.nationality ? `<div class="r-personal-item"><strong>Nationality:</strong> <span>${p.nationality}</span></div>` : ''}
+          </div>
+        </section>
+      ` : '';
+
+      const skillsHTML = resumeState.skills.length > 0 ? `
+        <section class="r-section">
+          <h3 class="r-section-title">${isHigh ? 'Technical Stack & Skills' : (isLow ? 'Key Skills & Abilities' : 'Skills & Competencies')}</h3>
+          <div class="r-tags-container">
+            ${resumeState.skills.map(s => `<span class="r-tag">${s}</span>`).join('')}
+          </div>
+        </section>
+      ` : '';
+
+      const educationHTML = resumeState.education.length > 0 ? `
+        <section class="r-section r-education-section">
+          <h3 class="r-section-title">Academic Qualifications</h3>
+          ${isLow ? `
+            <table class="r-table">
+              <thead>
+                <tr>
+                  <th>Qualification / Class</th>
+                  <th>School / Board</th>
+                  <th>Year</th>
+                  <th>Score / %</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${resumeState.education.map(edu => `
+                  <tr>
+                    <td><strong>${edu.degree}</strong></td>
+                    <td>${edu.institution} ${edu.board ? `(${edu.board})` : ''}</td>
+                    <td>${edu.startYear}${edu.endYear ? ` - ${edu.endYear}` : ''}</td>
+                    <td>${edu.grade}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          ` : `
+            ${resumeState.education.map(edu => `
+              <div class="r-item">
+                <div class="r-item-header">
+                  <span>${edu.degree}</span>
+                  <span>${edu.startYear}${edu.endYear ? ` – ${edu.endYear}` : ''}</span>
+                </div>
+                <div class="r-item-sub">
+                  <span>${edu.institution} ${edu.board ? `(${edu.board})` : ''}</span>
+                  <span>${edu.grade ? `Score: ${edu.grade}` : ''}</span>
+                </div>
+              </div>
+            `).join('')}
+          `}
+        </section>
+      ` : '';
+
+      const experienceHTML = resumeState.experience.length > 0 ? `
+        <section class="r-section r-experience-section">
+          <h3 class="r-section-title">Work Experience</h3>
+          ${resumeState.experience.map(exp => `
+            <div class="r-item">
+              <div class="r-item-header">
+                <span>${exp.role}</span>
+                <span>${exp.startDate}${exp.endDate ? ` – ${exp.endDate}` : ''}</span>
+              </div>
+              <div class="r-item-sub">
+                <span>${exp.company}</span>
+              </div>
+              <p class="r-item-desc">${exp.description}</p>
+            </div>
+          `).join('')}
+        </section>
+      ` : '';
+
+      const projectsHTML = (!isLow && resumeState.projects.length > 0) ? `
+        <section class="r-section r-projects-section">
+          <h3 class="r-section-title">Key Projects</h3>
+          ${resumeState.projects.map(proj => `
+            <div class="r-item">
+              <div class="r-item-header">
+                <span>${proj.title}</span>
+              </div>
+              ${proj.tech ? `<div class="r-item-sub"><span>Tech Stack: ${proj.tech}</span></div>` : ''}
+              <p class="r-item-desc">${proj.description}</p>
+            </div>
+          `).join('')}
+        </section>
+      ` : '';
+
+      const certsHTML = (resumeState.certifications || resumeState.languages) ? `
+        <section class="r-section">
+          <h3 class="r-section-title">Additional Details</h3>
+          ${resumeState.certifications ? `<p class="r-item-desc"><strong>Certifications:</strong> ${resumeState.certifications}</p>` : ''}
+          ${resumeState.languages ? `<p class="r-item-desc" style="margin-top: 2px;"><strong>Languages:</strong> ${resumeState.languages}</p>` : ''}
+        </section>
+      ` : '';
+
+      const signatureFooterHTML = getSignatureBlockHTML();
+
+      // RENDER TEMPLATES
+      if (resumeState.template === 'modern') {
+        preview.innerHTML = `
+          <div class="r-sidebar">
+            ${photoHTML ? `<div style="margin-bottom: 10px; text-align: center;">${photoHTML}</div>` : ''}
+            <h1 class="r-name" style="font-size: 15pt;">${p.fullName}</h1>
+            ${p.jobTitle ? `<p class="r-title" style="font-size: 8.8pt;">${p.jobTitle}</p>` : ''}
+            
+            <div style="margin-top: 10px; font-size: 7.8pt; color: #475569;">
+              ${p.mobile ? `<p style="margin-bottom: 3px;">📞 ${p.mobile}</p>` : ''}
+              ${p.email ? `<p style="margin-bottom: 3px;">✉ ${p.email}</p>` : ''}
+              ${p.address ? `<p style="margin-bottom: 3px;">📍 ${p.address}</p>` : ''}
+              ${(isHigh || isMedium) && p.linkedin ? `<p style="margin-bottom: 3px;">🔗 ${p.linkedin}</p>` : ''}
+            </div>
+
+            <div style="margin-top: 12px;">${skillsHTML}</div>
+            <div style="margin-top: 12px;">${personalDetailsHTML}</div>
+            <div style="margin-top: 12px;">${certsHTML}</div>
+          </div>
+
+          <div class="r-main">
+            ${objectiveHTML}
+            ${experienceHTML}
+            ${projectsHTML}
+            ${educationHTML}
+            ${signatureFooterHTML}
+          </div>
+        `;
+      } else if (resumeState.template === 'two-column') {
+        preview.innerHTML = `
+          <header class="r-header" style="border-bottom: 2px solid var(--r-primary); padding-bottom: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h1 class="r-name">${p.fullName}</h1>
+              ${p.jobTitle ? `<p class="r-title">${p.jobTitle}</p>` : ''}
+              ${contactsHTML}
+            </div>
+            ${photoHTML}
+          </header>
+
+          <div class="template-two-column">
+            <div class="col-left">
+              ${personalDetailsHTML}
+              ${skillsHTML}
+              ${educationHTML}
+              ${certsHTML}
+            </div>
+            <div class="col-right">
+              ${objectiveHTML}
+              ${experienceHTML}
+              ${projectsHTML}
+            </div>
+          </div>
+
+          ${signatureFooterHTML}
+        `;
+      } else {
+        preview.innerHTML = `
+          <header class="r-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+              <div>
+                <h1 class="r-name">${p.fullName}</h1>
+                ${p.jobTitle ? `<p class="r-title">${p.jobTitle}</p>` : ''}
+                ${contactsHTML}
+              </div>
+              ${photoHTML}
+            </div>
+          </header>
+
+          <main>
+            ${objectiveHTML}
+            ${personalDetailsHTML}
+            ${educationHTML}
+            ${experienceHTML}
+            ${projectsHTML}
+            ${skillsHTML}
+            ${certsHTML}
+            ${signatureFooterHTML}
+          </main>
+        `;
+      }
+    }
+
+    // PDF GENERATION
+    async function generatePDF() {
+      const element = document.getElementById('resume-preview-sheet');
+      const name = resumeState.personal.fullName.replace(/[^a-zA-Z0-9]/g, '_') || 'Resume';
+
+      if (!resumeState.personal.fullName || !resumeState.personal.mobile) {
+        alert('Please provide at least your Name and Mobile number.');
+        return;
+      }
+
+      const opt = {
+        margin: [0, 0, 0, 0],
+        filename: name + '_Resume.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      try {
+        await html2pdf().set(opt).from(element).save();
+      } catch (error) {
+        console.error('PDF generation failed:', error);
+        window.print();
+      }
+    }
+  </script>
 </body>
 </html>
 
